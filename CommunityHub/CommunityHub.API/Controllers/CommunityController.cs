@@ -6,39 +6,39 @@ namespace CommunityHub.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GroupsController : ControllerBase
+public class CommunityController : ControllerBase
 {
     [HttpGet("getAll")]
-    [ProducesResponseType(typeof(List<Group>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<Community>), StatusCodes.Status200OK)]
     public IActionResult GetAll()
     {
-        return Ok(DataStorage.GetAllGroups());
+        return Ok(DataStorage.GetAllCommunities());
     }
 
     [HttpGet("get/{id}")]
-    [ProducesResponseType(typeof(Group), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Community), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetById(Guid id)
     {
-        var group = DataStorage.GetGroupById(id);
+        var group = DataStorage.GetCommunityById(id);
         if (group == null) return NotFound();
         return Ok(group);
     }
 
     [HttpPost("create")]
-    [ProducesResponseType(typeof(Group), StatusCodes.Status200OK)]
-    public IActionResult Create([FromBody] Group group)
+    [ProducesResponseType(typeof(Community), StatusCodes.Status200OK)]
+    public IActionResult Create([FromBody] Community group)
     {
-        DataStorage.AddGroup(group);
+        DataStorage.AddCommunity(group);
         return Ok(group);
     }
 
     [HttpPut("update")]
-    [ProducesResponseType(typeof(Group), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Community), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult Update([FromBody] Group updateGroup)
+    public IActionResult Update([FromBody] Community updateGroup)
     {
-        var success = DataStorage.UpdateGroup(updateGroup);
+        var success = DataStorage.UpdateCommunity(updateGroup);
         if (!success) return BadRequest();
 
         return Ok();
@@ -49,7 +49,7 @@ public class GroupsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult DeleteById(Guid id)
     {
-        var success = DataStorage.DeleteGroup(id);
+        var success = DataStorage.DeleteCommunity(id);
         if (!success) return BadRequest();
         return NoContent();
     }

@@ -7,17 +7,17 @@
 	},
 	"item": [
 		{
-			"name": "getAll",
+			"name": "getAll_community",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/groups/getAll",
+					"raw": "{{baseURL}}/community/getAll",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
-						"groups",
+						"community",
 						"getAll"
 					]
 				}
@@ -25,17 +25,17 @@
 			"response": []
 		},
 		{
-			"name": "getById",
+			"name": "getById_community",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/groups/getAll/938da99c-a312-4b59-a44e-a12799042ac8",
+					"raw": "{{baseURL}}/community/getAll/938da99c-a312-4b59-a44e-a12799042ac8",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
-						"groups",
+						"community",
 						"getAll",
 						"938da99c-a312-4b59-a44e-a12799042ac8"
 					]
@@ -44,7 +44,7 @@
 			"response": []
 		},
 		{
-			"name": "create",
+			"name": "create_community",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -58,12 +58,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/groups/create",
+					"raw": "{{baseURL}}/community/create",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
-						"groups",
+						"community",
 						"create"
 					]
 				}
@@ -71,7 +71,7 @@
 			"response": []
 		},
 		{
-			"name": "update",
+			"name": "update_community",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -85,12 +85,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/groups/update",
+					"raw": "{{baseURL}}/community/update",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
-						"groups",
+						"community",
 						"update"
 					]
 				}
@@ -98,7 +98,7 @@
 			"response": []
 		},
 		{
-			"name": "delete",
+			"name": "delete_community",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -107,12 +107,12 @@
 					"raw": "{\r\n  \"id\": \"3fa85f64-5717-4562-b2fc-2c963f66afa6\",\r\n  \"name\": \"string\",\r\n  \"description\": \"newstring\",\r\n  \"category\": \"string\",\r\n  \"city\": \"string\",\r\n  \"country\": \"string\",\r\n  \"events\": [\r\n    {\r\n      \"id\": \"3fa85f64-5717-4462-b3fc-2c963f66afa6\",\r\n      \"title\": \"string\",\r\n      \"description\": \"string\",\r\n      \"eventDate\": \"2025-09-15T15:10:37.085Z\",\r\n      \"maxParticipants\": 0,\r\n      \"venue\": \"string\",\r\n      \"address\": \"string\",\r\n      \"status\": 0\r\n    }\r\n  ]\r\n}"
 				},
 				"url": {
-					"raw": "{{baseURL}}/groups/delete/8b406487-499f-4531-833a-77c1a34b6c47",
+					"raw": "{{baseURL}}/community/delete/8b406487-499f-4531-833a-77c1a34b6c47",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
-						"groups",
+						"community",
 						"delete",
 						"8b406487-499f-4531-833a-77c1a34b6c47"
 					]

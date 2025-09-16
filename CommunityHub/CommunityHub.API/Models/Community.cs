@@ -1,6 +1,6 @@
 ﻿namespace CommunityHub.API.Models;
 
-public class Group : IEntity
+public class Community : IEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = string.Empty;

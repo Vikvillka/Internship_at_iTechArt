@@ -4,20 +4,20 @@ namespace CommunityHub.API.Initialization;
 
 public static class DataStorage
 {
-    public static List<Group> groups { get; } = new List<Group>();
+    public static List<Community> Community { get; } = new List<Community>();
 
-    public static List<Group> GetAllGroups() => groups;
+    public static List<Community> GetAllCommunities() => Community;
 
-    public static Group? GetGroupById(Guid id) => groups.FirstOrDefault(g => g.Id == id);
+    public static Community? GetCommunityById(Guid id) => Community.FirstOrDefault(g => g.Id == id);
 
-    public static void AddGroup(Group group)
+    public static void AddCommunity(Community group)
     {
-        groups.Add(group);
+        Community.Add(group);
     }
 
-    public static bool UpdateGroup(Group updatedGroup)
+    public static bool UpdateCommunity(Community updatedGroup)
     {
-        var existingGroup = groups.FirstOrDefault(g => g.Id == updatedGroup.Id);
+        var existingGroup = Community.FirstOrDefault(g => g.Id == updatedGroup.Id);
         if (existingGroup == null) return false;
 
         existingGroup.Name = updatedGroup.Name;
@@ -30,12 +30,12 @@ public static class DataStorage
         return true;
     }
 
-    public static bool DeleteGroup(Guid id)
+    public static bool DeleteCommunity(Guid id)
     {
-        var group = groups.FirstOrDefault(g => g.Id == id);
+        var group = Community.FirstOrDefault(g => g.Id == id);
         if (group == null) return false;
             
-        groups.Remove(group);
+        Community.Remove(group);
         return true;
     }
 }

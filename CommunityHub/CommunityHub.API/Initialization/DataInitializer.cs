@@ -6,7 +6,7 @@ public static class DataInitializer
 {
     public static void Seed()
     {
-        if (DataStorage.groups.Any()) return;
+        if (DataStorage.Community.Any()) return;
 
         var defaultEvent = new Event
         {
@@ -19,7 +19,7 @@ public static class DataInitializer
             Status = EventStatus.Planned
         };
 
-        var defaultGroup = new Group
+        var defaultGroup = new Community
         {
             Name = "Reasoned Reads Round Table",
             Description = "Group created at initialization",
@@ -29,7 +29,7 @@ public static class DataInitializer
             Events = new List<Event> { defaultEvent }   
         };
 
-        DataStorage.groups.Add(defaultGroup);
+        DataStorage.Community.Add(defaultGroup);
     }
 }
 
