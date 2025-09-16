@@ -12,12 +12,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7072/groups/getAll",
-					"protocol": "https",
+					"raw": "{{baseURL}}/groups/getAll",
 					"host": [
-						"localhost"
+						"{{baseURL}}"
 					],
-					"port": "7072",
 					"path": [
 						"groups",
 						"getAll"
@@ -32,12 +30,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7072/groups/getAll/938da99c-a312-4b59-a44e-a12799042ac8",
-					"protocol": "https",
+					"raw": "{{baseURL}}/groups/getAll/938da99c-a312-4b59-a44e-a12799042ac8",
 					"host": [
-						"localhost"
+						"{{baseURL}}"
 					],
-					"port": "7072",
 					"path": [
 						"groups",
 						"getAll",
@@ -62,12 +58,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7072/groups/create",
-					"protocol": "https",
+					"raw": "{{baseURL}}/groups/create",
 					"host": [
-						"localhost"
+						"{{baseURL}}"
 					],
-					"port": "7072",
 					"path": [
 						"groups",
 						"create"
@@ -91,12 +85,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7072/groups/update",
-					"protocol": "https",
+					"raw": "{{baseURL}}/groups/update",
 					"host": [
-						"localhost"
+						"{{baseURL}}"
 					],
-					"port": "7072",
 					"path": [
 						"groups",
 						"update"
@@ -115,12 +107,10 @@
 					"raw": "{\r\n  \"id\": \"3fa85f64-5717-4562-b2fc-2c963f66afa6\",\r\n  \"name\": \"string\",\r\n  \"description\": \"newstring\",\r\n  \"category\": \"string\",\r\n  \"city\": \"string\",\r\n  \"country\": \"string\",\r\n  \"events\": [\r\n    {\r\n      \"id\": \"3fa85f64-5717-4462-b3fc-2c963f66afa6\",\r\n      \"title\": \"string\",\r\n      \"description\": \"string\",\r\n      \"eventDate\": \"2025-09-15T15:10:37.085Z\",\r\n      \"maxParticipants\": 0,\r\n      \"venue\": \"string\",\r\n      \"address\": \"string\",\r\n      \"status\": 0\r\n    }\r\n  ]\r\n}"
 				},
 				"url": {
-					"raw": "https://localhost:7072/groups/delete/8b406487-499f-4531-833a-77c1a34b6c47",
-					"protocol": "https",
+					"raw": "{{baseURL}}/groups/delete/8b406487-499f-4531-833a-77c1a34b6c47",
 					"host": [
-						"localhost"
+						"{{baseURL}}"
 					],
-					"port": "7072",
 					"path": [
 						"groups",
 						"delete",
@@ -129,6 +119,13 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
 		}
 	]
 }

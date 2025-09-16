@@ -1,8 +1,7 @@
-using CommunityHub.API;
 using CommunityHub.API.Controllers;
+using CommunityHub.API.Initialization;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -16,9 +15,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-DataInitializer.Seed(GroupsController.Groups);
+DataInitializer.Seed();
 
 app.UseHttpsRedirection();
 app.MapControllers();
-
 app.Run();
