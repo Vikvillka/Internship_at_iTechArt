@@ -6,7 +6,7 @@ namespace CommunityHub.API.Initialization
     {
         public static void Seed()
         {
-            if (DataStore.Groups.Any()) return;
+            if (DataStorage.groups.Any()) return;
 
             var defaultEvent = new Event
             {
@@ -29,7 +29,7 @@ namespace CommunityHub.API.Initialization
                 Events = new List<Event> { defaultEvent }   
             };
 
-            DataStore.Groups.Add(defaultGroup);
+            DataStorage.groups.Add(defaultGroup);
         }
     }
 }

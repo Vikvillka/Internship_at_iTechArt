@@ -5,62 +5,53 @@ using Microsoft.AspNetCore.Mvc;
 namespace CommunityHub.API.Controllers
 {
     [ApiController]
-    [Route("groups")]
+    [Route("[controller]")]
     public class GroupsController : ControllerBase
     {
         [HttpGet("getAll")]
         [ProducesResponseType(typeof(List<Group>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            return Ok(DataStore.Groups);
+            return Ok(DataStorage.GetAllGroups());
         }
 
-        [HttpGet("getAll/{id}")]
-        [ProducesResponseType(typeof(List<Group>), StatusCodes.Status200OK)]
+        [HttpGet("get/{id}")]
+        [ProducesResponseType(typeof(Group), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(Guid id)
         {
-            var group = DataStore.Groups.FirstOrDefault(g => g.Id == id);
+            var group = DataStorage.GetGroupById(id);
             if (group == null) return NotFound();
             return Ok(group);
         }
 
         [HttpPost("create")]
-        [ProducesResponseType(typeof(List<Group>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Group), StatusCodes.Status201Created)]
         public IActionResult Create([FromBody] Group group)
         {
-            group.Id = Guid.NewGuid();
-            DataStore.Groups.Add(group);
-            return Ok(group);
+            DataStorage.AddGroup(group);
+            return CreatedAtAction(nameof(GetById), new { id = group.Id }, group);
         }
 
         [HttpPut("update")]
-        [ProducesResponseType(typeof(List<Group>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Group), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Update([FromBody] Group updateGroup)
         {
-            var group = DataStore.Groups.FirstOrDefault(g => g.Id == updateGroup.Id);
-            if (group == null) return NotFound();
+            var success = DataStorage.UpdateGroup(updateGroup);
+            if (!success) return NotFound();
 
-            group.Name = updateGroup.Name;
-            group.Description = updateGroup.Description;
-            group.Category = updateGroup.Category;
-            group.City = updateGroup.City;
-            group.Country = updateGroup.Country;
-            group.Events = updateGroup.Events;
-
-            return Ok(group);
+            return Ok(updateGroup);
         }
 
         [HttpDelete("delete/{id}")]
-        [ProducesResponseType(typeof(List<Group>), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(Group), StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult DeleteById(Guid id) 
         {
-            var group = DataStore.Groups.FirstOrDefault(g => g.Id == id);
-            if (group == null) return NotFound();
-            DataStore.Groups.Remove(group);
-            return Ok(group);
+            var success = DataStorage.DeleteGroup(id);
+            if (!success) return NotFound();
+            return NoContent();
         }
     }
 }
