@@ -1,7 +1,7 @@
-﻿namespace CommunityHub.API.Models
+﻿namespace CommunityHub.API.Models;
+
+public interface IEntity
 {
-    public interface IEntity
-    {
-        Guid Id { get; set; }
-    }
+    Guid Id { get; set; }
 }
+
