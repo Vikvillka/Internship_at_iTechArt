@@ -20,25 +20,25 @@ public class CommunityController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetById(Guid id)
     {
-        var group = DataStorage.GetCommunityById(id);
-        if (group == null) return NotFound();
-        return Ok(group);
+        var community = DataStorage.GetCommunityById(id);
+        if (community == null) return NotFound();
+        return Ok(community);
     }
 
     [HttpPost("create")]
     [ProducesResponseType(typeof(Community), StatusCodes.Status200OK)]
-    public IActionResult Create([FromBody] Community group)
+    public IActionResult Create([FromBody] Community community)
     {
-        DataStorage.AddCommunity(group);
-        return Ok(group);
+        DataStorage.AddCommunity(community);
+        return Ok(community);
     }
 
     [HttpPut("update")]
     [ProducesResponseType(typeof(Community), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult Update([FromBody] Community updateGroup)
+    public IActionResult Update([FromBody] Community update—ommunity)
     {
-        var success = DataStorage.UpdateCommunity(updateGroup);
+        var success = DataStorage.UpdateCommunity(update—ommunity);
         if (!success) return BadRequest();
 
         return Ok();

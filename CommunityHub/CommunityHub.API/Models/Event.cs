@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Eventing.Reader;
-
-namespace CommunityHub.API.Models;
+﻿namespace CommunityHub.API.Models;
 
 public class Event : IEntity
 {

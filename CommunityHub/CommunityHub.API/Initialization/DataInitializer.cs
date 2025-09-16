@@ -19,7 +19,7 @@ public static class DataInitializer
             Status = EventStatus.Planned
         };
 
-        var defaultGroup = new Community
+        var defaultCommunity = new Community
         {
             Name = "Reasoned Reads Round Table",
             Description = "Group created at initialization",
@@ -29,7 +29,7 @@ public static class DataInitializer
             Events = new List<Event> { defaultEvent }   
         };
 
-        DataStorage.Community.Add(defaultGroup);
+        DataStorage.Community.Add(defaultCommunity);
     }
 }
 

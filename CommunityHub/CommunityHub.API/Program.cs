@@ -1,4 +1,3 @@
-using CommunityHub.API.Controllers;
 using CommunityHub.API.Initialization;
 
 var builder = WebApplication.CreateBuilder(args);

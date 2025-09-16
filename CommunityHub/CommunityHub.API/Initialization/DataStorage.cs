@@ -10,32 +10,32 @@ public static class DataStorage
 
     public static Community? GetCommunityById(Guid id) => Community.FirstOrDefault(g => g.Id == id);
 
-    public static void AddCommunity(Community group)
+    public static void AddCommunity(Community community)
     {
-        Community.Add(group);
+        Community.Add(community);
     }
 
-    public static bool UpdateCommunity(Community updatedGroup)
+    public static bool UpdateCommunity(Community updatedCommunity)
     {
-        var existingGroup = Community.FirstOrDefault(g => g.Id == updatedGroup.Id);
-        if (existingGroup == null) return false;
+        var existingCommunity = Community.FirstOrDefault(g => g.Id == updatedCommunity.Id);
+        if (existingCommunity == null) return false;
 
-        existingGroup.Name = updatedGroup.Name;
-        existingGroup.Description = updatedGroup.Description;
-        existingGroup.Category = updatedGroup.Category;
-        existingGroup.City = updatedGroup.City;
-        existingGroup.Country = updatedGroup.Country;
-        existingGroup.Events = updatedGroup.Events;
+        existingCommunity.Name = updatedCommunity.Name;
+        existingCommunity.Description = updatedCommunity.Description;
+        existingCommunity.Category = updatedCommunity.Category;
+        existingCommunity.City = updatedCommunity.City;
+        existingCommunity.Country = updatedCommunity.Country;
+        existingCommunity.Events = updatedCommunity.Events;
 
         return true;
     }
 
     public static bool DeleteCommunity(Guid id)
     {
-        var group = Community.FirstOrDefault(g => g.Id == id);
-        if (group == null) return false;
+        var community = Community.FirstOrDefault(g => g.Id == id);
+        if (community == null) return false;
             
-        Community.Remove(group);
+        Community.Remove(community);
         return true;
     }
 }
