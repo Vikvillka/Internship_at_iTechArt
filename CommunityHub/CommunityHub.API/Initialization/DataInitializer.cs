@@ -1,13 +1,14 @@
-﻿using CommunityHub.API.Models;
+﻿using CommunityHub.API.DataSources;
+using CommunityHub.API.Models;
 
 namespace CommunityHub.API.Initialization;
 
 public static class DataInitializer
 {
-    public static void Seed()
+    public static void Seed(ListDataSource<Community> dataSource)
     {
         // VS has refactoring too. I just missed the gray underline before, lol. Gotta pay more attention next time!)
-        if (DataStorage.Community.Count != 0) return;
+        if (dataSource.GetAllAsync().Result.Count != 0) return;
 
         var defaultEvent = new Event
         {
@@ -19,7 +20,7 @@ public static class DataInitializer
             MaxParticipants = 10,
             Status = EventStatus.Planned
         };
-
+      
         var defaultCommunity = new Community
         {
             Name = "Reasoned Reads Round Table",
@@ -27,10 +28,10 @@ public static class DataInitializer
             Category = "Hobby",
             City = "Minsk",
             Country = "Belarus",
-            Events = [defaultEvent]   
+            Events = [defaultEvent]
         };
 
-        DataStorage.Community.Add(defaultCommunity);
+        dataSource.CreateAsync(defaultCommunity).Wait();
     }
 }
 
