@@ -19,7 +19,7 @@ public class CommunityHubDbContext : DbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        
+        ApplyTimestampsAndSoftDelete();
         return await base.SaveChangesAsync(cancellationToken);
     }
 

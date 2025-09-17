@@ -22,6 +22,12 @@ if (app.Environment.IsDevelopment())
 
 DataInitializer.Seed();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<CommunityHubDbContext>();
+    db.Database.Migrate();
+}
+
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();

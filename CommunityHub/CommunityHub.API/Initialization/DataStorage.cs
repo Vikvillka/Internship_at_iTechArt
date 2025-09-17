@@ -4,7 +4,7 @@ namespace CommunityHub.API.Initialization;
 
 public static class DataStorage
 {
-    public static List<Community> Community { get; } = new List<Community>();
+    public static List<Community> Community { get; } = [];
 
     public static List<Community> GetAllCommunities() => Community;
 
