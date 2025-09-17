@@ -6,7 +6,8 @@ public static class DataInitializer
 {
     public static void Seed()
     {
-        if (DataStorage.Community.Any()) return;
+        // VS has refactoring too. I just missed the gray underline before, lol. Gotta pay more attention next time!)
+        if (DataStorage.Community.Count != 0) return;
 
         var defaultEvent = new Event
         {
@@ -26,7 +27,7 @@ public static class DataInitializer
             Category = "Hobby",
             City = "Minsk",
             Country = "Belarus",
-            Events = new List<Event> { defaultEvent }   
+            Events = [defaultEvent]   
         };
 
         DataStorage.Community.Add(defaultCommunity);

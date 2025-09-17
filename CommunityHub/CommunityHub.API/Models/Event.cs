@@ -1,8 +1,7 @@
 ﻿namespace CommunityHub.API.Models;
 
-public class Event : IEntity
+public class Event : BaseEntity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public DateTime EventDate { get; set; }
@@ -10,11 +9,13 @@ public class Event : IEntity
     public string Venue { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public EventStatus Status { get; set; }
+
+    public Guid CommunityId { get; set; }
+    public Community Community { get; set; } = null!;
 }
 
 public enum EventStatus
 {
     Planned,
-    Comleted
+    Completed
 }
-
