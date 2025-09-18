@@ -43,7 +43,6 @@ namespace CommunityHub.API.Migrations
                     Address = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     CommunityId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CommunityId1 = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -53,12 +52,6 @@ namespace CommunityHub.API.Migrations
                     table.ForeignKey(
                         name: "FK_Events_Communities_CommunityId",
                         column: x => x.CommunityId,
-                        principalTable: "Communities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Events_Communities_CommunityId1",
-                        column: x => x.CommunityId1,
                         principalTable: "Communities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -74,11 +67,6 @@ namespace CommunityHub.API.Migrations
                 name: "IX_Events_CommunityId",
                 table: "Events",
                 column: "CommunityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_CommunityId1",
-                table: "Events",
-                column: "CommunityId1");
         }
 
         /// <inheritdoc />

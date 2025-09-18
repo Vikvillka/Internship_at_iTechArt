@@ -8,9 +8,9 @@ namespace CommunityHub.API.Controllers;
 [Route("[controller]")]
 public class CommunityController : ControllerBase
 {
-    private readonly IDataSource<Community> _dataSource;
+    private readonly IRepository<Community> _dataSource;
 
-    public CommunityController(IDataSource<Community> dataSource)
+    public CommunityController(IRepository<Community> dataSource)
     {
         _dataSource = dataSource;
     }
@@ -20,7 +20,7 @@ public class CommunityController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var communities = await _dataSource.GetAllAsync();
-        return Ok(communities.Where(c => !c.IsDeleted));
+        return Ok(communities);
     }
 
     [HttpGet("get/{id}")]
@@ -29,7 +29,7 @@ public class CommunityController : ControllerBase
     public async Task<IActionResult> GetById(Guid id)
     {
         var community = await _dataSource.GetByIdAsync(id);
-        if (community == null || community.IsDeleted) return NotFound();
+        if (community == null) return NotFound();
         return Ok(community);
     }
 

@@ -86,9 +86,6 @@ namespace CommunityHub.API.Migrations
                     b.Property<Guid>("CommunityId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CommunityId1")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -123,22 +120,14 @@ namespace CommunityHub.API.Migrations
 
                     b.HasIndex("CommunityId");
 
-                    b.HasIndex("CommunityId1");
-
                     b.ToTable("Events");
                 });
 
             modelBuilder.Entity("CommunityHub.API.Models.Event", b =>
                 {
-                    b.HasOne("CommunityHub.API.Models.Community", null)
+                    b.HasOne("CommunityHub.API.Models.Community", "Community")
                         .WithMany("Events")
                         .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CommunityHub.API.Models.Community", "Community")
-                        .WithMany()
-                        .HasForeignKey("CommunityId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

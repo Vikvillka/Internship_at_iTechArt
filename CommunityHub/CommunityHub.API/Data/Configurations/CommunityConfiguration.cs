@@ -19,7 +19,7 @@ public class CommunityConfiguration : IEntityTypeConfiguration<Community>
         builder.Property(c => c.IsDeleted).IsRequired().HasDefaultValue(false);
 
         builder.HasMany(c => c.Events)
-               .WithOne()
+               .WithOne(e => e.Community)
                .HasForeignKey(e => e.CommunityId)
                .OnDelete(DeleteBehavior.Cascade);
 

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CommunityHub.API.DataSources;
 
-public class EfDataSource<T> : IDataSource<T> where T : BaseEntity
+public class EfRepository<T> : IRepository<T> where T : BaseEntity
 {
     private readonly CommunityHubDbContext _context;
 
-    public EfDataSource(CommunityHubDbContext context)
+    public EfRepository(CommunityHubDbContext context)
     {
         _context = context;
     }
@@ -17,9 +17,10 @@ public class EfDataSource<T> : IDataSource<T> where T : BaseEntity
     {
         return await _context.Set<T>().ToListAsync();
     }
+
     public async Task<T?> GetByIdAsync(Guid id)
     {
-        return await _context.Set<T>().FindAsync(id);
+        return await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
     }
 
     public async Task<T> CreateAsync(T entity)
@@ -53,6 +54,11 @@ public class EfDataSource<T> : IDataSource<T> where T : BaseEntity
         }
         await _context.SaveChangesAsync();
         return true;
+    }
+
+    public IQueryable<T> AsQueryable()
+    {
+        return _context.Set<T>();
     }
 }
 

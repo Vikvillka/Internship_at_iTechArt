@@ -36,6 +36,7 @@ public class CommunityHubDbContext : DbContext
                 case EntityState.Modified:
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
                     break;
+                // I thought the task said that soft deleting only applies to the main entity (Community)? If you meant to include the event too, just let me know and I’ll take care of it
                 case EntityState.Deleted:
                     if (entry.Entity is Community community)
                     {
