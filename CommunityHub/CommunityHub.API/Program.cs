@@ -1,10 +1,9 @@
 using CommunityHub.API.Data;
 using CommunityHub.API.DataSources;
 using CommunityHub.API.Extensions;
-using CommunityHub.API.Initialization;
 using CommunityHub.API.Models;
+using CommunityHub.API.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
