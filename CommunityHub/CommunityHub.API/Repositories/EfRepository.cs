@@ -1,9 +1,8 @@
 ﻿using CommunityHub.API.Data;
 using CommunityHub.API.Models;
-using CommunityHub.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace CommunityHub.API.DataSources;
+namespace CommunityHub.API.Repositories;
 
 public class EfRepository<T> : IRepository<T> where T : BaseEntity
 {
@@ -44,15 +43,8 @@ public class EfRepository<T> : IRepository<T> where T : BaseEntity
     {
         var existing = await _context.Set<T>().FindAsync(id);
         if (existing == null) return false;
-        if (existing is Community community)
-        {
-            community.IsDeleted = true;
-            _context.Entry(community).State = EntityState.Modified;
-        }
-        else
-        {
-            _context.Set<T>().Remove(existing);
-        }
+
+        _context.Set<T>().Remove(existing);
         await _context.SaveChangesAsync();
         return true;
     }

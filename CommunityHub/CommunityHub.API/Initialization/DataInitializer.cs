@@ -11,6 +11,7 @@ public static class DataInitializer
 
         var defaultEvent = new Event
         {
+            // ID community 
             Title = "Short Story Discussion: Harrison Bergeron by Kurt Vonnegut",
             Description = "Join us for a friendly discussion of the short story Harrison Bergeron by Kurt Vonnegut.",
             EventDate = DateTime.UtcNow.AddDays(2),
@@ -27,7 +28,7 @@ public static class DataInitializer
             Category = "Hobby",
             City = "Minsk",
             Country = "Belarus",
-            Events = [defaultEvent]
+            Events = [defaultEvent] 
         };
 
         await dataSource.CreateAsync(defaultCommunity);
