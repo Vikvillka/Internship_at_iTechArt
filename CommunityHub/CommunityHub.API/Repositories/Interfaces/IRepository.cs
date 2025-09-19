@@ -1,6 +1,6 @@
 ﻿using CommunityHub.API.Models;
 
-namespace CommunityHub.API.Repositories;
+namespace CommunityHub.API.Repositories.Interfaces;
 
 public interface IRepository<T> where T : BaseEntity
 {
