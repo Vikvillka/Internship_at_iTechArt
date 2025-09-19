@@ -7,11 +7,8 @@ namespace CommunityHub.API.Repositories;
 
 public class CommunityRepository : EfRepository<Community>, ICommunityRepository
 {
-    private readonly CommunityHubDbContext _context;
-
     public CommunityRepository(CommunityHubDbContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task<IList<Community>> SearchAsync(string? category, string? city, string? country)

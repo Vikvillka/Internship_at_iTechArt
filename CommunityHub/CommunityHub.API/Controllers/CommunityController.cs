@@ -1,5 +1,5 @@
 using CommunityHub.API.Models;
-using CommunityHub.API.Repositories;
+using CommunityHub.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityHub.API.Controllers;
@@ -44,9 +44,9 @@ public class CommunityController : ControllerBase
     [HttpPut("update")]
     [ProducesResponseType(typeof(Community), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromBody] Community update—ommunity)
+    public async Task<IActionResult> Update([FromBody] Community updateCommunity)
     {
-        var success = await _dataSource.UpdateAsync(update—ommunity);
+        var success = await _dataSource.UpdateAsync(updateCommunity);
         if (!success) return BadRequest();
         return Ok();
     }
