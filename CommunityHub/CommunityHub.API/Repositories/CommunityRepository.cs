@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CommunityHub.API.Repositories;
 
-public class CommunityRepository : EfRepository<Community>, ICommunityRepository
+public class CommunityRepository<T> : EfRepository<Community>, ICommunityRepository<Community> where T : Community
 {
     public CommunityRepository(CommunityHubDbContext context) : base(context)
     {
@@ -23,5 +23,17 @@ public class CommunityRepository : EfRepository<Community>, ICommunityRepository
             query = query.Where(c => c.Country == country);
 
         return await query.ToListAsync();
+    }
+
+    public override async Task<List<Community>> GetAllAsync()
+    {
+        return await _context.Set<Community>().Include(c => c.Events).ToListAsync();
+    }
+
+    public override async Task<Community?> GetByIdAsync(Guid id)
+    {
+        return await _context.Set<Community>()
+            .Include(c => c.Events)
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 }

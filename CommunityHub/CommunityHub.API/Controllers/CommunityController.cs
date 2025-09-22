@@ -8,18 +8,18 @@ namespace CommunityHub.API.Controllers;
 [Route("[controller]")]
 public class CommunityController : ControllerBase
 {
-    private readonly IRepository<Community> _dataSource;
+    private readonly ICommunityRepository<Community> _repository;
 
-    public CommunityController(IRepository<Community> dataSource)
+    public CommunityController(ICommunityRepository<Community> dataSource)
     {
-        _dataSource = dataSource;
+        _repository = dataSource;
     }
 
     [HttpGet("getAll")]
     [ProducesResponseType(typeof(List<Community>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        var communities = await _dataSource.GetAllAsync();
+        var communities = await _repository.GetAllAsync();
         return Ok(communities);
     }
 
@@ -28,7 +28,7 @@ public class CommunityController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var community = await _dataSource.GetByIdAsync(id);
+        var community = await _repository.GetByIdAsync(id);
         if (community == null) return NotFound();
         return Ok(community);
     }
@@ -37,7 +37,7 @@ public class CommunityController : ControllerBase
     [ProducesResponseType(typeof(Community), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] Community community)
     {
-        var created = await _dataSource.CreateAsync(community);
+        var created = await _repository.CreateAsync(community);
         return Ok(created);
     }
 
@@ -46,7 +46,7 @@ public class CommunityController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] Community updateCommunity)
     {
-        var success = await _dataSource.UpdateAsync(updateCommunity);
+        var success = await _repository.UpdateAsync(updateCommunity);
         if (!success) return BadRequest();
         return Ok();
     }
@@ -56,7 +56,7 @@ public class CommunityController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteById(Guid id)
     {
-        var success = await _dataSource.DeleteAsync(id);
+        var success = await _repository.DeleteAsync(id);
         if (!success) return BadRequest();
         return NoContent();
     }

@@ -1,7 +1,7 @@
 ﻿using CommunityHub.API.Models;
-using CommunityHub.API.Repositories;
+using CommunityHub.API.Repositories.Interfaces;
 
-namespace CommunityHub.API.DataSources;
+namespace CommunityHub.API.Repositories;
 
 public class ListRepository<T> : IRepository<T> where T : Community
 {

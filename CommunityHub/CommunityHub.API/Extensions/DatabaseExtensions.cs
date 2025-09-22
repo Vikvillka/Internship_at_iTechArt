@@ -1,7 +1,7 @@
 ﻿using CommunityHub.API.Data;
 using CommunityHub.API.Initialization;
 using CommunityHub.API.Models;
-using CommunityHub.API.Repositories;
+using CommunityHub.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CommunityHub.API.Extensions;

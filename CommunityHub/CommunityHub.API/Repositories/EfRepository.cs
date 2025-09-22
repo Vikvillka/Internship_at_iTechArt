@@ -1,24 +1,25 @@
 ﻿using CommunityHub.API.Data;
 using CommunityHub.API.Models;
+using CommunityHub.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CommunityHub.API.Repositories;
 
 public class EfRepository<T> : IRepository<T> where T : BaseEntity
 {
-    private readonly CommunityHubDbContext _context;
+    protected readonly CommunityHubDbContext _context;
 
     public EfRepository(CommunityHubDbContext context)
     {
         _context = context;
     }
 
-    public async Task<List<T>> GetAllAsync()
+    public virtual async Task<List<T>> GetAllAsync()
     {
         return await _context.Set<T>().ToListAsync();
     }
 
-    public async Task<T?> GetByIdAsync(Guid id)
+    public virtual async Task<T?> GetByIdAsync(Guid id)
     {
         return await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
     }
