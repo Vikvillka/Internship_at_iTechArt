@@ -23,7 +23,7 @@ public class CommunityResponse
             Category = community.Category,
             City = community.City,
             Country = community.Country,
-            Events = [.. community.Events.Select(EventResponse.FromModel)]
+            Events = community.Events.Select(EventResponse.FromModel).ToList()
         };
     }
 }

@@ -25,7 +25,7 @@ public static class DataInitializer
 
         var defaultCommunity = new Community
         {
-            Id = Guid.NewGuid(),
+            Id = communityId,
             Name = "Reasoned Reads Round Table",
             Description = "Group created at initialization",
             Category = "Hobby",

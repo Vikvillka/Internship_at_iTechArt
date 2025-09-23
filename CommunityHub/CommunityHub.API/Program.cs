@@ -5,7 +5,6 @@ using CommunityHub.API.Models;
 using CommunityHub.API.Repositories;
 using CommunityHub.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
+// продумать как добавлять евенты вместе с комьюнити 
 await app.MigrateDatabaseAsync();
 
 if (app.Environment.IsDevelopment())
