@@ -16,13 +16,7 @@ builder.Services.AddDbContext<CommunityHubDbContext>(options =>
 builder.Services.AddScoped<IRepository<Community>, EfRepository<Community>>();
 builder.Services.AddScoped<ICommunityRepository<Community>, CommunityRepository<Community>>();
 
-var mappingConfig = new MapperConfiguration(mc =>
-{
-    mc.AddMaps(Assembly.GetExecutingAssembly());
-});
-
-IMapper mapper = mappingConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
