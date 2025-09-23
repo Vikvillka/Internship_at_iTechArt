@@ -8,9 +8,9 @@ namespace CommunityHub.API.Controllers;
 [Route("[controller]")]
 public class CommunityController : ControllerBase
 {
-    private readonly ICommunityRepository<Community> _repository;
+    private readonly ICommunityRepository _repository;
 
-    public CommunityController(ICommunityRepository<Community> dataSource)
+    public CommunityController(ICommunityRepository dataSource)
     {
         _repository = dataSource;
     }

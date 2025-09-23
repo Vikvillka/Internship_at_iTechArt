@@ -11,8 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<CommunityHubDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IRepository<Community>, EfRepository<Community>>();
-builder.Services.AddScoped<ICommunityRepository<Community>, CommunityRepository<Community>>();
+builder.Services.AddScoped<ICommunityRepository, CommunityRepository>();
 
 // There is a small problem.
 // I tried to fix the retrieval of Communities with Events, but I ended up with a cyclic entity dependency.

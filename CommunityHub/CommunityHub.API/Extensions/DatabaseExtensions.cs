@@ -14,7 +14,7 @@ public static class DatabaseExtensions
         var db = scope.ServiceProvider.GetRequiredService<CommunityHubDbContext>();
         await db.Database.MigrateAsync();
 
-        var repository = scope.ServiceProvider.GetRequiredService<IRepository<Community>>();
+        var repository = scope.ServiceProvider.GetRequiredService<ICommunityRepository>();
         await DataInitializer.SeedAsync(repository);
     }
 }

@@ -5,11 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CommunityHub.API.Repositories;
 
-public class CommunityRepository<T> : EfRepository<Community>, ICommunityRepository<Community> where T : Community
+public class CommunityRepository: EfRepository<Community>, ICommunityRepository 
 {
     public CommunityRepository(CommunityHubDbContext context) : base(context)
     {
     }
+
+    protected override IQueryable<Community> CollectionWithIncludes => 
+        _dbSet.Include(c => c.Events);
 
     public async Task<IList<Community>> SearchAsync(string? category, string? city, string? country)
     {
@@ -23,17 +26,5 @@ public class CommunityRepository<T> : EfRepository<Community>, ICommunityReposit
             query = query.Where(c => c.Country == country);
 
         return await query.ToListAsync();
-    }
-
-    public override async Task<List<Community>> GetAllAsync()
-    {
-        return await _context.Set<Community>().Include(c => c.Events).ToListAsync();
-    }
-
-    public override async Task<Community?> GetByIdAsync(Guid id)
-    {
-        return await _context.Set<Community>()
-            .Include(c => c.Events)
-            .FirstOrDefaultAsync(c => c.Id == id);
     }
 }
