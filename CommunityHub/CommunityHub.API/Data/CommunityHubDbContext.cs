@@ -1,5 +1,6 @@
-﻿using CommunityHub.API.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+
+using CommunityHub.API.Models;
 
 namespace CommunityHub.API.Data;
 

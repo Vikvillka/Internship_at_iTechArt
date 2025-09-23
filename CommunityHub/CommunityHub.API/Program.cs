@@ -1,11 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using AutoMapper;
+
 using CommunityHub.API.Data;
 using CommunityHub.API.Extensions;
 using CommunityHub.API.Models;
 using CommunityHub.API.Repositories;
 using CommunityHub.API.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

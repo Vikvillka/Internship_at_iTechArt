@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using CommunityHub.API.Models;
 
 namespace CommunityHub.API.DTOs.Profiles;

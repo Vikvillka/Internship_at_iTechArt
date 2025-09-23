@@ -1,6 +1,4 @@
-﻿using CommunityHub.API.Models;
-
-namespace CommunityHub.API.DTOs;
+﻿namespace CommunityHub.API.DTOs;
 
 public class CommunityResponse
 {
