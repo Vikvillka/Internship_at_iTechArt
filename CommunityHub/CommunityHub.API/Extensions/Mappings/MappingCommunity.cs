@@ -15,7 +15,7 @@ public static class MappingCommunity
             Category = community.Category,
             City = community.City,
             Country = community.Country,
-            Events = community.Events.Select(EventResponse.FromModel).ToList()
+            Events = community.Events.Select(e => e.FromModel()).ToList()
         };
     }
 }

@@ -5,7 +5,7 @@ namespace CommunityHub.API.Extensions.Mappings;
 
 public static class MappingEvent
 {
-    public static EventResponse FromModel(Event eventModel)
+    public static EventResponse FromModel(this Event eventModel)
     {
         return new EventResponse
         {

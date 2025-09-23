@@ -12,18 +12,4 @@ public class CommunityResponse
     public string Country { get; set; } = string.Empty;
 
     public List<EventResponse> Events { get; set; } = [];
-
-    public static CommunityResponse FromModel(Community community)
-    {
-        return new CommunityResponse
-        {
-            Id = community.Id,
-            Name = community.Name,
-            Description = community.Description,
-            Category = community.Category,
-            City = community.City,
-            Country = community.Country,
-            Events = community.Events.Select(EventResponse.FromModel).ToList()
-        };
-    }
 }
