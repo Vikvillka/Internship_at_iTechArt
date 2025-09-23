@@ -28,7 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-// продумать как добавлять евенты вместе с комьюнити 
+ 
 await app.MigrateDatabaseAsync();
 
 if (app.Environment.IsDevelopment())

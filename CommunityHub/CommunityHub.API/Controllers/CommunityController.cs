@@ -1,5 +1,6 @@
 using AutoMapper;
 using CommunityHub.API.DTOs;
+using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.API.Models;
 using CommunityHub.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ public class CommunityController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var communities = await _repository.GetAllAsync();
-        var response = communities.Select(CommunityResponse.FromModel).ToList();
+        var response = communities.Select(c => c.FromModel()).ToList();
         return Ok(response);
     }
 
@@ -36,7 +37,7 @@ public class CommunityController : ControllerBase
         var community = await _repository.GetByIdAsync(id);
         if (community == null) return NotFound();
         
-        var response = CommunityResponse.FromModel(community);
+        var response = community.FromModel();
         return Ok(response);
     }
 
@@ -46,14 +47,14 @@ public class CommunityController : ControllerBase
     {
         var communityEntity = _mapper.Map<Community>(request);
         var created = await _repository.CreateAsync(communityEntity);
-        var response = CommunityResponse.FromModel(created);
+        var response = created.FromModel();
         return Ok(response);
     }
 
     [HttpPut("update")]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromBody] CommunityResponse request)
+    public async Task<IActionResult> Update([FromBody] UpdateCommunityRequest request)
     {
         var entityUpdate = _mapper.Map<Community>(request);
         var success = await _repository.UpdateAsync(entityUpdate);
