@@ -1,5 +1,4 @@
 ﻿using CommunityHub.API.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace CommunityHub.API.Repositories.Interfaces;
 
