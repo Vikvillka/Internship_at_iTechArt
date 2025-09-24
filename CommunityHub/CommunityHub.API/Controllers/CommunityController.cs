@@ -12,10 +12,10 @@ namespace CommunityHub.API.Controllers;
 [Route("[controller]")]
 public class CommunityController : ControllerBase
 {
-    private readonly ICommunityRepository<Community> _repository;
+    private readonly ICommunityRepository _repository;
     private readonly IMapper _mapper;
 
-    public CommunityController(ICommunityRepository<Community> repository, IMapper mapper)
+    public CommunityController(ICommunityRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;

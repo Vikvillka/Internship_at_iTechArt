@@ -9,33 +9,38 @@ namespace CommunityHub.API.Repositories;
 public class EfRepository<T> : IRepository<T> where T : BaseEntity
 {
     protected readonly CommunityHubDbContext _context;
+    protected readonly DbSet<T> _dbSet;
+    
+    protected virtual IQueryable<T> CollectionWithIncludes => _dbSet;
 
     public EfRepository(CommunityHubDbContext context)
     {
         _context = context;
+        _dbSet = context.Set<T>();
     }
 
-    public virtual async Task<List<T>> GetAllAsync()
+    public async Task<List<T>> GetAllAsync()
     {
-        return await _context.Set<T>().ToListAsync();
+        return await CollectionWithIncludes.ToListAsync();
     }
 
-    public virtual async Task<T?> GetByIdAsync(Guid id)
+    public async Task<T?> GetByIdAsync(Guid id)
     {
-        return await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+        return await CollectionWithIncludes.FirstOrDefaultAsync(e => e.Id == id);
     }
 
     public async Task<T> CreateAsync(T entity)
     {
-        _context.Set<T>().Add(entity);
+       _dbSet.Add(entity);
         await _context.SaveChangesAsync();
         return entity;
     }
 
     public async Task<bool> UpdateAsync(T entity)
     {
-        var existing = await _context.Set<T>().FindAsync(entity.Id);
+        var existing = await _dbSet.FindAsync(entity.Id);
         if (existing == null) return false;
+        
         _context.Entry(existing).CurrentValues.SetValues(entity);
         await _context.SaveChangesAsync();
         return true;
@@ -43,17 +48,17 @@ public class EfRepository<T> : IRepository<T> where T : BaseEntity
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var existing = await _context.Set<T>().FindAsync(id);
+        var existing = await _dbSet.FindAsync(id);
         if (existing == null) return false;
 
-        _context.Set<T>().Remove(existing);
+        _dbSet.Remove(existing);
         await _context.SaveChangesAsync();
         return true;
     }
 
     public IQueryable<T> AsQueryable()
     {
-        return _context.Set<T>();
+        return CollectionWithIncludes;
     }
 }
 
