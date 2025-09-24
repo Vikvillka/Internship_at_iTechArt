@@ -1,4 +1,4 @@
-﻿using CommunityHub.API.DTOs;
+﻿using CommunityHub.API.DTOs.EventDTOs;
 using CommunityHub.API.Models;
 
 namespace CommunityHub.API.Extensions.Mappings;

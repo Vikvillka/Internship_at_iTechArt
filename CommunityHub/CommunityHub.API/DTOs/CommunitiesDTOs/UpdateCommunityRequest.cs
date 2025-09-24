@@ -1,6 +1,6 @@
-﻿namespace CommunityHub.API.DTOs;
+﻿namespace CommunityHub.API.DTOs.CommunitiesDTOs;
 
-public class CommunityResponse
+public class UpdateCommunityRequest
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -8,6 +8,4 @@ public class CommunityResponse
     public string Category { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
-
-    public List<EventResponse> Events { get; set; } = [];
 }

@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.API.DTOs;
+﻿namespace CommunityHub.API.DTOs.CommunitiesDTOs;
 
 public class CreateCommunityRequest
 {
