@@ -12,5 +12,6 @@ public class CreateEventRequest
     public string Address { get; set; } = string.Empty;
     public EventStatus Status { get; set; } = EventStatus.Planned;
     public Guid CommunityId { get; set; }
+    public List<Guid> TagIds { get; set; } = [];
 }
 

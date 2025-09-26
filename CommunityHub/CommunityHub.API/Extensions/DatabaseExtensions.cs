@@ -2,8 +2,8 @@
 
 using CommunityHub.API.Data;
 using CommunityHub.API.Initialization;
-using CommunityHub.API.Models;
 using CommunityHub.API.Repositories.Interfaces;
+using CommunityHub.API.Models;
 
 namespace CommunityHub.API.Extensions;
 
@@ -15,8 +15,9 @@ public static class DatabaseExtensions
         var db = scope.ServiceProvider.GetRequiredService<CommunityHubDbContext>();
         await db.Database.MigrateAsync();
 
-        var repository = scope.ServiceProvider.GetRequiredService<ICommunityRepository>();
-        await DataInitializer.SeedAsync(repository);
+        var communityRepo = scope.ServiceProvider.GetRequiredService<ICommunityRepository>();
+        var tagRepo = scope.ServiceProvider.GetRequiredService<ITagRepository>();
+        await DataInitializer.SeedAsync(communityRepo, tagRepo);
     }
 }
 

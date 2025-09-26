@@ -13,6 +13,7 @@ builder.Services.AddDbContext<CommunityHubDbContext>(options =>
 
 builder.Services.AddScoped<ICommunityRepository, CommunityRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

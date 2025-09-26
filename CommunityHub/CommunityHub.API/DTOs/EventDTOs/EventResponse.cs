@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.API.DTOs.EventDTOs;
+﻿using CommunityHub.API.DTOs.TagDTOs;
+
+namespace CommunityHub.API.DTOs.EventDTOs;
 
 public class EventResponse
 {
@@ -10,4 +12,5 @@ public class EventResponse
     public string Venue { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
+    public List<TagResponse> Tags { get; set; } = [];
 }

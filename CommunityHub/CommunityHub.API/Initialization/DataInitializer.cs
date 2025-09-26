@@ -5,9 +5,33 @@ namespace CommunityHub.API.Initialization;
 
 public static class DataInitializer
 {
-    public async static Task SeedAsync(IRepository<Community> dataSource)
+    public async static Task SeedAsync(ICommunityRepository communityRepo, ITagRepository tagRepo)
     {
-        if ((await dataSource.GetAllAsync()).Count != 0) return;
+        if ((await tagRepo.GetAllAsync()).Count != 0) return;
+
+        // TODO: I want to implement storing tags in a JSON file
+        // because I plan to add a lot more and deserialize them here.
+        // Is this a good idea?
+        var defaultTags = new List<EventTag>
+        {
+            new() { Name = "Technology" },
+            new() { Name = "Health" },
+            new() { Name = "Education" },
+            new() { Name = "Entertainment" },
+            new() { Name = "Sports" },
+            new() { Name = "Business" },
+            new() { Name = "Art" },
+            new() { Name = "Science" },
+            new() { Name = "Travel" },
+            new() { Name = "Food" }
+        };
+
+        foreach (var tag in defaultTags)
+        {
+            await tagRepo.CreateAsync(tag);
+        }
+
+        if ((await communityRepo.GetAllAsync()).Count != 0) return;
 
         var communityId = Guid.NewGuid();
 
@@ -34,7 +58,7 @@ public static class DataInitializer
             Events = [defaultEvent]
         };
 
-        await dataSource.CreateAsync(defaultCommunity);
+        await communityRepo.CreateAsync(defaultCommunity);
     }
 }
 

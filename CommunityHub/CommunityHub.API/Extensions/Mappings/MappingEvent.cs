@@ -16,7 +16,8 @@ public static class MappingEvent
             MaxParticipants = eventModel.MaxParticipants,
             Venue = eventModel.Venue,
             Address = eventModel.Address,
-            Status = eventModel.Status.ToString()
+            Status = eventModel.Status.ToString(),
+            Tags = eventModel.Tags.Select(t => t.FromModel()).ToList()
         };
     }
 }

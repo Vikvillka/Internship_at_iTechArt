@@ -11,6 +11,7 @@ public class CommunityHubDbContext : DbContext
 
     public DbSet<Community> Communities { get; set; }
     public DbSet<Event> Events { get; set; }
+    public DbSet<EventTag> Tags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) 
     { 

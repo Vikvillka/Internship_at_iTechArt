@@ -12,14 +12,17 @@ public class EventRepository : EfRepository<Event>, IEventRepository
     {
     }
 
+    protected override IQueryable<Event> CollectionWithIncludes =>
+        _dbSet.Include(e => e.Tags);
+
     public async Task<List<Event>> GetAllPlannedAsync()
     {
-        return await _dbSet.Where(e => e.Status == EventStatus.Planned).ToListAsync();
+        return await CollectionWithIncludes.Where(e => e.Status == EventStatus.Planned).ToListAsync();
     }
 
     public async Task<List<Event>> GetByCommunityIdAsync(Guid communityId)
     {
-        return await _dbSet.Where(e => e.CommunityId == communityId).ToListAsync();
+        return await CollectionWithIncludes.Where(e => e.CommunityId == communityId).ToListAsync();
     }
 
     public async Task<bool> UpdateStatusAsync(Guid id, EventStatus newStatus)

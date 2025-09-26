@@ -1,4 +1,7 @@
-﻿namespace CommunityHub.API.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+
+namespace CommunityHub.API.Models;
 
 public class Event : BaseEntity
 {
@@ -12,6 +15,7 @@ public class Event : BaseEntity
 
     public Guid CommunityId { get; set; }
     public Community Community { get; set; } = null!;
+    public ICollection<EventTag> Tags { get; set; } = [];
 }
 
 public enum EventStatus

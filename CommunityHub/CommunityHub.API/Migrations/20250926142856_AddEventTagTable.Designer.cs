@@ -3,6 +3,7 @@ using System;
 using CommunityHub.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CommunityHub.API.Migrations
 {
     [DbContext(typeof(CommunityHubDbContext))]
-    partial class CommunityHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250926142856_AddEventTagTable")]
+    partial class AddEventTagTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
