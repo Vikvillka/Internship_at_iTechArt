@@ -51,13 +51,11 @@ public class EventController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("create/{communityId}")]
+    [HttpPost("create")]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Create([FromBody] CreateEventRequest request, Guid communityId)
+    public async Task<IActionResult> Create([FromBody] CreateEventRequest request)
     {
-        var eventEntity = _mapper.Map<Event>(request);
-        eventEntity.CommunityId = communityId;
-        
+        var eventEntity = _mapper.Map<Event>(request);        
         var created = await _repository.CreateAsync(eventEntity);
         var response = created.FromModel();
         return Ok(response);

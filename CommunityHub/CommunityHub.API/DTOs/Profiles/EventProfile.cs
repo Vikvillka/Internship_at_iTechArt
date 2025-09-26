@@ -10,11 +10,7 @@ public class EventProfile : Profile
     {
         CreateMap<Event, EventResponse>()
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
-        
-        CreateMap<CreateEventRequest, Event>()
-            .ForMember(dest => dest.CommunityId, opt => opt.Ignore()) 
-            .ForMember(dest => dest.Community, opt => opt.Ignore());
-
+        CreateMap<CreateEventRequest, Event>();
         CreateMap<UpdateEventRequest, Event>();
     }
 }

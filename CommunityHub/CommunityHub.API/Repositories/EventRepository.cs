@@ -24,12 +24,10 @@ public class EventRepository : EfRepository<Event>, IEventRepository
 
     public async Task<bool> UpdateStatusAsync(Guid id, EventStatus newStatus)
     {
-        var existing = await _dbSet.FindAsync(id);
-        if (existing == null) return false;
+        var update = await _dbSet.Where(e => e.Id == id)
+            .ExecuteUpdateAsync(u => u
+            .SetProperty(e => e.Status, newStatus));
 
-        existing.Status = newStatus;
-        await _context.SaveChangesAsync();
-
-        return true;
+        return update != 0;
     }
 }
