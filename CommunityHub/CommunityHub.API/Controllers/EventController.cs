@@ -13,13 +13,11 @@ namespace CommunityHub.API.Controllers;
 public class EventController : ControllerBase
 {
     private readonly IEventRepository _repository;
-    private readonly ITagRepository _tagRepository;
     private readonly IMapper _mapper;
 
     public EventController(IEventRepository repository, IMapper mapper, ITagRepository tagRepository)
     {
         _repository = repository;
-        _tagRepository = tagRepository;
         _mapper = mapper;
     }
 
@@ -58,11 +56,7 @@ public class EventController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateEventRequest request)
     {
         var eventEntity = _mapper.Map<Event>(request);
-        
-        var tags = await _tagRepository.GetByIdsAsync(request.TagIds);
-        eventEntity.Tags = tags;
-
-        var created = await _repository.CreateAsync(eventEntity);
+        var created = await _repository.CreateWithTagsAsync(eventEntity, request.TagIds);
         var response = created.FromModel();
         return Ok(response);
     }

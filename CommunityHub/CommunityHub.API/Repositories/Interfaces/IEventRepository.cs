@@ -7,4 +7,5 @@ public interface IEventRepository : IRepository<Event>
     Task<List<Event>> GetAllPlannedAsync();
     Task<List<Event>> GetByCommunityIdAsync(Guid communityId);
     Task<bool> UpdateStatusAsync(Guid eventId, EventStatus newStatus);
+    Task<Event> CreateWithTagsAsync(Event eventEntity, List<Guid> tagsIds);
 }

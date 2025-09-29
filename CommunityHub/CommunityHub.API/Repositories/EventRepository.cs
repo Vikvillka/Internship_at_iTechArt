@@ -33,4 +33,19 @@ public class EventRepository : EfRepository<Event>, IEventRepository
 
         return update != 0;
     }
+
+    public async Task<Event> CreateWithTagsAsync(Event eventEntity, List<Guid> tagsIds)
+    {
+        eventEntity.Tags = tagsIds.Select(id => new EventTag { Id = id }).ToList();
+
+        foreach (var tag in eventEntity.Tags)
+        {
+            _context.Attach(tag);
+        }
+
+        _dbSet.Add(eventEntity);
+
+        await _context.SaveChangesAsync();
+        return eventEntity;
+    }
 }
