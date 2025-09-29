@@ -21,7 +21,7 @@ public class TagController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var tags = await _repository.GetAllAsync();
-        var response = tags.Select(t => t.FromModel()).ToList();
+        var response = tags.Select(t => t.FromEntity()).ToList();
         return Ok(response);
     }
 }

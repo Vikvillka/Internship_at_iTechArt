@@ -5,7 +5,7 @@ namespace CommunityHub.API.Extensions.Mappings;
 
 public static class MappingEvent
 {
-    public static EventResponse FromModel(this Event eventModel)
+    public static EventResponse FromEntity(this Event eventModel)
     {
         return new EventResponse
         {
@@ -17,7 +17,7 @@ public static class MappingEvent
             Venue = eventModel.Venue,
             Address = eventModel.Address,
             Status = eventModel.Status.ToString(),
-            Tags = eventModel.Tags.Select(t => t.FromModel()).ToList()
+            Tags = eventModel.Tags.Select(t => t.FromEntity()).ToList()
         };
     }
 }

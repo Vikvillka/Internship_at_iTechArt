@@ -26,7 +26,7 @@ public class CommunityController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var communities = await _repository.GetAllAsync();
-        var response = communities.Select(c => c.FromModel()).ToList();
+        var response = communities.Select(c => c.FromEntity()).ToList();
         return Ok(response);
     }
 
@@ -38,7 +38,7 @@ public class CommunityController : ControllerBase
         var community = await _repository.GetByIdAsync(id);
         if (community == null) return NotFound();
         
-        var response = community.FromModel();
+        var response = community.FromEntity();
         return Ok(response);
     }
 
@@ -48,7 +48,7 @@ public class CommunityController : ControllerBase
     {
         var communityEntity = _mapper.Map<Community>(request);
         var created = await _repository.CreateAsync(communityEntity);
-        var response = created.FromModel();
+        var response = created.FromEntity();
         return Ok(response);
     }
 

@@ -5,7 +5,7 @@ namespace CommunityHub.API.Extensions.Mappings;
 
 public static class MappingCommunity
 {
-    public static CommunityResponse FromModel(this Community community)
+    public static CommunityResponse FromEntity(this Community community)
     {
         return new CommunityResponse
         {
@@ -15,7 +15,7 @@ public static class MappingCommunity
             Category = community.Category,
             City = community.City,
             Country = community.Country,
-            Events = community.Events.Select(e => e.FromModel()).ToList()
+            Events = community.Events.Select(e => e.FromEntity()).ToList()
         };
     }
 }

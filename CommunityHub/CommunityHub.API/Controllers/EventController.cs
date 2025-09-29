@@ -26,7 +26,7 @@ public class EventController : ControllerBase
     public async Task<IActionResult> GetAllPlanned()
     {
         var events = await _repository.GetAllPlannedAsync();
-        var response = events.Select(e => e.FromModel()).ToList();
+        var response = events.Select(e => e.FromEntity()).ToList();
         return Ok(response);
     }
 
@@ -38,7 +38,7 @@ public class EventController : ControllerBase
         var eventEnity = await _repository.GetByIdAsync(id);
         if (eventEnity == null) return NotFound();
 
-        var response = eventEnity.FromModel();
+        var response = eventEnity.FromEntity();
         return Ok(response);
     }
 
@@ -47,7 +47,7 @@ public class EventController : ControllerBase
     public async Task<IActionResult> GetAllForCommunity(Guid communityId)
     {
         var events = await _repository.GetByCommunityIdAsync(communityId);
-        var response = events.Select(e => e.FromModel()).ToList();
+        var response = events.Select(e => e.FromEntity()).ToList();
         return Ok(response);
     }
 
@@ -57,7 +57,7 @@ public class EventController : ControllerBase
     {
         var eventEntity = _mapper.Map<Event>(request);
         var created = await _repository.CreateWithTagsAsync(eventEntity, request.TagIds);
-        var response = created.FromModel();
+        var response = created.FromEntity();
         return Ok(response);
     }
 

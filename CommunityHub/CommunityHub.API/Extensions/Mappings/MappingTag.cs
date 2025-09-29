@@ -5,7 +5,7 @@ namespace CommunityHub.API.Extensions.Mappings;
 
 public static class MappingTag
 {
-    public static TagResponse FromModel(this EventTag tag)
+    public static TagResponse FromEntity(this EventTag tag)
     {
         return new TagResponse
         {
