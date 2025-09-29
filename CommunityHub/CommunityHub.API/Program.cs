@@ -8,14 +8,7 @@ using CommunityHub.API.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<CommunityHubDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddScoped<ICommunityRepository, CommunityRepository>();
-builder.Services.AddScoped<IEventRepository, EventRepository>();
-builder.Services.AddScoped<ITagRepository, TagRepository>();
-
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

@@ -36,16 +36,14 @@ public class EventRepository : EfRepository<Event>, IEventRepository
 
     public async Task<Event> CreateWithTagsAsync(Event eventEntity, List<Guid> tagsIds)
     {
-        eventEntity.Tags = tagsIds.Select(id => new EventTag { Id = id }).ToList();
-
-        foreach (var tag in eventEntity.Tags)
-        {
-            _context.Attach(tag);
-        }
+        // I couldn't get the names with attach, since EF already knows the EventTag context objects via Attach,
+        // so it doesn't perform a repeat SELECT for other properties.
+        var tags = await _context.Tags.Where(t => tagsIds.Contains(t.Id)).ToListAsync();
+        eventEntity.Tags = tags;
 
         _dbSet.Add(eventEntity);
-
         await _context.SaveChangesAsync();
+        
         return eventEntity;
     }
 }

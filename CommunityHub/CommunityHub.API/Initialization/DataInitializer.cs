@@ -1,5 +1,6 @@
 ﻿using CommunityHub.API.Models;
 using CommunityHub.API.Repositories.Interfaces;
+using System.Xml.Linq;
 
 namespace CommunityHub.API.Initialization;
 
@@ -9,25 +10,23 @@ public static class DataInitializer
     {
         if ((await tagRepo.GetAllAsync()).Count != 0) return;
 
-        // TODO: I want to implement storing tags in a JSON file
-        // because I plan to add a lot more and deserialize them here.
-        // Is this a good idea?
-        var defaultTags = new List<EventTag>
+        var defaultTags = new List<string>
         {
-            new() { Name = "Technology" },
-            new() { Name = "Health" },
-            new() { Name = "Education" },
-            new() { Name = "Entertainment" },
-            new() { Name = "Sports" },
-            new() { Name = "Business" },
-            new() { Name = "Art" },
-            new() { Name = "Science" },
-            new() { Name = "Travel" },
-            new() { Name = "Food" }
+            "Technology",
+            "Health",
+            "Education",
+            "Entertainment",
+            "Sports",
+            "Business",
+            "Art",
+            "Science",
+            "Travel",
+            "Food" 
         };
 
-        foreach (var tag in defaultTags)
+        foreach (var name in defaultTags)
         {
+            var tag = new EventTag { Name = name };
             await tagRepo.CreateAsync(tag);
         }
 
