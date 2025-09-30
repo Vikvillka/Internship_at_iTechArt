@@ -1,10 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-
-using CommunityHub.API.Data;
 using CommunityHub.API.Extensions;
-using CommunityHub.API.Repositories;
-using CommunityHub.API.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

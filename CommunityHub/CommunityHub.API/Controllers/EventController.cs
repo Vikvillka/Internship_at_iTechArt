@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-
 using CommunityHub.API.DTOs.EventDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.API.Models;
+using CommunityHub.API.Repositories;
 using CommunityHub.API.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommunityHub.API.Controllers;
 
@@ -13,11 +14,13 @@ namespace CommunityHub.API.Controllers;
 public class EventController : ControllerBase
 {
     private readonly IEventRepository _repository;
+    private readonly ITagRepository _tagRepository;
     private readonly IMapper _mapper;
 
     public EventController(IEventRepository repository, IMapper mapper, ITagRepository tagRepository)
     {
         _repository = repository;
+        _tagRepository = tagRepository;
         _mapper = mapper;
     }
 
@@ -35,10 +38,10 @@ public class EventController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var eventEnity = await _repository.GetByIdAsync(id);
-        if (eventEnity == null) return NotFound();
+        var eventEntity = await _repository.GetByIdAsync(id);
+        if (eventEntity == null) return NotFound();
 
-        var response = eventEnity.FromEntity();
+        var response = eventEntity.FromEntity();
         return Ok(response);
     }
 
@@ -56,7 +59,10 @@ public class EventController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateEventRequest request)
     {
         var eventEntity = _mapper.Map<Event>(request);
-        var created = await _repository.CreateWithTagsAsync(eventEntity, request.TagIds);
+        var tags = await _tagRepository.GetByIdsAsync(request.TagIds);
+        eventEntity.Tags = tags;
+
+        var created = await _repository.CreateAsync(eventEntity);
         var response = created.FromEntity();
         return Ok(response);
     }
