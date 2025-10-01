@@ -8,12 +8,12 @@ namespace CommunityHub.Application.Services;
 public class EventService : IEventService 
 {
     private readonly IEventRepository _eventRepository;
-    private readonly ITagRepository _tagRepository;
+    private readonly ITagService _tagService;
 
-    public EventService(IEventRepository eventRepository, ITagRepository tagRepository)
+    public EventService(IEventRepository eventRepository, ITagService tagService)
     {
         _eventRepository = eventRepository;
-        _tagRepository = tagRepository;
+        _tagService = tagService;
     }
 
     public async Task<IList<Event>> GetAllPlannedAsync()
@@ -33,7 +33,7 @@ public class EventService : IEventService
 
     public async Task<Event> CreateAsync(Event eventEntity, List<Guid> tagIds)
     {
-        var tags = await _tagRepository.GetByIdsAsync(tagIds);
+        var tags = await _tagService.GetByIdsAsync(tagIds);
         eventEntity.Tags = tags;
 
         return await _eventRepository.CreateAsync(eventEntity);
