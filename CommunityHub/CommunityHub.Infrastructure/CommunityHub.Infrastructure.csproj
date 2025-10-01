@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommunityHub.Application\CommunityHub.Application.csproj" />
     <ProjectReference Include="..\CommunityHub.Domain\CommunityHub.Domain.csproj" />
-    <ProjectReference Include="..\CommunityHub.Interfaces\CommunityHub.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

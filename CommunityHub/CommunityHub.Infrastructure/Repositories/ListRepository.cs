@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Domain.Entities;
-using CommunityHub.Interfaces.Interfaces.Repositories;
+using CommunityHub.Application.Interfaces.Repositories;
 
 namespace CommunityHub.Infrastructure.Repositories;
 
