@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CommunityHub.Domain\CommunityHub.Domain.csproj" />
+    <ProjectReference Include="..\CommunityHub.Interfaces\CommunityHub.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>
