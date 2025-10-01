@@ -1,10 +1,10 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-
-using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.API.DTOs.CommunitiesDTOs;
+using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Repositories;
+using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityHub.API.Controllers;
 
@@ -12,12 +12,12 @@ namespace CommunityHub.API.Controllers;
 [Route("[controller]")]
 public class CommunityController : ControllerBase
 {
-    private readonly ICommunityRepository _repository;
+    private readonly ICommunityService _service;
     private readonly IMapper _mapper;
 
-    public CommunityController(ICommunityRepository repository, IMapper mapper)
+    public CommunityController(ICommunityService service, IMapper mapper)
     {
-        _repository = repository;
+        _service = service;
         _mapper = mapper;
     }
 
@@ -25,7 +25,7 @@ public class CommunityController : ControllerBase
     [ProducesResponseType(typeof(List<CommunityResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        var communities = await _repository.GetAllAsync();
+        var communities = await _service.GetAllAsync();
         var response = communities.Select(c => c.FromEntity()).ToList();
         return Ok(response);
     }
@@ -35,7 +35,7 @@ public class CommunityController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var community = await _repository.GetByIdAsync(id);
+        var community = await _service.GetByIdAsync(id);
         if (community == null) return NotFound();
         
         var response = community.FromEntity();
@@ -47,7 +47,7 @@ public class CommunityController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateCommunityRequest request)
     {
         var communityEntity = _mapper.Map<Community>(request);
-        var created = await _repository.CreateAsync(communityEntity);
+        var created = await _service.CreateAsync(communityEntity);
         var response = created.FromEntity();
         return Ok(response);
     }
@@ -58,8 +58,7 @@ public class CommunityController : ControllerBase
     public async Task<IActionResult> Update([FromBody] UpdateCommunityRequest request)
     {
         var entityUpdate = _mapper.Map<Community>(request);
-        var success = await _repository.UpdateAsync(entityUpdate);
-        
+        var success = await _service.UpdateAsync(entityUpdate);
         if (!success) return BadRequest();
         return Ok();
     }
@@ -69,7 +68,7 @@ public class CommunityController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteById(Guid id)
     {
-        var success = await _repository.DeleteAsync(id);
+        var success = await _service.DeleteAsync(id);
         if (!success) return BadRequest();
         return NoContent();
     }
