@@ -1,4 +1,4 @@
-﻿using CommunityHub.API.Models;
+﻿using CommunityHub.Domain.Enums;
 
 namespace CommunityHub.API.DTOs.EventDTOs;
 

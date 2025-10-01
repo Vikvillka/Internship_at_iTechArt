@@ -1,7 +1,8 @@
-﻿using CommunityHub.API.DTOs.TagDTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+
+using CommunityHub.API.DTOs.TagDTOs;
 using CommunityHub.API.Extensions.Mappings;
-using CommunityHub.API.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+using CommunityHub.Application.Interfaces.Repositories;
 
 namespace CommunityHub.API.Controllers;
 

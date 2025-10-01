@@ -2,9 +2,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 using CommunityHub.API.Extensions.Mappings;
-using CommunityHub.API.Models;
-using CommunityHub.API.Repositories.Interfaces;
 using CommunityHub.API.DTOs.CommunitiesDTOs;
+using CommunityHub.Application.Interfaces.Repositories;
+using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.API.Controllers;
 

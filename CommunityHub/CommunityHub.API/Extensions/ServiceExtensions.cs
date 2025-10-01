@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-using CommunityHub.API.Data;
-using CommunityHub.API.Repositories;
-using CommunityHub.API.Repositories.Interfaces;
+using CommunityHub.Application.Interfaces.Repositories;
+using CommunityHub.Infrastructure.Repositories;
+using CommunityHub.Infrastructure.Data;
 
 namespace CommunityHub.API.Extensions;
 

@@ -1,7 +1,8 @@
-﻿using CommunityHub.API.Models;
-using CommunityHub.API.Repositories.Interfaces;
+﻿using CommunityHub.Domain.Entities;
+using CommunityHub.Application.Interfaces.Repositories;
+using CommunityHub.Domain.Enums;
 
-namespace CommunityHub.API.Initialization;
+namespace CommunityHub.Infrastructure.Initialization;
 
 public static class DataInitializer
 {
