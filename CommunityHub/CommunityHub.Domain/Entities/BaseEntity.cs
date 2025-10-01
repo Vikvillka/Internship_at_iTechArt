@@ -1,4 +1,4 @@
-﻿using CommunityHub.API.Models;
+﻿using CommunityHub.Domain.Interfaces;
 
 namespace CommunityHub.Domain.Entities;
 

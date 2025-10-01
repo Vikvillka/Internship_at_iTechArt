@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.API.Models;
+﻿namespace CommunityHub.Domain.Interfaces;
 
 public interface IEntity
 {

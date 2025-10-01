@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Domain.Entities;
+﻿using CommunityHub.Domain.Enums;
+
+namespace CommunityHub.Domain.Entities;
 
 public class Event : BaseEntity
 {
@@ -13,11 +15,4 @@ public class Event : BaseEntity
     public Guid CommunityId { get; set; }
     public Community Community { get; set; } = null!;
     public ICollection<EventTag> Tags { get; set; } = [];
-}
-
-public enum EventStatus
-{
-    Planned,
-    Completed,
-    Cancelled
 }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CommunityHub.Domain.Enums;
 
-namespace CommunityHub.Domain.Enums
+public enum EventStatus
 {
-    internal class EventStatus
-    {
-    }
+    Planned,
+    Completed,
+    Cancelled
 }
+
+
