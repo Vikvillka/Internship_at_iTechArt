@@ -1,20 +1,22 @@
-using CommunityHub.API.Initialization;
+using CommunityHub.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+ 
+await app.MigrateDatabaseAsync();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-DataInitializer.Seed();
 
 app.UseHttpsRedirection();
 app.MapControllers();

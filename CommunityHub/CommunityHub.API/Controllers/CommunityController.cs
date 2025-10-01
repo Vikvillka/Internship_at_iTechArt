@@ -1,6 +1,10 @@
-using CommunityHub.API.Initialization;
-using CommunityHub.API.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+
+using CommunityHub.API.Extensions.Mappings;
+using CommunityHub.API.Models;
+using CommunityHub.API.Repositories.Interfaces;
+using CommunityHub.API.DTOs.CommunitiesDTOs;
 
 namespace CommunityHub.API.Controllers;
 
@@ -8,50 +12,65 @@ namespace CommunityHub.API.Controllers;
 [Route("[controller]")]
 public class CommunityController : ControllerBase
 {
-    [HttpGet("getAll")]
-    [ProducesResponseType(typeof(List<Community>), StatusCodes.Status200OK)]
-    public IActionResult GetAll()
+    private readonly ICommunityRepository _repository;
+    private readonly IMapper _mapper;
+
+    public CommunityController(ICommunityRepository repository, IMapper mapper)
     {
-        return Ok(DataStorage.GetAllCommunities());
+        _repository = repository;
+        _mapper = mapper;
+    }
+
+    [HttpGet("getAll")]
+    [ProducesResponseType(typeof(List<CommunityResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll()
+    {
+        var communities = await _repository.GetAllAsync();
+        var response = communities.Select(c => c.FromEntity()).ToList();
+        return Ok(response);
     }
 
     [HttpGet("get/{id}")]
-    [ProducesResponseType(typeof(Community), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetById(Guid id)
+    public async Task<IActionResult> GetById(Guid id)
     {
-        var community = DataStorage.GetCommunityById(id);
+        var community = await _repository.GetByIdAsync(id);
         if (community == null) return NotFound();
-        return Ok(community);
+        
+        var response = community.FromEntity();
+        return Ok(response);
     }
 
     [HttpPost("create")]
-    [ProducesResponseType(typeof(Community), StatusCodes.Status200OK)]
-    public IActionResult Create([FromBody] Community community)
+    [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Create([FromBody] CreateCommunityRequest request)
     {
-        DataStorage.AddCommunity(community);
-        return Ok(community);
+        var communityEntity = _mapper.Map<Community>(request);
+        var created = await _repository.CreateAsync(communityEntity);
+        var response = created.FromEntity();
+        return Ok(response);
     }
 
     [HttpPut("update")]
-    [ProducesResponseType(typeof(Community), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult Update([FromBody] Community update—ommunity)
+    public async Task<IActionResult> Update([FromBody] UpdateCommunityRequest request)
     {
-        var success = DataStorage.UpdateCommunity(update—ommunity);
+        var entityUpdate = _mapper.Map<Community>(request);
+        var success = await _repository.UpdateAsync(entityUpdate);
+        
         if (!success) return BadRequest();
-
         return Ok();
     }
 
     [HttpDelete("delete/{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult DeleteById(Guid id)
+    public async Task<IActionResult> DeleteById(Guid id)
     {
-        var success = DataStorage.DeleteCommunity(id);
+        var success = await _repository.DeleteAsync(id);
         if (!success) return BadRequest();
         return NoContent();
     }
 }
-
