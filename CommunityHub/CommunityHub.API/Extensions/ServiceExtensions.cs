@@ -20,6 +20,7 @@ public static class ServiceExtensions
         services.AddScoped<ITagRepository, TagRepository>();
 
         services.AddScoped<ICommunityService, CommunityService>();
+        services.AddScoped<IEventService, EventService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
