@@ -15,7 +15,7 @@ public class TimerMiddleware
     {
         var watch = Stopwatch.StartNew();
 
-        context.Items["RequestDuration"] = DateTime.UtcNow;
+        context.Items["StartTime"] = DateTime.UtcNow;
 
         context.Response.OnStarting(() =>
         {
