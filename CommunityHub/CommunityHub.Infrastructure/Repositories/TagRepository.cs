@@ -12,7 +12,7 @@ public class TagRepository : EfRepository<EventTag>, ITagRepository
     {
     }
 
-    public async Task<List<EventTag>> GetByIdsAsync(List<Guid> tagIds)
+    public async Task<IList<EventTag>> GetByIdsAsync(List<Guid> tagIds)
     {
         return await _dbSet.Where(t => tagIds.Contains(t.Id)).ToListAsync();
     }

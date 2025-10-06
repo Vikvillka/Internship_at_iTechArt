@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using CommunityHub.API.DTOs.EventDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Domain.Entities;
-using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Domain.Enums;
 using CommunityHub.Application.Interfaces.Services;
 

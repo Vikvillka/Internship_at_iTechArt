@@ -7,26 +7,26 @@ public class ListRepository<T> : IRepository<T> where T : Community
 {
     public readonly List<T> Community = [];
 
-    public async Task<List<T>> GetAllAsync() 
+    public Task<List<T>> GetAllAsync() 
     { 
-        return await Task.FromResult(Community.ToList()); 
+        return Task.FromResult(Community.ToList()); 
     }
 
-    public async Task<T?> GetByIdAsync(Guid id)
+    public Task<T?> GetByIdAsync(Guid id)
     {
-        return await Task.FromResult(Community.FirstOrDefault(c => c.Id == id));
+        return Task.FromResult(Community.FirstOrDefault(c => c.Id == id));
     }
 
-    public async Task<T> CreateAsync(T entity)
+    public Task<T> CreateAsync(T entity)
     {
         Community.Add(entity);
-        return await Task.FromResult(entity);
+        return Task.FromResult(entity);
     }
 
-    public async Task<bool> UpdateAsync(T entity)
+    public Task<bool> UpdateAsync(T entity)
     {
         var existing = Community.FirstOrDefault(c => c.Id == entity.Id);
-        if (existing == null) return await Task.FromResult(false);
+        if (existing == null) return Task.FromResult(false);
 
         existing.Name = entity.Name;
         existing.Description = entity.Description;
@@ -35,16 +35,16 @@ public class ListRepository<T> : IRepository<T> where T : Community
         existing.Country = entity.Country;
         existing.Events = entity.Events;
 
-        return await Task.FromResult(true);
+        return Task.FromResult(true);
     }
 
-    public async Task<bool> DeleteAsync(Guid id)
+    public  Task<bool> DeleteAsync(Guid id)
     {
         var existing = Community.FirstOrDefault(c => c.Id == id);
-        if (existing == null) return await Task.FromResult(false);
+        if (existing == null) return Task.FromResult(false);
 
         Community.Remove(existing);
-        return  await Task.FromResult(true);
+        return Task.FromResult(true);
     }
 
     public IQueryable<T> AsQueryable()

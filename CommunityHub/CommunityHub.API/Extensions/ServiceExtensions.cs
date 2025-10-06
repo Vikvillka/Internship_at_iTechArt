@@ -25,7 +25,6 @@ public static class ServiceExtensions
         services.AddScoped<ITagService, TagService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
     }
 }
 

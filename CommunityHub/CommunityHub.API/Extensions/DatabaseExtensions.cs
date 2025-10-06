@@ -19,4 +19,3 @@ public static class DatabaseExtensions
         await DataInitializer.SeedAsync(communityRepo, tagRepo);
     }
 }
-
