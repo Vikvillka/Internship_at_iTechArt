@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using FluentValidation;
 using System.Reflection;
 
 using CommunityHub.Application.Interfaces.Repositories;
@@ -25,6 +26,7 @@ public static class ServiceExtensions
         services.AddScoped<ITagService, TagService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
 
