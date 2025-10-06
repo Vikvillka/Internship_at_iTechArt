@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using System.Reflection;
+using FluentValidation.AspNetCore;
 
 using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Interfaces.Services;
@@ -27,6 +28,7 @@ public static class ServiceExtensions
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddFluentValidationAutoValidation();
     }
 }
 
