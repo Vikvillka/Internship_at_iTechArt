@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
 using CommunityHub.API.DTOs.CommunitiesDTOs;
-using CommunityHub.API.Models;
+using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.API.DTOs.Profiles;
 

@@ -1,5 +1,5 @@
 ﻿using CommunityHub.API.DTOs.EventDTOs;
-using CommunityHub.API.Models;
+using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.API.Extensions.Mappings;
 

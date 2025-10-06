@@ -1,7 +1,8 @@
-﻿using CommunityHub.API.DTOs.TagDTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+
+using CommunityHub.API.DTOs.TagDTOs;
 using CommunityHub.API.Extensions.Mappings;
-using CommunityHub.API.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+using CommunityHub.Application.Interfaces.Services;
 
 namespace CommunityHub.API.Controllers;
 
@@ -9,18 +10,18 @@ namespace CommunityHub.API.Controllers;
 [Route("[controller]")]
 public class TagController : ControllerBase 
 {
-    private readonly ITagRepository _repository;
+    private readonly ITagService _service;
 
-    public TagController(ITagRepository repository)
+    public TagController(ITagService service)
     {
-        _repository = repository;
+        _service = service;
     }
 
     [HttpGet("getAll")]
     [ProducesResponseType(typeof(List<TagResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        var tags = await _repository.GetAllAsync();
+        var tags = await _service.GetAllAsync();
         var response = tags.Select(t => t.FromEntity()).ToList();
         return Ok(response);
     }

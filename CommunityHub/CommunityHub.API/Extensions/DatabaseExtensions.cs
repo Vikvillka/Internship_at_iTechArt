@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using CommunityHub.API.Data;
-using CommunityHub.API.Initialization;
-using CommunityHub.API.Repositories.Interfaces;
-using CommunityHub.API.Models;
+using CommunityHub.Infrastructure.Initialization;
+using CommunityHub.Application.Interfaces.Repositories;
+using CommunityHub.Infrastructure.Data;
 
 namespace CommunityHub.API.Extensions;
 
@@ -20,4 +19,3 @@ public static class DatabaseExtensions
         await DataInitializer.SeedAsync(communityRepo, tagRepo);
     }
 }
-

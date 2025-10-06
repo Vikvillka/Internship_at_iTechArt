@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+
 using CommunityHub.API.DTOs.EventDTOs;
 using CommunityHub.API.Extensions.Mappings;
-using CommunityHub.API.Models;
-using CommunityHub.API.Repositories;
-using CommunityHub.API.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using CommunityHub.Domain.Entities;
+using CommunityHub.Domain.Enums;
+using CommunityHub.Application.Interfaces.Services;
 
 namespace CommunityHub.API.Controllers;
 
@@ -13,14 +13,12 @@ namespace CommunityHub.API.Controllers;
 [Route("[controller]")]
 public class EventController : ControllerBase
 {
-    private readonly IEventRepository _repository;
-    private readonly ITagRepository _tagRepository;
+    private readonly IEventService _service;
     private readonly IMapper _mapper;
 
-    public EventController(IEventRepository repository, IMapper mapper, ITagRepository tagRepository)
+    public EventController(IEventService service, IMapper mapper)
     {
-        _repository = repository;
-        _tagRepository = tagRepository;
+        _service = service;
         _mapper = mapper;
     }
 
@@ -28,7 +26,7 @@ public class EventController : ControllerBase
     [ProducesResponseType(typeof(List<EventResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllPlanned()
     {
-        var events = await _repository.GetAllPlannedAsync();
+        var events = await _service.GetAllPlannedAsync();
         var response = events.Select(e => e.FromEntity()).ToList();
         return Ok(response);
     }
@@ -38,7 +36,7 @@ public class EventController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var eventEntity = await _repository.GetByIdAsync(id);
+        var eventEntity = await _service.GetByIdAsync(id);
         if (eventEntity == null) return NotFound();
 
         var response = eventEntity.FromEntity();
@@ -49,7 +47,7 @@ public class EventController : ControllerBase
     [ProducesResponseType(typeof(List<EventResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllForCommunity(Guid communityId)
     {
-        var events = await _repository.GetByCommunityIdAsync(communityId);
+        var events = await _service.GetByCommunityIdAsync(communityId);
         var response = events.Select(e => e.FromEntity()).ToList();
         return Ok(response);
     }
@@ -59,10 +57,7 @@ public class EventController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateEventRequest request)
     {
         var eventEntity = _mapper.Map<Event>(request);
-        var tags = await _tagRepository.GetByIdsAsync(request.TagIds);
-        eventEntity.Tags = tags;
-
-        var created = await _repository.CreateAsync(eventEntity);
+        var created = await _service.CreateAsync(eventEntity, request.TagIds);
         var response = created.FromEntity();
         return Ok(response);
     }
@@ -73,7 +68,7 @@ public class EventController : ControllerBase
     public async Task<IActionResult> Update([FromBody] UpdateEventRequest request)
     {
         var entityUpdate = _mapper.Map<Event>(request);
-        var success = await _repository.UpdateAsync(entityUpdate);
+        var success = await _service.UpdateAsync(entityUpdate);
 
         if (!success) return BadRequest();
         return Ok();
@@ -84,7 +79,7 @@ public class EventController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateStatus([FromBody] EventStatus newStatus, Guid id)
     {
-        var success = await _repository.UpdateStatusAsync(id, newStatus);
+        var success = await _service.UpdateStatusAsync(id, newStatus);
         if (!success) return NotFound();
 
         return Ok();

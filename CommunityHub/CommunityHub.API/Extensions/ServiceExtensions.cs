@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-using CommunityHub.API.Data;
-using CommunityHub.API.Repositories;
-using CommunityHub.API.Repositories.Interfaces;
+using CommunityHub.Application.Interfaces.Repositories;
+using CommunityHub.Application.Interfaces.Services;
+using CommunityHub.Application.Services;
+using CommunityHub.Infrastructure.Data;
+using CommunityHub.Infrastructure.Repositories;
 
 namespace CommunityHub.API.Extensions;
 
@@ -18,8 +20,11 @@ public static class ServiceExtensions
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
 
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddScoped<ICommunityService, CommunityService>();
+        services.AddScoped<IEventService, EventService>();
+        services.AddScoped<ITagService, TagService>();
 
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }
 }
 
