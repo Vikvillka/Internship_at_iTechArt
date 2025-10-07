@@ -13,7 +13,7 @@ public class UpdateCommunityRequestValidator : AbstractValidator<UpdateCommunity
 
         RuleFor(x => x.Name)
            .NotEmpty().WithMessage("Name is required")
-           .MaximumLength(200).WithMessage("Name cannot exceed 200 characters"); ;
+           .MaximumLength(200).WithMessage("Name cannot exceed 200 characters");
 
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("Description is required")

@@ -17,7 +17,7 @@ public class CreateEventRequestValidator : AbstractValidator<CreateEventRequest>
             .MaximumLength(2000).WithMessage("Description cannot exceed 2000 characters");
 
         RuleFor(x => x.EventDate)
-            .GreaterThan(DateTime.UtcNow).WithMessage("Event date must be in the future");
+            .Must(date => date > DateTime.UtcNow).WithMessage("Event date must be in the future");
 
         RuleFor(x => x.MaxParticipants)
             .GreaterThan(0).WithMessage("MaxParticipants must be greater than 0");
