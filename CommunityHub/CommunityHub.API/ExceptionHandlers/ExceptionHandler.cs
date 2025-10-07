@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
+﻿using CommunityHub.Domain.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.Net;
@@ -8,14 +9,27 @@ namespace CommunityHub.API.ExceptionHandlers;
 
 public class ExceptionHandler : IExceptionHandler
 {
-
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        var statusCode = (int)HttpStatusCode.InternalServerError;
+        int statusCode;
+        string title;
+
+        switch (exception)
+        {
+            case NotFoundException notFoundException:
+                statusCode = StatusCodes.Status404NotFound;
+                title = notFoundException.Error;
+                break;
+
+            default:
+                statusCode = StatusCodes.Status500InternalServerError;
+                title = "An unexpected error occurred";
+                break;
+        }
         
         var problemDetails = new ProblemDetails
         {
-            Title = "An unexpected error occurred",
+            Title = title,
             Detail = exception.Message,
             Status = statusCode,
             Instance = httpContext.Request.Path

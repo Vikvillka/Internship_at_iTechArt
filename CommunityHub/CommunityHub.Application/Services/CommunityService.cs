@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
+using CommunityHub.Domain.Exceptions;
 
 namespace CommunityHub.Application.Services;
 
@@ -19,8 +20,12 @@ public class CommunityService : ICommunityService
     }
 
     public async Task<Community?> GetByIdAsync(Guid id)
-    {
-        return await _communityRepository.GetByIdAsync(id);
+    { 
+        var community = await _communityRepository.GetByIdAsync(id);
+        if (community == null)
+            throw new NotFoundException("NotFound", $"Community with id '{id}' not found");
+
+        return community;
     }
 
     public async Task<Community> CreateAsync(Community community)
@@ -31,15 +36,17 @@ public class CommunityService : ICommunityService
     public async Task<bool> UpdateAsync(Community community)
     {
         var existingCommunity = await _communityRepository.GetByIdAsync(community.Id);
-        if (existingCommunity == null) return false;
-            
+        if (existingCommunity == null) 
+            throw new NotFoundException("NotFound", $"Community with id '{community.Id}' not found");
+
         return await _communityRepository.UpdateAsync(community);
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
         var existingCommunity = await _communityRepository.GetByIdAsync(id);
-        if (existingCommunity == null) return false;
+        if (existingCommunity == null) 
+            throw new NotFoundException("NotFound", $"Community with id '{id}' not found");
 
         return await _communityRepository.DeleteAsync(id);
     }

@@ -36,9 +36,7 @@ public class CommunityController : ControllerBase
     public async Task<IActionResult> GetById(Guid id)
     {
         var community = await _service.GetByIdAsync(id);
-        if (community == null) return NotFound();
-        
-        var response = community.FromEntity();
+        var response = community?.FromEntity();
         return Ok(response);
     }
 
@@ -58,8 +56,7 @@ public class CommunityController : ControllerBase
     public async Task<IActionResult> Update([FromBody] UpdateCommunityRequest request)
     {
         var entityUpdate = _mapper.Map<Community>(request);
-        var success = await _service.UpdateAsync(entityUpdate);
-        if (!success) return BadRequest();
+        await _service.UpdateAsync(entityUpdate);
         return Ok();
     }
 
@@ -68,8 +65,7 @@ public class CommunityController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteById(Guid id)
     {
-        var success = await _service.DeleteAsync(id);
-        if (!success) return BadRequest();
+        await _service.DeleteAsync(id);
         return NoContent();
     }
 }
