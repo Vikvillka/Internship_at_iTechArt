@@ -1,5 +1,4 @@
 using CommunityHub.API.Extensions;
-using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
