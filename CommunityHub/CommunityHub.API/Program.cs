@@ -12,6 +12,8 @@ var app = builder.Build();
  
 await app.MigrateDatabaseAsync();
 
+app.UseCustomMiddlewares();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
