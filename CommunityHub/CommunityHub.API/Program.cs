@@ -12,7 +12,7 @@ var app = builder.Build();
  
 await app.MigrateDatabaseAsync();
 
-app.UseResponseTimer();
+app.UseCustomMiddlewares();
 
 if (app.Environment.IsDevelopment())
 {
