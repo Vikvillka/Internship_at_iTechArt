@@ -2,6 +2,7 @@
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Enums;
+using CommunityHub.Domain.Exceptions;
 
 namespace CommunityHub.Application.Services;
 
@@ -23,7 +24,10 @@ public class EventService : IEventService
 
     public async Task<Event?> GetByIdAsync(Guid id)
     {
-        return await _eventRepository.GetByIdAsync(id);
+        var eventEntity = await _eventRepository.GetByIdAsync(id);
+        if (eventEntity == null)
+            throw new NotFoundException("NotFound", $"Event with id '{id}' not found");
+        return eventEntity;
     }
 
     public async Task<IList<Event>> GetByCommunityIdAsync(Guid communityId)
@@ -42,7 +46,8 @@ public class EventService : IEventService
     public async Task<bool> UpdateAsync(Event eventEntity)
     {
         var existing = await _eventRepository.GetByIdAsync(eventEntity.Id);
-        if (existing == null) return false;
+        if (existing == null)
+            throw new NotFoundException("NotFound", $"Event with id '{eventEntity.Id}' not found");
 
         return await _eventRepository.UpdateAsync(eventEntity);
     }
@@ -50,7 +55,8 @@ public class EventService : IEventService
     public async Task<bool> UpdateStatusAsync(Guid id, EventStatus newStatus)
     {
         var existing = await _eventRepository.GetByIdAsync(id);
-        if (existing == null) return false;
+        if (existing == null)
+            throw new NotFoundException("NotFound", $"Event with id '{id}' not found");
 
         return await _eventRepository.UpdateStatusAsync(id, newStatus);
     }

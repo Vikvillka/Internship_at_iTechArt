@@ -1,6 +1,12 @@
+using Serilog;
+
 using CommunityHub.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
 builder.Services.AddApplicationServices(builder.Configuration);
 
@@ -13,6 +19,7 @@ var app = builder.Build();
 await app.MigrateDatabaseAsync();
 
 app.UseCustomMiddlewares();
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {

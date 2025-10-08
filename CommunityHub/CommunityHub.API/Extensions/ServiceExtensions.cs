@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
+using CommunityHub.API.ExceptionHandlers;
 using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Application.Services;
@@ -25,6 +28,11 @@ public static class ServiceExtensions
         services.AddScoped<ITagService, TagService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddFluentValidationAutoValidation();
+
+        services.AddExceptionHandler<ExceptionHandler>();
+        services.AddProblemDetails();
     }
 }
 

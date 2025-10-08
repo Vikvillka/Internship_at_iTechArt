@@ -37,9 +37,7 @@ public class EventController : ControllerBase
     public async Task<IActionResult> GetById(Guid id)
     {
         var eventEntity = await _service.GetByIdAsync(id);
-        if (eventEntity == null) return NotFound();
-
-        var response = eventEntity.FromEntity();
+        var response = eventEntity?.FromEntity();
         return Ok(response);
     }
 
@@ -68,9 +66,7 @@ public class EventController : ControllerBase
     public async Task<IActionResult> Update([FromBody] UpdateEventRequest request)
     {
         var entityUpdate = _mapper.Map<Event>(request);
-        var success = await _service.UpdateAsync(entityUpdate);
-
-        if (!success) return BadRequest();
+        await _service.UpdateAsync(entityUpdate);
         return Ok();
     }
 
@@ -79,9 +75,7 @@ public class EventController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateStatus([FromBody] EventStatus newStatus, Guid id)
     {
-        var success = await _service.UpdateStatusAsync(id, newStatus);
-        if (!success) return NotFound();
-
+        await _service.UpdateStatusAsync(id, newStatus);
         return Ok();
     }
 }
