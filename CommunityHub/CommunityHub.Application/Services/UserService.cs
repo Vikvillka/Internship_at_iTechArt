@@ -26,7 +26,7 @@ public class UserService : IUserService
     public async Task<User> RegisterAsync(User user, string password)
     {
         var existingUser = _userRepository.GetByUsernameAsync(user.Username);
-        if (existingUser != null)
+        if (existingUser == null)
             throw new ConflictException("Conflict", $"Username '{user.Username}' is already taken");
 
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);

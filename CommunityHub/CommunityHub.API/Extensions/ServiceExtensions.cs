@@ -22,10 +22,12 @@ public static class ServiceExtensions
         services.AddScoped<ICommunityRepository, CommunityRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<ICommunityService, CommunityService>();
         services.AddScoped<IEventService, EventService>();
         services.AddScoped<ITagService, TagService>();
+        services.AddScoped<IUserService, UserService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
