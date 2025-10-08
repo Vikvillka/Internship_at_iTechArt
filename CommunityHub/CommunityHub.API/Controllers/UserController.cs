@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 using CommunityHub.API.DTOs.UserDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityHub.API.Controllers;
 
@@ -32,6 +34,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(AuthenticationSchemes = "Basic")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)

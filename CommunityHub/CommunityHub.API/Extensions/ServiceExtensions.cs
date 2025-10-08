@@ -33,6 +33,8 @@ public static class ServiceExtensions
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddFluentValidationAutoValidation();
 
+        services.AddAuthenticationSchemes();
+
         services.AddExceptionHandler<ExceptionHandler>();
         services.AddProblemDetails();
     }
