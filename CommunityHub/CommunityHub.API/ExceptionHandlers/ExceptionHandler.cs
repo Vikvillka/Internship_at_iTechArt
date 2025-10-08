@@ -21,6 +21,11 @@ public class ExceptionHandler : IExceptionHandler
                 title = notFoundException.Error;
                 break;
 
+            case ConflictException conflictException:
+                statusCode = StatusCodes.Status409Conflict;
+                title = conflictException.Error;
+                break;
+
             default:
                 statusCode = StatusCodes.Status500InternalServerError;
                 title = "An unexpected error occurred";
