@@ -1,10 +1,12 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-
 using CommunityHub.API.DTOs.CommunitiesDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
+
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityHub.API.Controllers;
 
@@ -22,6 +24,7 @@ public class CommunityController : ControllerBase
     }
 
     [HttpGet("getAll")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(List<CommunityResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {

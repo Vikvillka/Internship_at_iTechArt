@@ -10,6 +10,9 @@ using CommunityHub.Application.Services;
 using CommunityHub.Infrastructure.Data;
 using CommunityHub.Infrastructure.Repositories;
 using CommunityHub.Infrastructure.Services;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using CommunityHub.API.Configurations;
 
 namespace CommunityHub.API.Extensions;
 
@@ -39,6 +42,8 @@ public static class ServiceExtensions
 
         services.AddExceptionHandler<ExceptionHandler>();
         services.AddProblemDetails();
+
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
     }
 }
 
