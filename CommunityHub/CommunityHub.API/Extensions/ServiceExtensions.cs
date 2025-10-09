@@ -9,6 +9,7 @@ using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Application.Services;
 using CommunityHub.Infrastructure.Data;
 using CommunityHub.Infrastructure.Repositories;
+using CommunityHub.Infrastructure.Services;
 
 namespace CommunityHub.API.Extensions;
 
@@ -28,12 +29,13 @@ public static class ServiceExtensions
         services.AddScoped<IEventService, EventService>();
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IJwtService, JwtService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddFluentValidationAutoValidation();
 
-        services.AddAuthenticationSchemes();
+        services.AddAuthenticationSchemes(config);
 
         services.AddExceptionHandler<ExceptionHandler>();
         services.AddProblemDetails();

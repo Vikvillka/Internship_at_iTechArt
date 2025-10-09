@@ -19,6 +19,7 @@ var app = builder.Build();
 await app.MigrateDatabaseAsync();
 
 app.UseCustomMiddlewares();
+
 app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
