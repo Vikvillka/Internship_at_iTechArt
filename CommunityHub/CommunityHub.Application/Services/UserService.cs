@@ -39,7 +39,19 @@ public class UserService : IUserService
         var existingUser = await _userRepository.GetByIdAsync(id);
         if (existingUser == null)
             throw new NotFoundException("NotFound", $"User with id '{id}' not found");
-        
+
         return await _userRepository.DeleteAsync(id);
+    }
+
+    public async Task<User> AuthenticateAsync(string username, string password)
+    {
+        var user = await _userRepository.GetByUsernameAsync(username);
+        if (user == null)
+            throw new NotFoundException("NotFound", $"Community with username '{username}' not found");
+        
+        if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            throw new UnauthorizedException("Unauthorized", "Invalid username or password");
+        
+        return user;
     }
 }

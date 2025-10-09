@@ -24,6 +24,11 @@ public class ExceptionHandler : IExceptionHandler
                 title = conflictException.Error;
                 break;
 
+            case UnauthorizedException unauthorizedException:
+                statusCode = StatusCodes.Status401Unauthorized;
+                title = unauthorizedException.Error;
+                break;
+
             default:
                 statusCode = StatusCodes.Status500InternalServerError;
                 title = "An unexpected error occurred";

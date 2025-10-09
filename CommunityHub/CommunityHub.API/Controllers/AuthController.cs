@@ -22,11 +22,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetToken([FromBody] AuthRequest request)
     {
-        var user = await _userService.GetByUsernameAsync(request.Username);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-        {
-            return Unauthorized();
-        }
+        var user = await _userService.AuthenticateAsync(request.Username, request.Password);
         var tokens = _jwtService.GenerateTokens(user);
         return Ok(tokens);
     }
@@ -37,10 +33,6 @@ public class AuthController : ControllerBase
     public IActionResult Refresh([FromBody] RefreshRequest request)
     {
         var newAccessToken = _jwtService.Refresh(request.RefreshToken);
-        if (newAccessToken == null)
-        {
-            return Unauthorized();
-        }
         return Ok(new { AccessToken = newAccessToken });
     }
 }

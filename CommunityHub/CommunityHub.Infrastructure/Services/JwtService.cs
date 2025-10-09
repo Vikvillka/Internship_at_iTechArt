@@ -1,13 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CommunityHub.Application.DTOs.AuthDTOs;
+using CommunityHub.Application.Interfaces.Services;
+using CommunityHub.Domain.Entities;
+using CommunityHub.Domain.Exceptions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
-using CommunityHub.Application.DTOs.AuthDTOs;
-using CommunityHub.Application.Interfaces.Services;
-using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.Infrastructure.Services;
 
@@ -88,7 +88,7 @@ public class JwtService : IJwtService
         catch(Exception e)
         {
             _logger.LogError(e, "Error refreshing token");
-            throw new SecurityTokenException("Invalid refresh token");
+            throw new UnauthorizedException("Unauthorized", "Invalid or expired refresh token");
         }
     }
 
