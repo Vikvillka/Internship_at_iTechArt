@@ -1,7 +1,8 @@
-﻿using CommunityHub.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+
+using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Domain.Entities;
 using CommunityHub.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace CommunityHub.Infrastructure.Repositories;
 

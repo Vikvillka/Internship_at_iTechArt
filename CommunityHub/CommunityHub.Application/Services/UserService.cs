@@ -14,9 +14,9 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public Task<User?> GetByUsernameAsync(string username)
+    public async Task<User?> GetByUsernameAsync(string username)
     {
-        var user = _userRepository.GetByUsernameAsync(username);
+        var user = await _userRepository.GetByUsernameAsync(username);
         if (user == null)
             throw new NotFoundException("NotFound", $"Community with username '{username}' not found");
 
@@ -25,8 +25,8 @@ public class UserService : IUserService
 
     public async Task<User> RegisterAsync(User user, string password)
     {
-        var existingUser = _userRepository.GetByUsernameAsync(user.Username);
-        if (existingUser == null)
+        var existingUser = await _userRepository.GetByUsernameAsync(user.Username);
+        if (existingUser != null)
             throw new ConflictException("Conflict", $"Username '{user.Username}' is already taken");
 
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
