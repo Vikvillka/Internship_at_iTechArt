@@ -2,6 +2,8 @@
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 using CommunityHub.API.ExceptionHandlers;
 using CommunityHub.Application.Interfaces.Repositories;
@@ -10,8 +12,6 @@ using CommunityHub.Application.Services;
 using CommunityHub.Infrastructure.Data;
 using CommunityHub.Infrastructure.Repositories;
 using CommunityHub.Infrastructure.Services;
-using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using CommunityHub.API.Configurations;
 
 namespace CommunityHub.API.Extensions;

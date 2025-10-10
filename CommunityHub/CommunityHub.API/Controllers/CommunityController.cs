@@ -1,12 +1,12 @@
-using CommunityHub.API.DTOs.CommunitiesDTOs;
-using CommunityHub.API.Extensions.Mappings;
-using CommunityHub.Application.Interfaces.Services;
-using CommunityHub.Domain.Entities;
-
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using CommunityHub.API.DTOs.CommunitiesDTOs;
+using CommunityHub.API.Extensions.Mappings;
+using CommunityHub.Application.Interfaces.Services;
+using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.API.Controllers;
 
