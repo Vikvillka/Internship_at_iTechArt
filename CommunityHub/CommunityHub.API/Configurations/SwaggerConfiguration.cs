@@ -11,7 +11,7 @@ public class SwaggerConfiguration : IConfigureOptions<SwaggerGenOptions>
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
             In = ParameterLocation.Header,
-            Description = "Please provide a valid JWT token'",
+            Description = "Please provide a valid JWT token",
             Name = "Authorization",
             Type = SecuritySchemeType.Http,
             Scheme = "bearer",

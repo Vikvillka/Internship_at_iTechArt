@@ -18,7 +18,7 @@ public class UserService : IUserService
     {
         var user = await _userRepository.GetByUsernameAsync(username);
         if (user == null)
-            throw new NotFoundException("NotFound", $"Community with username '{username}' not found");
+            throw new NotFoundException("NotFound", $"User with username '{username}' not found");
 
         return user;
     }
@@ -47,9 +47,9 @@ public class UserService : IUserService
     {
         var user = await _userRepository.GetByUsernameAsync(username);
         if (user == null)
-            throw new NotFoundException("NotFound", $"Community with username '{username}' not found");
+            throw new NotFoundException("NotFound", $"User with username '{username}' not found");
         
-        if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+        if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             throw new UnauthorizedException("Unauthorized", "Invalid username or password");
         
         return user;
