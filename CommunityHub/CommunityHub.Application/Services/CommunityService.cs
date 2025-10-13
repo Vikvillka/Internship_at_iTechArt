@@ -30,6 +30,15 @@ public class CommunityService : ICommunityService
 
     public async Task<Community> CreateAsync(Community community)
     {
+        var existing = await _communityRepository.SearchAsync(
+            category: null,
+            city: community.City,
+            country: community.Country
+        );
+
+        if (existing.Any(c => c.Name.Equals(community.Name, StringComparison.OrdinalIgnoreCase)))
+            throw new ConflictException("Conflict", $"Community with name '{community.Name}' is already taken");
+
         return await _communityRepository.CreateAsync(community);
     }
 
