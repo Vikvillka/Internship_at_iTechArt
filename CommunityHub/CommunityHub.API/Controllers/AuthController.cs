@@ -17,7 +17,7 @@ public class AuthController : ControllerBase
         _jwtService = jwtService;
     }
 
-    [HttpPost("getToken")]
+    [HttpPost("getTokens")]
     [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetToken([FromBody] AuthRequest request)
@@ -28,11 +28,11 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("refresh")]
-    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Refresh([FromBody] RefreshRequest request)
     {
         var newAccessToken = _jwtService.Refresh(request.RefreshToken);
-        return Ok(new { AccessToken = newAccessToken });
+        return Ok(newAccessToken);
     }
 }

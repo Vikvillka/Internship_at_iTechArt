@@ -6,5 +6,5 @@ namespace CommunityHub.Application.Interfaces.Services;
 public interface IJwtService
 {
     TokenResponse GenerateTokens(User user);
-    string Refresh(string refreshToken);
+    TokenResponse Refresh(string refreshToken);
 }

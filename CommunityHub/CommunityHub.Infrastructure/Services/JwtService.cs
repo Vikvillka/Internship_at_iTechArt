@@ -51,7 +51,7 @@ public class JwtService : IJwtService
         }
     }
 
-    public string Refresh(string refreshToken)
+    public TokenResponse Refresh(string refreshToken)
     {
         try
         {
@@ -81,10 +81,15 @@ public class JwtService : IJwtService
             };
 
             var newAccessToken = GenerateToken(newClaims, TimeSpan.FromMinutes(5));
+            var newRefreshToken = GenerateToken(newClaims, TimeSpan.FromHours(2));
 
             _logger.LogInformation("Refreshed access token for user {Username}", username);
 
-            return newAccessToken;
+            return new TokenResponse
+            {
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken
+            };
         }
         catch(Exception e)
         {
