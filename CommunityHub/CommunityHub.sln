@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityHub.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityHub.Application", "CommunityHub.Application\CommunityHub.Application.csproj", "{AA0666A5-602F-4B87-B4D7-5A1801117C76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityHub.Tests", "CommunityHub.Tests\CommunityHub.Tests.csproj", "{B400A7C9-57E4-4477-9B4B-AA602836A980}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AA0666A5-602F-4B87-B4D7-5A1801117C76} = {AA0666A5-602F-4B87-B4D7-5A1801117C76}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +38,10 @@ Global
 		{AA0666A5-602F-4B87-B4D7-5A1801117C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA0666A5-602F-4B87-B4D7-5A1801117C76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA0666A5-602F-4B87-B4D7-5A1801117C76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B400A7C9-57E4-4477-9B4B-AA602836A980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B400A7C9-57E4-4477-9B4B-AA602836A980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B400A7C9-57E4-4477-9B4B-AA602836A980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B400A7C9-57E4-4477-9B4B-AA602836A980}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
