@@ -1,6 +1,7 @@
-﻿using CommunityHub.Application.DTOs.AuthDTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+
+using CommunityHub.Application.DTOs.AuthDTOs;
 using CommunityHub.Application.Interfaces.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityHub.API.Controllers;
 
@@ -20,7 +21,7 @@ public class AuthController : ControllerBase
     [HttpPost("getTokens")]
     [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetToken([FromBody] AuthRequest request)
+    public async Task<IActionResult> GetTokens([FromBody] AuthRequest request)
     {
         var user = await _userService.AuthenticateAsync(request.Username, request.Password);
         var tokens = _jwtService.GenerateTokens(user);

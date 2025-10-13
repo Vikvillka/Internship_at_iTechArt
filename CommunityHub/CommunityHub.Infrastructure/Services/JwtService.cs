@@ -16,11 +16,16 @@ public class JwtService : IJwtService
 {
     private readonly IConfiguration _config;
     private readonly ILogger<JwtService> _logger;
+    private readonly TimeSpan _accessTokenLifetime;
+    private readonly TimeSpan _refreshTokenLifetime;
 
     public JwtService(IConfiguration config, ILogger<JwtService> logger)
     {
         _config = config;
         _logger = logger;
+
+        _accessTokenLifetime = TimeSpan.FromMinutes(int.Parse(_config["Jwt:AccessTokenLifetimeMinutes"]!));
+        _refreshTokenLifetime = TimeSpan.FromHours(int.Parse(_config["Jwt:AccessTokenLifetimeMinutes"]!));
     }
 
     public TokenResponse GenerateTokens(User user)
@@ -33,8 +38,8 @@ public class JwtService : IJwtService
             new Claim(JwtRegisteredClaimNames.UniqueName, user.Username)
         };
 
-            var accessToken = GenerateToken(claims, TimeSpan.FromMinutes(5));
-            var refreshToken = GenerateToken(claims, TimeSpan.FromHours(2));
+            var accessToken = GenerateToken(claims, _accessTokenLifetime);
+            var refreshToken = GenerateToken(claims, _refreshTokenLifetime);
 
             _logger.LogInformation("Generated tokens for user {Username}", user.Username);
 
@@ -80,8 +85,8 @@ public class JwtService : IJwtService
                 new Claim(JwtRegisteredClaimNames.UniqueName, username)
             };
 
-            var newAccessToken = GenerateToken(newClaims, TimeSpan.FromMinutes(5));
-            var newRefreshToken = GenerateToken(newClaims, TimeSpan.FromHours(2));
+            var newAccessToken = GenerateToken(newClaims, _accessTokenLifetime);
+            var newRefreshToken = GenerateToken(newClaims, _refreshTokenLifetime);
 
             _logger.LogInformation("Refreshed access token for user {Username}", username);
 
