@@ -1,4 +1,6 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using CommunityHub.API.DTOs.CommunitiesDTOs;
@@ -41,6 +43,7 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPost("create")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateCommunityRequest request)
     {
@@ -51,6 +54,7 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPut("update")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateCommunityRequest request)
@@ -61,6 +65,7 @@ public class CommunityController : ControllerBase
     }
 
     [HttpDelete("delete/{id}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteById(Guid id)

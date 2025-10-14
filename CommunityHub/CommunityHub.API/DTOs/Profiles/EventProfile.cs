@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using CommunityHub.API.DTOs.EventDTOs;
 using CommunityHub.Domain.Entities;
 

@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using CommunityHub.API.DTOs.EventDTOs;
 using CommunityHub.API.Extensions.Mappings;
+using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Enums;
-using CommunityHub.Application.Interfaces.Services;
 
 namespace CommunityHub.API.Controllers;
 
@@ -23,6 +25,7 @@ public class EventController : ControllerBase
     }
 
     [HttpGet("getAll")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(List<EventResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllPlanned()
     {
@@ -51,6 +54,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPost("create")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateEventRequest request)
     {
@@ -61,6 +65,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPut("update")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateEventRequest request)
@@ -71,6 +76,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPatch("{id}/status")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateStatus([FromBody] EventStatus newStatus, Guid id)

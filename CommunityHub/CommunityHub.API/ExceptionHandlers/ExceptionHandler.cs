@@ -1,9 +1,7 @@
 ﻿using CommunityHub.Domain.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using System.Net;
 
 namespace CommunityHub.API.ExceptionHandlers;
 
@@ -19,6 +17,16 @@ public class ExceptionHandler : IExceptionHandler
             case NotFoundException notFoundException:
                 statusCode = StatusCodes.Status404NotFound;
                 title = notFoundException.Error;
+                break;
+
+            case ConflictException conflictException:
+                statusCode = StatusCodes.Status409Conflict;
+                title = conflictException.Error;
+                break;
+
+            case UnauthorizedException unauthorizedException:
+                statusCode = StatusCodes.Status401Unauthorized;
+                title = unauthorizedException.Error;
                 break;
 
             default:
