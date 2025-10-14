@@ -19,8 +19,8 @@ public class CommunityServiceTests
 
         _communities = new List<Community>
         {
-            new() { Id = Guid.NewGuid(), Name = "First" },
-            new() { Id = Guid.NewGuid(), Name = "Second" }
+            new() { Id = Guid.NewGuid(), Name = "First", City = "CityA", Country = "CountryA" },
+            new() { Id = Guid.NewGuid(), Name = "Second", City = "CityB", Country = "CountryB" }
         };
     }
 
@@ -100,11 +100,11 @@ public class CommunityServiceTests
     }
     #endregion
 
-    #region GetByIdAsync Tests
+    #region CreateAsync Tests
     [Trait("Method", "Create")]
     [Theory]
-    [InlineData("Community", "Description", "Category", "City", "Country")]
-    public async Task CreateAsync_ShouldReturnCreatedCommunity_WhenValidInput(
+    [InlineData("Community", "Description", "Category", "CityC", "CountryC")]
+    public async Task CreateAsync_ShouldReturnCreatedCommunity_WhenValidInputAndNameIsUnique(
         string name,
         string description,
         string category,
@@ -121,6 +121,9 @@ public class CommunityServiceTests
             City = city,
             Country = country
         };
+
+        _mockRepo.Setup(r => r.SearchAsync(null, city, country))
+            .ReturnsAsync([]);
 
         _mockRepo.Setup(r => r.CreateAsync(It.Is<Community>(c =>
             c.Name == name &&
@@ -145,11 +148,138 @@ public class CommunityServiceTests
 
     [Trait("Method", "Create")]
     [Theory]
-    [InlineData(null)]
-    public async Task CreateAsync_ShouldThrowConflictException_WhenNameExistsInSameCityAndCountry(string? name)
+    [InlineData("First", "CityA", "CountryA")]
+    public async Task CreateAsync_ShouldThrowConflictException_WhenNameIsNotUnique(
+        string name, 
+        string city, 
+        string country)
     {
+        // Arrange
+        var duplicateCommunity = new Community
+        {
+            Id = Guid.NewGuid(),
+            Name = name,
+            City = city,
+            Country = country
+        };
 
+        _mockRepo.Setup(r => r.SearchAsync(null, city, country))
+            .ReturnsAsync(_communities.Where(c =>
+                c.City.Equals(city, StringComparison.OrdinalIgnoreCase) &&
+                c.Country.Equals(country, StringComparison.OrdinalIgnoreCase)
+            ).ToList());
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<ConflictException>(() =>
+            _service.CreateAsync(duplicateCommunity)
+        );
+
+        Assert.Equal("Conflict", exception.Error);
+        _mockRepo.Verify(r => r.SearchAsync(null, city, country), Times.Once);
+    }
+    #endregion
+
+    #region UpdateAsync Tests
+    [Trait("Method", "Update")]
+    [Theory]
+    [InlineData("Community", "Description", "Category", "CityC", "CountryC")]
+    public async Task UpdateAsync_ShouldReturnTrue_WhenCommunityExistsAndNameIsUnique(
+        string name, 
+        string description, 
+        string category, 
+        string city, 
+        string country)
+    {
+        // Arrange
+        var existing = _communities[0];
+        var updatedCommunity = new Community
+        {
+            Id = existing.Id,
+            Name = name,
+            Description = description,
+            Category = category,
+            City = city,
+            Country = country
+        };
+
+        _mockRepo.Setup(r => r.GetByIdAsync(existing.Id))
+            .ReturnsAsync(existing);
+
+        _mockRepo.Setup(r => r.SearchAsync(null, city, country))
+            .ReturnsAsync(_communities.Where(c => c.Id != existing.Id).ToList());
+
+        _mockRepo.Setup(r => r.UpdateAsync(updatedCommunity))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateAsync(updatedCommunity);
+
+        // Assert
+        Assert.True(result);
+        _mockRepo.Verify(r => r.UpdateAsync(updatedCommunity), Times.Once);
     }
 
+    [Trait("Method", "Update")]
+    [Fact]
+    public async Task UpdateAsync_ShouldThrowNotFoundException_WhenCommunityDoesNotExist()
+    {
+        // Arrange
+        var missingCommunity = new Community
+        {
+            Id = Guid.NewGuid(),
+            Name = "Name",
+            City = "CityA",
+            Country = "CountryA"
+        };
+
+        _mockRepo.Setup(r => r.GetByIdAsync(missingCommunity.Id))
+            .ReturnsAsync((Community?)null);
+
+        // Act & Assert
+        var ex = await Assert.ThrowsAsync<NotFoundException>(() =>
+            _service.UpdateAsync(missingCommunity));
+
+        Assert.Equal("NotFound", ex.Error);
+        _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<Community>()), Times.Never);
+    }
+    #endregion
+
+    #region DeleteAsync Tests
+    [Trait("Method", "Delete")]
+    [Fact]
+    public async Task DeleteAsync_ShouldReturnTrue_WhenCommunityExists()
+    {
+        // Arrange
+        var existing = _communities[0];
+
+        _mockRepo.Setup(r => r.GetByIdAsync(existing.Id))
+            .ReturnsAsync(existing);
+        _mockRepo.Setup(r => r.DeleteAsync(existing.Id))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.DeleteAsync(existing.Id);
+
+        // Assert
+        Assert.True(result);
+        _mockRepo.Verify(r => r.DeleteAsync(existing.Id), Times.Once);
+    }
+
+    [Trait("Method", "Delete")]
+    [Fact]
+    public async Task DeleteAsync_ShouldThrowNotFoundException_WhenCommunityDoesNotExist()
+    {
+        // Arrange
+        var missingId = Guid.NewGuid();
+        _mockRepo.Setup(r => r.GetByIdAsync(missingId))
+            .ReturnsAsync((Community?)null);
+
+        // Act & Assert
+        var ex = await Assert.ThrowsAsync<NotFoundException>(() =>
+            _service.DeleteAsync(missingId));
+
+        Assert.Equal("NotFound", ex.Error);
+        _mockRepo.Verify(r => r.DeleteAsync(It.IsAny<Guid>()), Times.Never);
+    }
     #endregion
 }
