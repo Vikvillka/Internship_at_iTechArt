@@ -41,7 +41,6 @@ public class CommunityService : ICommunityService
             throw new NotFoundException("NotFound", $"Community with id '{community.Id}' not found");
 
         await EnsureUniqueCommunityNameAsync(community, community.Id);
-
         return await _communityRepository.UpdateAsync(community);
     }
 

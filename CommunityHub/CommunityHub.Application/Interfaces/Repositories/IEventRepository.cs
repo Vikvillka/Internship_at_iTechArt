@@ -7,5 +7,6 @@ public interface IEventRepository : IRepository<Event>
 {
     Task<List<Event>> GetAllPlannedAsync();
     Task<List<Event>> GetByCommunityIdAsync(Guid communityId);
+    Task<bool> ExistsWithSameTitleAndTimeAsync(Guid communityId, string title, DateTime eventDate);
     Task<bool> UpdateStatusAsync(Guid eventId, EventStatus newStatus);
 }

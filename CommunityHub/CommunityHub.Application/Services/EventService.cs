@@ -37,6 +37,8 @@ public class EventService : IEventService
 
     public async Task<Event> CreateAsync(Event eventEntity, List<Guid> tagIds)
     {
+        await EnsureUniqueEventTitleAndTimeAsync(eventEntity);
+
         var tags = await _tagService.GetByIdsAsync(tagIds);
         eventEntity.Tags = tags;
 
@@ -49,6 +51,7 @@ public class EventService : IEventService
         if (existing == null)
             throw new NotFoundException("NotFound", $"Event with id '{eventEntity.Id}' not found");
 
+        await EnsureUniqueEventTitleAndTimeAsync(eventEntity, eventEntity.Id);
         return await _eventRepository.UpdateAsync(eventEntity);
     }
 
@@ -59,6 +62,30 @@ public class EventService : IEventService
             throw new NotFoundException("NotFound", $"Event with id '{id}' not found");
 
         return await _eventRepository.UpdateStatusAsync(id, newStatus);
+    }
+
+    private async Task EnsureUniqueEventTitleAndTimeAsync(Event eventEntity, Guid? excludeId = null)
+    {
+        var exists = await _eventRepository.ExistsWithSameTitleAndTimeAsync(
+            eventEntity.CommunityId,
+            eventEntity.Title,
+            eventEntity.EventDate);
+
+        if (!exists)
+            return;
+        
+        if (excludeId != null)
+        {
+            var currentEvent = await _eventRepository.GetByIdAsync(excludeId.Value);
+            if (currentEvent != null &&
+                currentEvent.Title == eventEntity.Title &&
+                currentEvent.EventDate == eventEntity.EventDate)
+            {
+                return; 
+            }
+        }
+
+        throw new ConflictException("Conflict", $"Event with title '{eventEntity.Title}' and time '{eventEntity.EventDate}' is already taken");
     }
 }
 

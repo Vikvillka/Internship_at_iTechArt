@@ -17,11 +17,21 @@ public class CommunityServiceTests
         _mockRepo = new Mock<ICommunityRepository>();
         _service = new CommunityService(_mockRepo.Object);
 
-        _communities = new List<Community>
-        {
-            new() { Id = Guid.NewGuid(), Name = "First", City = "CityA", Country = "CountryA" },
-            new() { Id = Guid.NewGuid(), Name = "Second", City = "CityB", Country = "CountryB" }
-        };
+        _communities =
+        [
+            new() { 
+                Id = Guid.NewGuid(), 
+                Name = "First", 
+                City = "CityA", 
+                Country = "CountryA" 
+            },
+            new() { 
+                Id = Guid.NewGuid(), 
+                Name = "Second", 
+                City = "CityB", 
+                Country = "CountryB" 
+            }
+        ];
     }
 
     #region GetAllAsync Tests
@@ -48,7 +58,7 @@ public class CommunityServiceTests
     {
         // Arrange
         _mockRepo.Setup(r => r.GetAllAsync())
-            .ReturnsAsync(new List<Community>());
+            .ReturnsAsync([]);
 
         // Act
         var result = await _service.GetAllAsync();

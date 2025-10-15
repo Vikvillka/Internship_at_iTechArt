@@ -26,6 +26,14 @@ public class EventRepository : EfRepository<Event>, IEventRepository
         return await CollectionWithIncludes.Where(e => e.CommunityId == communityId).ToListAsync();
     }
 
+    public async Task<bool> ExistsWithSameTitleAndTimeAsync(Guid communityId, string title, DateTime eventDate)
+    {
+        return await _dbSet.AnyAsync(e =>
+            e.CommunityId == communityId &&
+            e.Title == title &&
+            e.EventDate == eventDate);
+    }
+
     public async Task<bool> UpdateStatusAsync(Guid id, EventStatus newStatus)
     {
         var update = await _dbSet.Where(e => e.Id == id)
