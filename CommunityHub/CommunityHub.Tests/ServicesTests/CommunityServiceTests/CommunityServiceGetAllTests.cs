@@ -7,11 +7,11 @@ using Moq;
 
 namespace CommunityHub.Tests.ServicesTests.CommunityServiceTests;
 
-public class CommunityServiceTests : IClassFixture<CommunityServiceTestFixture>
+public class CommunityServiceGetAllTests : IClassFixture<CommunityServiceTestFixture>
 {
     private readonly CommunityServiceTestFixture _fixture;
 
-    public CommunityServiceTests(CommunityServiceTestFixture fixture)
+    public CommunityServiceGetAllTests(CommunityServiceTestFixture fixture)
     {
         _fixture = fixture;
     }
