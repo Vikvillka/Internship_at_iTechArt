@@ -12,6 +12,7 @@ public class CommunityServiceCreateTests : IClassFixture<CommunityServiceTestFix
     public CommunityServiceCreateTests(CommunityServiceTestFixture fixture)
     {
         _fixture = fixture;
+        _fixture.MockRepo.Invocations.Clear();
     }
 
     [Trait("Method", "Create")]
@@ -56,6 +57,7 @@ public class CommunityServiceCreateTests : IClassFixture<CommunityServiceTestFix
         Assert.Equal(category, result.Category);
         Assert.Equal(city, result.City);
         Assert.Equal(country, result.Country);
+        _fixture.MockRepo.Verify(r => r.CreateAsync(newCommunity), Times.Once);
     }
 
     [Trait("Method", "Create")]
@@ -87,5 +89,6 @@ public class CommunityServiceCreateTests : IClassFixture<CommunityServiceTestFix
         );
 
         Assert.Equal("Conflict", exception.Error);
+        _fixture.MockRepo.Verify(r => r.CreateAsync(It.IsAny<Community>()), Times.Never);
     }
 }

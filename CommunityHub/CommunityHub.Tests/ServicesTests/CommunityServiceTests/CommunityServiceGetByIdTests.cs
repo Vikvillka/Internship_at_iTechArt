@@ -12,6 +12,7 @@ public class CommunityServiceGetByIdTests : IClassFixture<CommunityServiceTestFi
     public CommunityServiceGetByIdTests(CommunityServiceTestFixture fixture)
     {
         _fixture = fixture;
+        _fixture.MockRepo.Invocations.Clear();
     }
 
     [Trait("Method", "GetById")]
@@ -31,6 +32,7 @@ public class CommunityServiceGetByIdTests : IClassFixture<CommunityServiceTestFi
         // Assert
         Assert.NotNull(result);
         Assert.Equal(targetId, result.Id);
+        _fixture.MockRepo.Verify(r => r.GetByIdAsync(targetId), Times.Once);
     }
 
     [Trait("Method", "GetById")]
@@ -48,5 +50,6 @@ public class CommunityServiceGetByIdTests : IClassFixture<CommunityServiceTestFi
         );
 
         Assert.Equal("NotFound", exeption.Error);
+        _fixture.MockRepo.Verify(r => r.GetByIdAsync(missingId), Times.Once);
     }
 }

@@ -12,6 +12,7 @@ public class CommunityServiceUpdateTests : IClassFixture<CommunityServiceTestFix
     public CommunityServiceUpdateTests(CommunityServiceTestFixture fixture)
     {
         _fixture = fixture;
+        _fixture.MockRepo.Invocations.Clear();
     }
 
     [Trait("Method", "Update")]
@@ -50,6 +51,7 @@ public class CommunityServiceUpdateTests : IClassFixture<CommunityServiceTestFix
 
         // Assert
         Assert.True(result);
+        _fixture.MockRepo.Verify(r => r.UpdateAsync(updatedCommunity), Times.Once);
     }
 
     [Trait("Method", "Update")]
@@ -73,5 +75,6 @@ public class CommunityServiceUpdateTests : IClassFixture<CommunityServiceTestFix
             _fixture.Service.UpdateAsync(missingCommunity));
 
         Assert.Equal("NotFound", ex.Error);
+        _fixture.MockRepo.Verify(r => r.UpdateAsync(missingCommunity), Times.Never);
     }
 }

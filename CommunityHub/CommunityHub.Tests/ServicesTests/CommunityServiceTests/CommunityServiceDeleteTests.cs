@@ -12,6 +12,7 @@ public class CommunityServiceDeleteTests : IClassFixture<CommunityServiceTestFix
     public CommunityServiceDeleteTests(CommunityServiceTestFixture fixture)
     {
         _fixture = fixture;
+        _fixture.MockRepo.Invocations.Clear();
     }
 
     [Trait("Method", "Delete")]
@@ -31,6 +32,7 @@ public class CommunityServiceDeleteTests : IClassFixture<CommunityServiceTestFix
 
         // Assert
         Assert.True(result);
+        _fixture.MockRepo.Verify(r => r.DeleteAsync(existing.Id), Times.Once);
     }
 
     [Trait("Method", "Delete")]
@@ -47,5 +49,6 @@ public class CommunityServiceDeleteTests : IClassFixture<CommunityServiceTestFix
             _fixture.Service.DeleteAsync(missingId));
 
         Assert.Equal("NotFound", ex.Error);
+        _fixture.MockRepo.Verify(r => r.DeleteAsync(missingId), Times.Never);
     }
 }

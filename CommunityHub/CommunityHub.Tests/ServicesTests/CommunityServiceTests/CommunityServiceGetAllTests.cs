@@ -14,6 +14,7 @@ public class CommunityServiceGetAllTests : IClassFixture<CommunityServiceTestFix
     public CommunityServiceGetAllTests(CommunityServiceTestFixture fixture)
     {
         _fixture = fixture;
+        _fixture.MockRepo.Invocations.Clear();
     }
 
     [Trait("Method", "GetAll")]
@@ -30,6 +31,7 @@ public class CommunityServiceGetAllTests : IClassFixture<CommunityServiceTestFix
         // Assert
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
+        _fixture.MockRepo.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     [Trait("Method", "GetAll")]
@@ -46,5 +48,6 @@ public class CommunityServiceGetAllTests : IClassFixture<CommunityServiceTestFix
         // Assert
         Assert.NotNull(result);
         Assert.Empty(result);
+        _fixture.MockRepo.Verify(r => r.GetAllAsync(), Times.Once);
     }
 }
