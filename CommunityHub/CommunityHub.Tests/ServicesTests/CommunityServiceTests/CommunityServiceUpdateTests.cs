@@ -14,7 +14,6 @@ public class CommunityServiceUpdateTests : IClassFixture<CommunityServiceTestFix
         _fixture = fixture;
     }
 
-    #region UpdateAsync Tests
     [Trait("Method", "Update")]
     [Theory]
     [InlineData("Community", "Description", "Category", "CityC", "CountryC")]
@@ -75,5 +74,4 @@ public class CommunityServiceUpdateTests : IClassFixture<CommunityServiceTestFix
 
         Assert.Equal("NotFound", ex.Error);
     }
-    #endregion
 }
