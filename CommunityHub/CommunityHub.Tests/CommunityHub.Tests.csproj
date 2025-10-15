@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ServicesTests\TagServiceTests\" />
     <Folder Include="ServicesTests\UserServiceTests\" />
   </ItemGroup>
 
