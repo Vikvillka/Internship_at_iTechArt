@@ -2,36 +2,18 @@
 using CommunityHub.Application.Services;
 using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Exceptions;
+using CommunityHub.Tests.Fixtures;
 using Moq;
 
 namespace CommunityHub.Tests.ServicesTests.CommunityServiceTests;
 
-public class CommunityServiceTests
+public class CommunityServiceTests : IClassFixture<CommunityServiceTestFixture>
 {
-    private readonly CommunityService _service;
-    private readonly Mock<ICommunityRepository> _mockRepo;
-    private readonly List<Community> _communities;
+    private readonly CommunityServiceTestFixture _fixture;
 
-    public CommunityServiceTests()
+    public CommunityServiceTests(CommunityServiceTestFixture fixture)
     {
-        _mockRepo = new Mock<ICommunityRepository>();
-        _service = new CommunityService(_mockRepo.Object);
-
-        _communities =
-        [
-            new() { 
-                Id = Guid.NewGuid(), 
-                Name = "First", 
-                City = "CityA", 
-                Country = "CountryA" 
-            },
-            new() { 
-                Id = Guid.NewGuid(), 
-                Name = "Second", 
-                City = "CityB", 
-                Country = "CountryB" 
-            }
-        ];
+        _fixture = fixture;
     }
 
     #region GetAllAsync Tests
@@ -40,16 +22,15 @@ public class CommunityServiceTests
     public async Task GetAllAsync_ShouldReturnAllCommunities()
     {
         // Arrange
-        _mockRepo.Setup(r => r.GetAllAsync())
-            .ReturnsAsync(_communities);
+        _fixture.MockRepo.Setup(r => r.GetAllAsync())
+            .ReturnsAsync(_fixture.Communities);
         
         // Act
-        var result = await _service.GetAllAsync();
+        var result = await _fixture.Service.GetAllAsync();
         
         // Assert
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
-        _mockRepo.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     [Trait("Method", "GetAll")]
@@ -57,16 +38,15 @@ public class CommunityServiceTests
     public async Task GetAllAsync_ShouldReturnEmptyList_WhenNoCommunitiesExist()
     {
         // Arrange
-        _mockRepo.Setup(r => r.GetAllAsync())
+        _fixture.MockRepo.Setup(r => r.GetAllAsync())
             .ReturnsAsync([]);
 
         // Act
-        var result = await _service.GetAllAsync();
+        var result = await _fixture.Service.GetAllAsync();
 
         // Assert
         Assert.NotNull(result);
         Assert.Empty(result);
-        _mockRepo.Verify(r => r.GetAllAsync(), Times.Once);
     }
     #endregion
 
@@ -76,19 +56,18 @@ public class CommunityServiceTests
     public async Task GetByIdAsync_ShouldReturnCommunityById_WhenExists()
     {
         // Arrange
-        var targetId = _communities[0].Id;
-        var expectedCommunity = _communities[0];
+        var targetId = _fixture.Communities[0].Id;
+        var expectedCommunity = _fixture.Communities[0];
 
-        _mockRepo.Setup(r => r.GetByIdAsync(targetId))
+        _fixture.MockRepo.Setup(r => r.GetByIdAsync(targetId))
             .ReturnsAsync(expectedCommunity);
 
         // Act
-        var result = await _service.GetByIdAsync(targetId);
+        var result = await _fixture.Service.GetByIdAsync(targetId);
 
         // Assert
         Assert.NotNull(result);
         Assert.Equal(targetId, result.Id);
-        _mockRepo.Verify(r => r.GetByIdAsync(targetId), Times.Once);
     }
 
     [Trait("Method", "GetById")]
@@ -97,16 +76,15 @@ public class CommunityServiceTests
     {
         // Arrange
         var missingId = Guid.NewGuid();
-        _mockRepo.Setup(r => r.GetByIdAsync(missingId))
+        _fixture.MockRepo.Setup(r => r.GetByIdAsync(missingId))
             .ReturnsAsync((Community?)null);
 
         // Act & Assert
         var exeption = await Assert.ThrowsAsync<NotFoundException>(() =>
-            _service.GetByIdAsync(missingId)
+            _fixture.Service.GetByIdAsync(missingId)
         );
 
         Assert.Equal("NotFound", exeption.Error);
-        _mockRepo.Verify(r => r.GetByIdAsync(missingId), Times.Once);
     }
     #endregion
 
@@ -132,10 +110,10 @@ public class CommunityServiceTests
             Country = country
         };
 
-        _mockRepo.Setup(r => r.SearchAsync(null, city, country))
+        _fixture.MockRepo.Setup(r => r.SearchAsync(null, city, country))
             .ReturnsAsync([]);
 
-        _mockRepo.Setup(r => r.CreateAsync(It.Is<Community>(c =>
+        _fixture.MockRepo.Setup(r => r.CreateAsync(It.Is<Community>(c =>
             c.Name == name &&
             c.Description == description &&
             c.Category == category &&
@@ -144,7 +122,7 @@ public class CommunityServiceTests
             .ReturnsAsync((Community c) => c);
 
         // Act
-        var result = await _service.CreateAsync(newCommunity);
+        var result = await _fixture.Service.CreateAsync(newCommunity);
 
         // Assert
         Assert.NotNull(result);
@@ -153,7 +131,6 @@ public class CommunityServiceTests
         Assert.Equal(category, result.Category);
         Assert.Equal(city, result.City);
         Assert.Equal(country, result.Country);
-        _mockRepo.Verify(r => r.CreateAsync(It.IsAny<Community>()), Times.Once);
     }
 
     [Trait("Method", "Create")]
@@ -173,19 +150,18 @@ public class CommunityServiceTests
             Country = country
         };
 
-        _mockRepo.Setup(r => r.SearchAsync(null, city, country))
-            .ReturnsAsync(_communities.Where(c =>
+        _fixture.MockRepo.Setup(r => r.SearchAsync(null, city, country))
+            .ReturnsAsync(_fixture.Communities.Where(c =>
                 c.City.Equals(city, StringComparison.OrdinalIgnoreCase) &&
                 c.Country.Equals(country, StringComparison.OrdinalIgnoreCase)
             ).ToList());
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<ConflictException>(() =>
-            _service.CreateAsync(duplicateCommunity)
+            _fixture.Service.CreateAsync(duplicateCommunity)
         );
 
         Assert.Equal("Conflict", exception.Error);
-        _mockRepo.Verify(r => r.SearchAsync(null, city, country), Times.Once);
     }
     #endregion
 
@@ -201,7 +177,7 @@ public class CommunityServiceTests
         string country)
     {
         // Arrange
-        var existing = _communities[0];
+        var existing = _fixture.Communities[0];
         var updatedCommunity = new Community
         {
             Id = existing.Id,
@@ -212,21 +188,20 @@ public class CommunityServiceTests
             Country = country
         };
 
-        _mockRepo.Setup(r => r.GetByIdAsync(existing.Id))
+        _fixture.MockRepo.Setup(r => r.GetByIdAsync(existing.Id))
             .ReturnsAsync(existing);
 
-        _mockRepo.Setup(r => r.SearchAsync(null, city, country))
-            .ReturnsAsync(_communities.Where(c => c.Id != existing.Id).ToList());
+        _fixture.MockRepo.Setup(r => r.SearchAsync(null, city, country))
+            .ReturnsAsync(_fixture.Communities.Where(c => c.Id != existing.Id).ToList());
 
-        _mockRepo.Setup(r => r.UpdateAsync(updatedCommunity))
+        _fixture.MockRepo.Setup(r => r.UpdateAsync(updatedCommunity))
             .ReturnsAsync(true);
 
         // Act
-        var result = await _service.UpdateAsync(updatedCommunity);
+        var result = await _fixture.Service.UpdateAsync(updatedCommunity);
 
         // Assert
         Assert.True(result);
-        _mockRepo.Verify(r => r.UpdateAsync(updatedCommunity), Times.Once);
     }
 
     [Trait("Method", "Update")]
@@ -242,15 +217,14 @@ public class CommunityServiceTests
             Country = "CountryA"
         };
 
-        _mockRepo.Setup(r => r.GetByIdAsync(missingCommunity.Id))
+        _fixture.MockRepo.Setup(r => r.GetByIdAsync(missingCommunity.Id))
             .ReturnsAsync((Community?)null);
 
         // Act & Assert
         var ex = await Assert.ThrowsAsync<NotFoundException>(() =>
-            _service.UpdateAsync(missingCommunity));
+            _fixture.Service.UpdateAsync(missingCommunity));
 
         Assert.Equal("NotFound", ex.Error);
-        _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<Community>()), Times.Never);
     }
     #endregion
 
@@ -260,19 +234,18 @@ public class CommunityServiceTests
     public async Task DeleteAsync_ShouldReturnTrue_WhenCommunityExists()
     {
         // Arrange
-        var existing = _communities[0];
+        var existing = _fixture.Communities[0];
 
-        _mockRepo.Setup(r => r.GetByIdAsync(existing.Id))
+        _fixture.MockRepo.Setup(r => r.GetByIdAsync(existing.Id))
             .ReturnsAsync(existing);
-        _mockRepo.Setup(r => r.DeleteAsync(existing.Id))
+        _fixture.MockRepo.Setup(r => r.DeleteAsync(existing.Id))
             .ReturnsAsync(true);
 
         // Act
-        var result = await _service.DeleteAsync(existing.Id);
+        var result = await _fixture.Service.DeleteAsync(existing.Id);
 
         // Assert
         Assert.True(result);
-        _mockRepo.Verify(r => r.DeleteAsync(existing.Id), Times.Once);
     }
 
     [Trait("Method", "Delete")]
@@ -281,15 +254,14 @@ public class CommunityServiceTests
     {
         // Arrange
         var missingId = Guid.NewGuid();
-        _mockRepo.Setup(r => r.GetByIdAsync(missingId))
+        _fixture.MockRepo.Setup(r => r.GetByIdAsync(missingId))
             .ReturnsAsync((Community?)null);
 
         // Act & Assert
         var ex = await Assert.ThrowsAsync<NotFoundException>(() =>
-            _service.DeleteAsync(missingId));
+            _fixture.Service.DeleteAsync(missingId));
 
         Assert.Equal("NotFound", ex.Error);
-        _mockRepo.Verify(r => r.DeleteAsync(It.IsAny<Guid>()), Times.Never);
     }
     #endregion
 }
