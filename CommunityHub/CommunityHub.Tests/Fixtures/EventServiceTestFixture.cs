@@ -12,14 +12,16 @@ public class EventServiceTestFixture
     public EventService Service { get; }
     public Mock<IEventRepository> MockRepo { get; }
     public Mock<ITagService> MockTagService { get; }
+    public Mock<ICommunityService> MockCommunityService { get; }
     public List<Event> Events { get; }
 
     public EventServiceTestFixture()
     {
         MockRepo = new Mock<IEventRepository>();
         MockTagService = new Mock<ITagService>();
+        MockCommunityService = new Mock<ICommunityService>();
 
-        Service = new EventService(MockRepo.Object, MockTagService.Object);
+        Service = new EventService(MockRepo.Object, MockTagService.Object, MockCommunityService.Object);
 
         Events =
         [

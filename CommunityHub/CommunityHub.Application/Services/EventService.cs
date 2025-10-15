@@ -9,12 +9,14 @@ namespace CommunityHub.Application.Services;
 public class EventService : IEventService 
 {
     private readonly IEventRepository _eventRepository;
+    private readonly ICommunityService _communityService;
     private readonly ITagService _tagService;
 
-    public EventService(IEventRepository eventRepository, ITagService tagService)
+    public EventService(IEventRepository eventRepository, ITagService tagService, ICommunityService communityService)
     {
         _eventRepository = eventRepository;
         _tagService = tagService;
+        _communityService = communityService;
     }
 
     public async Task<IList<Event>> GetAllPlannedAsync()
@@ -27,11 +29,16 @@ public class EventService : IEventService
         var eventEntity = await _eventRepository.GetByIdAsync(id);
         if (eventEntity == null)
             throw new NotFoundException("NotFound", $"Event with id '{id}' not found");
+        
         return eventEntity;
     }
 
     public async Task<IList<Event>> GetByCommunityIdAsync(Guid communityId)
     {
+        var community = await _communityService.GetByIdAsync(communityId);
+        if (community == null)
+            throw new NotFoundException("NotFound", $"Community with id '{communityId}' not found");
+
         return await _eventRepository.GetByCommunityIdAsync(communityId);
     }
 
