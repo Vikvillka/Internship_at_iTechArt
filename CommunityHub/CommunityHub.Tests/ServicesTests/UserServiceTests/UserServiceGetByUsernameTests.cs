@@ -1,7 +1,8 @@
-﻿using CommunityHub.Domain.Entities;
+﻿using Moq;
+
+using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Exceptions;
 using CommunityHub.Tests.Fixtures;
-using Moq;
 
 namespace CommunityHub.Tests.ServicesTests.UserServiceTests;
 
@@ -12,6 +13,7 @@ public class UserServiceGetByUsernameTests : IClassFixture<UserServiceTestFixtur
     public UserServiceGetByUsernameTests(UserServiceTestFixture fixture)
     {
         _fixture = fixture;
+        _fixture.MockRepo.Invocations.Clear();
     }
 
     [Trait("Method", "GetByUsername")]
