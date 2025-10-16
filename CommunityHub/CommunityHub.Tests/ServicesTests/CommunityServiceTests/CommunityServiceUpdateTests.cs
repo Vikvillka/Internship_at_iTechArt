@@ -18,6 +18,7 @@ public class CommunityServiceUpdateTests : IClassFixture<CommunityServiceTestFix
     [Trait("Method", "Update")]
     [Theory]
     [InlineData("Community", "Description", "Category", "CityC", "CountryC")]
+    [InlineData("Community", "Description", "Category", "CityD", "CountryD")]
     public async Task UpdateAsync_ShouldReturnTrue_WhenCommunityExistsAndNameIsUnique(
         string name,
         string description,
@@ -62,9 +63,6 @@ public class CommunityServiceUpdateTests : IClassFixture<CommunityServiceTestFix
         var missingCommunity = new Community
         {
             Id = Guid.NewGuid(),
-            Name = "Name",
-            City = "CityA",
-            Country = "CountryA"
         };
 
         _fixture.MockRepo.Setup(r => r.GetByIdAsync(missingCommunity.Id))
