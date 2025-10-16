@@ -1,7 +1,7 @@
-﻿using CommunityHub.Domain.Enums;
+﻿using Moq;
+
+using CommunityHub.Domain.Enums;
 using CommunityHub.Tests.Fixtures;
-using Moq;
-using System.Reflection;
 
 namespace CommunityHub.Tests.ServicesTests.EventServiceTests;
 

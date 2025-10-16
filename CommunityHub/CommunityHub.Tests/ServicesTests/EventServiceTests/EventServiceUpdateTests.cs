@@ -1,8 +1,9 @@
-﻿using CommunityHub.Domain.Entities;
+﻿using Moq;
+
+using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Enums;
 using CommunityHub.Domain.Exceptions;
 using CommunityHub.Tests.Fixtures;
-using Moq;
 
 namespace CommunityHub.Tests.ServicesTests.EventServiceTests;
 

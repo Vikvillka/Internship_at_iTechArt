@@ -1,5 +1,6 @@
-﻿using CommunityHub.Tests.Fixtures;
-using Moq;
+﻿using Moq;
+
+using CommunityHub.Tests.Fixtures;
 
 namespace CommunityHub.Tests.ServicesTests.TagServiceTests;
 

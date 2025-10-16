@@ -1,7 +1,8 @@
-﻿using CommunityHub.Application.Interfaces.Repositories;
+﻿using Moq;
+
+using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Services;
 using CommunityHub.Domain.Entities;
-using Moq;
 
 namespace CommunityHub.Tests.Fixtures;
 

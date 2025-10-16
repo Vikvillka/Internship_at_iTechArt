@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Exceptions;
 using CommunityHub.Tests.Fixtures;
+
 using Moq;
 
 namespace CommunityHub.Tests.ServicesTests.CommunityServiceTests;
