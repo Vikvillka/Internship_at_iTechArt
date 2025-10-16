@@ -17,16 +17,20 @@ public class EventServiceUpdateTests : IClassFixture<EventServiceTestFixture>
     }
 
     [Trait("Method", "Update")]
-    [Fact]
-    public async Task UpdateAsync_ShouldReturnTrue_WhenEventExistsAndTitleAndTimeAreUnique()
+    [Theory]
+    [InlineData("UpdatedTitleA", 5)]
+    [InlineData("UpdatedTitleB", 10)]
+    public async Task UpdateAsync_ShouldReturnTrue_WhenEventExistsAndTitleAndTimeAreUnique(
+        string updatedTitle,
+        int daysFromNow)
     {
         // Arrange
         var existing = _fixture.Events[0];
         var updatedEvent = new Event
         {
             Id = existing.Id,
-            Title = "UpdatedTitle",
-            EventDate = DateTime.Now.AddDays(10),
+            Title = updatedTitle,
+            EventDate = DateTime.Now.AddDays(daysFromNow),
             CommunityId = existing.CommunityId,
             Status = EventStatus.Planned
         };
@@ -59,9 +63,6 @@ public class EventServiceUpdateTests : IClassFixture<EventServiceTestFixture>
         var missingEvent = new Event
         {
             Id = Guid.NewGuid(),
-            Title = "Title",
-            EventDate = DateTime.Now.AddDays(1),
-            CommunityId = Guid.NewGuid()
         };
 
         _fixture.MockRepo.Setup(r => r.GetByIdAsync(missingEvent.Id))

@@ -77,8 +77,7 @@ public class CommunityServiceCreateTests : IClassFixture<CommunityServiceTestFix
         };
 
         _fixture.MockRepo.Setup(r => r.SearchAsync(null, existing.City, existing.Country))
-            .ReturnsAsync(new List<Community> { existing });
-
+            .ReturnsAsync([existing]);
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<ConflictException>(() =>

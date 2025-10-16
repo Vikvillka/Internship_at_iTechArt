@@ -18,16 +18,20 @@ public class EventServiceCreateTests : IClassFixture<EventServiceTestFixture>
     }
 
     [Trait("Method", "Create")]
-    [Fact]
-    public async Task CreateAsync_ShouldReturnCreatedEvent_WhenTitleAndTimeAreUnique()
+    [Theory]
+    [InlineData("EventA", 3)]
+    [InlineData("EventB", 7)]
+    public async Task CreateAsync_ShouldReturnCreatedEvent_WhenTitleAndTimeAreUnique(
+        string title,
+        int daysFromNow)
     {
         // Arrange
         var newEvent = new Event
         {
             Id = Guid.NewGuid(),
-            Title = "NewEvent",
+            Title = title,
             CommunityId = Guid.NewGuid(),
-            EventDate = DateTime.Now.AddDays(5),
+            EventDate = DateTime.Now.AddDays(daysFromNow),
             Status = EventStatus.Planned
         };
 
@@ -70,12 +74,14 @@ public class EventServiceCreateTests : IClassFixture<EventServiceTestFixture>
     public async Task CreateAsync_ShouldThrowConflictException_WhenEventWithSameTitleAndTimeExists()
     {
         // Arrange
+        var existing = _fixture.Events[0];
+
         var conflictingEvent = new Event
         {
             Id = Guid.NewGuid(),
-            Title = _fixture.Events[0].Title,
-            CommunityId = _fixture.Events[0].CommunityId,
-            EventDate = _fixture.Events[0].EventDate
+            Title = existing.Title,
+            CommunityId = existing.CommunityId,
+            EventDate = existing.EventDate
         };
 
         _fixture.MockRepo
