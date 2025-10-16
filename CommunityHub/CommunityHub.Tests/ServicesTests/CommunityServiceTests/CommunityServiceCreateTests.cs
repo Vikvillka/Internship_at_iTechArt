@@ -18,6 +18,7 @@ public class CommunityServiceCreateTests : IClassFixture<CommunityServiceTestFix
     [Trait("Method", "Create")]
     [Theory]
     [InlineData("Community", "Description", "Category", "CityC", "CountryC")]
+    [InlineData("Community", "Description", "Category", "CityD", "CountryD")]
     public async Task CreateAsync_ShouldReturnCreatedCommunity_WhenValidInputAndNameIsUnique(
         string name,
         string description,
@@ -61,27 +62,23 @@ public class CommunityServiceCreateTests : IClassFixture<CommunityServiceTestFix
     }
 
     [Trait("Method", "Create")]
-    [Theory]
-    [InlineData("First", "CityA", "CountryA")]
-    public async Task CreateAsync_ShouldThrowConflictException_WhenNameIsNotUnique(
-        string name,
-        string city,
-        string country)
+    [Fact]
+    public async Task CreateAsync_ShouldThrowConflictException_WhenNameIsNotUnique()
     {
         // Arrange
+        var existing = _fixture.Communities[0];
+
         var duplicateCommunity = new Community
         {
             Id = Guid.NewGuid(),
-            Name = name,
-            City = city,
-            Country = country
+            Name = existing.Name,
+            City = existing.City,
+            Country = existing.Country
         };
 
-        _fixture.MockRepo.Setup(r => r.SearchAsync(null, city, country))
-            .ReturnsAsync(_fixture.Communities.Where(c =>
-                c.City.Equals(city, StringComparison.OrdinalIgnoreCase) &&
-                c.Country.Equals(country, StringComparison.OrdinalIgnoreCase)
-            ).ToList());
+        _fixture.MockRepo.Setup(r => r.SearchAsync(null, existing.City, existing.Country))
+            .ReturnsAsync(new List<Community> { existing });
+
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<ConflictException>(() =>
