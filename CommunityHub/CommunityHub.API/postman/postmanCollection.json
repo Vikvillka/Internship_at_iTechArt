@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "7ae54843-5f44-40b6-878a-e5212b266641",
+		"name": "CommunityHub_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34141094"
+	},
+	"item": [
+		{
+			"name": "getAll_community",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/community/getAll",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"community",
+						"getAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getById_community",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/community/getAll/938da99c-a312-4b59-a44e-a12799042ac8",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"community",
+						"getAll",
+						"938da99c-a312-4b59-a44e-a12799042ac8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_community",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"category\": \"string\",\r\n  \"city\": \"string\",\r\n  \"country\": \"string\",\r\n  \"events\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/community/create",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"community",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_community",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"60e938f9-4581-47c3-9f26-d799c134d5e2\",\r\n  \"name\": \"string\",\r\n  \"description\": \"newstring\",\r\n  \"category\": \"string\",\r\n  \"city\": \"string\",\r\n  \"country\": \"string\",\r\n  \"events\": [\r\n    {\r\n      \"id\": \"3fa85f64-5717-4462-b3fc-2c963f66afa6\",\r\n      \"title\": \"string\",\r\n      \"description\": \"string\",\r\n      \"eventDate\": \"2025-09-15T15:10:37.085Z\",\r\n      \"maxParticipants\": 0,\r\n      \"venue\": \"string\",\r\n      \"address\": \"string\",\r\n      \"status\": 0\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/community/update",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"community",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_community",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"3fa85f64-5717-4562-b2fc-2c963f66afa6\",\r\n  \"name\": \"string\",\r\n  \"description\": \"newstring\",\r\n  \"category\": \"string\",\r\n  \"city\": \"string\",\r\n  \"country\": \"string\",\r\n  \"events\": [\r\n    {\r\n      \"id\": \"3fa85f64-5717-4462-b3fc-2c963f66afa6\",\r\n      \"title\": \"string\",\r\n      \"description\": \"string\",\r\n      \"eventDate\": \"2025-09-15T15:10:37.085Z\",\r\n      \"maxParticipants\": 0,\r\n      \"venue\": \"string\",\r\n      \"address\": \"string\",\r\n      \"status\": 0\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/community/delete/8b406487-499f-4531-833a-77c1a34b6c47",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"community",
+						"delete",
+						"8b406487-499f-4531-833a-77c1a34b6c47"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"user\",\r\n  \"password\": \"Password1234$\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/user",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_user",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{userName}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/user/d7de2620-c8af-4cf0-b779-ff338fca1672",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"user",
+						"d7de2620-c8af-4cf0-b779-ff338fca1672"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getToken_auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"\r",
+							"if (json.accessToken) {\r",
+							"    pm.environment.set(\"accessToken\", json.accessToken);\r",
+							"}\r",
+							"\r",
+							"if (json.refreshToken) {\r",
+							"    pm.environment.set(\"refreshToken\", json.refreshToken);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"string\",\r\n  \"password\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/getToken",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"getToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refresh_auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"refreshToken\": \"{{refreshToken}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/refresh",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
