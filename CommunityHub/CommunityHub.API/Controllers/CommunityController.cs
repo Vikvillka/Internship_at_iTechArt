@@ -32,7 +32,7 @@ public class CommunityController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("get/{id}")]
+    [HttpGet("get/{id:guid}")]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
@@ -64,7 +64,7 @@ public class CommunityController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("delete/{id}")]
+    [HttpDelete("delete/{id:guid}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -34,7 +34,7 @@ public class EventController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("get/{id}")]
+    [HttpGet("get/{id:guid}")]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
@@ -44,7 +44,7 @@ public class EventController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("getAllByCommunity/{communityId}")]
+    [HttpGet("getAllByCommunity/{communityId:guid}")]
     [ProducesResponseType(typeof(List<EventResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllForCommunity(Guid communityId)
     {
@@ -75,7 +75,7 @@ public class EventController : ControllerBase
         return Ok();
     }
 
-    [HttpPatch("{id}/status")]
+    [HttpPatch("{id:guid}/status")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

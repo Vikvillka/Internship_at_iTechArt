@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-
 using CommunityHub.API.DTOs.EventDTOs;
 using CommunityHub.Domain.Entities;
 
-namespace CommunityHub.API.DTOs.Profiles;
+namespace CommunityHub.API.Extensions.Mappings.Profiles;
 
 public class EventProfile : Profile
 {
