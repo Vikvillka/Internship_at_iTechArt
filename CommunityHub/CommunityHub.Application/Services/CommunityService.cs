@@ -30,6 +30,7 @@ public class CommunityService : ICommunityService
 
     public async Task<Community> CreateAsync(Community community)
     {
+        await EnsureUniqueCommunityNameAsync(community);
         return await _communityRepository.CreateAsync(community);
     }
 
@@ -39,6 +40,7 @@ public class CommunityService : ICommunityService
         if (existingCommunity == null) 
             throw new NotFoundException("NotFound", $"Community with id '{community.Id}' not found");
 
+        await EnsureUniqueCommunityNameAsync(community, community.Id);
         return await _communityRepository.UpdateAsync(community);
     }
 
@@ -54,5 +56,20 @@ public class CommunityService : ICommunityService
     public async Task<IList<Community>> SearchAsync(string? category, string? city, string? country)
     {
         return await _communityRepository.SearchAsync(category, city, country);
+    }
+
+    private async Task EnsureUniqueCommunityNameAsync(Community community, Guid? excludeId = null)
+    {
+        var existing = await _communityRepository.SearchAsync(
+            category: null,
+            city: community.City,
+            country: community.Country
+        );
+
+        if (existing.Any(c => !excludeId.HasValue || c.Id != excludeId.Value &&
+            c.Name.Equals(community.Name, StringComparison.OrdinalIgnoreCase)))
+        {
+            throw new ConflictException("Conflict", $"Community with name '{community.Name}' is already taken");
+        }
     }
 }
