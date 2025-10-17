@@ -46,11 +46,11 @@ public class CommunityServiceGetByIdTests : IClassFixture<CommunityServiceTestFi
             .ReturnsAsync((Community?)null);
 
         // Act & Assert
-        var exeption = await Assert.ThrowsAsync<NotFoundException>(() =>
+        var exсeption = await Assert.ThrowsAsync<NotFoundException>(() =>
             _fixture.Service.GetByIdAsync(missingId)
         );
 
-        Assert.Equal("NotFound", exeption.Error);
+        Assert.Equal("NotFound", exсeption.Error);
         _fixture.MockRepo.Verify(r => r.GetByIdAsync(missingId), Times.Once);
     }
 }

@@ -76,4 +76,40 @@ public class EventServiceUpdateTests : IClassFixture<EventServiceTestFixture>
         Assert.Equal("NotFound", ex.Error);
         _fixture.MockRepo.Verify(r => r.UpdateAsync(It.IsAny<Event>()), Times.Never);
     }
+
+    [Trait("Method", "Update")]
+    [Fact]
+    public async Task UpdateAsync_ShouldThrowConflictException_WhenEventWithSameTitleAndTimeExists()
+    {
+        // Arrange
+        var existing = _fixture.Events[0];
+        var otherEvent = _fixture.Events[1];
+
+        var conflictingEvent = new Event
+        {
+            Id = existing.Id,
+            Title = otherEvent.Title,
+            EventDate = otherEvent.EventDate,
+            CommunityId = existing.CommunityId
+        };
+
+        _fixture.MockRepo
+            .Setup(r => r.GetByIdAsync(existing.Id))
+            .ReturnsAsync(existing);
+
+        _fixture.MockRepo
+            .Setup(r => r.ExistsWithSameTitleAndTimeAsync(
+                existing.CommunityId,
+                otherEvent.Title,
+                otherEvent.EventDate))
+            .ReturnsAsync(true);
+        
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<ConflictException>(() =>
+            _fixture.Service.UpdateAsync(conflictingEvent)
+        );
+
+        Assert.Equal("Conflict", exception.Error);
+        _fixture.MockRepo.Verify(r => r.UpdateAsync(It.IsAny<Event>()), Times.Never);
+    }
 }
