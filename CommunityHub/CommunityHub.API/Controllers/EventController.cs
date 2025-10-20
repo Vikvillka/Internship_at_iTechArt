@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using CommunityHub.API.DTOs.EventDTOs;
+using CommunityHub.Contracts.DTOs.EventDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;

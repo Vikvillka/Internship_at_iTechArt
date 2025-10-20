@@ -1,4 +1,4 @@
-﻿using CommunityHub.API.DTOs.TagDTOs;
+﻿using CommunityHub.Contracts.DTOs.TagDTOs;
 using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.API.Extensions.Mappings;

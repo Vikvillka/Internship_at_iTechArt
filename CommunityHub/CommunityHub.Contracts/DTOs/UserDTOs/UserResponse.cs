@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.API.DTOs.UserDTOs;
+﻿namespace CommunityHub.Contracts.DTOs.UserDTOs;
 
 public class UserResponse
 {

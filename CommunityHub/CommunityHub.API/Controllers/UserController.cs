@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using CommunityHub.API.DTOs.UserDTOs;
+using CommunityHub.Contracts.DTOs.UserDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;

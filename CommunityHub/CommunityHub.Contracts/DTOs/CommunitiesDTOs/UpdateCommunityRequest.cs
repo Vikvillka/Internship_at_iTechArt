@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.API.DTOs.CommunitiesDTOs;
+﻿namespace CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 
 public class UpdateCommunityRequest
 {

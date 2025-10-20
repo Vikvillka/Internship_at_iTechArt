@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using CommunityHub.API.DTOs.TagDTOs;
+using CommunityHub.Contracts.DTOs.TagDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Services;
 

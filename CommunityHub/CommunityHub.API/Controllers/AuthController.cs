@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using CommunityHub.Application.DTOs.AuthDTOs;
+using CommunityHub.Contracts.DTOs.AuthDTOs;
 using CommunityHub.Application.Interfaces.Services;
 
 namespace CommunityHub.API.Controllers;

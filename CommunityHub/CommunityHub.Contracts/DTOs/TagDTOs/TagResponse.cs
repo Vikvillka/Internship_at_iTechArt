@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.API.DTOs.TagDTOs;
+﻿namespace CommunityHub.Contracts.DTOs.TagDTOs;
 
 public class TagResponse
 {

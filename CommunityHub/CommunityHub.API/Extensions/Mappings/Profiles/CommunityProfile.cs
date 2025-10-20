@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 
-using CommunityHub.API.DTOs.CommunitiesDTOs;
+using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 using CommunityHub.Domain.Entities;
 
-namespace CommunityHub.API.DTOs.Profiles;
+namespace CommunityHub.API.Extensions.Mappings.Profiles;
 
 public class CommunityProfile : Profile
 {

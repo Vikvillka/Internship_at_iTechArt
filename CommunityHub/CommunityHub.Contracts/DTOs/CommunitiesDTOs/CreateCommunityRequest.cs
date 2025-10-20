@@ -1,15 +1,10 @@
-﻿using CommunityHub.API.DTOs.EventDTOs;
+﻿namespace CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 
-namespace CommunityHub.API.DTOs.CommunitiesDTOs;
-
-public class CommunityResponse
+public class CreateCommunityRequest
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Category { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
-
-    public List<EventResponse> Events { get; set; } = [];
 }

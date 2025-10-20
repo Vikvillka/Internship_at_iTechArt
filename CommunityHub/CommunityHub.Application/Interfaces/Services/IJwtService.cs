@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.DTOs.AuthDTOs;
+﻿using CommunityHub.Contracts.DTOs.AuthDTOs;
 using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.Application.Interfaces.Services;

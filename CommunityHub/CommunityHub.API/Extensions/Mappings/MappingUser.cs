@@ -1,4 +1,4 @@
-﻿using CommunityHub.API.DTOs.UserDTOs;
+﻿using CommunityHub.Contracts.DTOs.UserDTOs;
 using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.API.Extensions.Mappings;

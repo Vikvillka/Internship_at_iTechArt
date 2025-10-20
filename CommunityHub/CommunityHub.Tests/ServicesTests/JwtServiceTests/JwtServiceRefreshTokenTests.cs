@@ -1,7 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-
-using CommunityHub.Domain.Exceptions;
+﻿using CommunityHub.Domain.Exceptions;
 using CommunityHub.Tests.Fixtures;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CommunityHub.Tests.ServicesTests.JwtServiceTests;
 
@@ -22,13 +21,13 @@ public class JwtServiceRefreshTokenTests : IClassFixture<JwtServiceTestFixture>
         var refreshToken = _fixture.Service.GenerateTokens(_fixture.TestUser).RefreshToken;
 
         // Act
-        var newAccessToken = _fixture.Service.Refresh(refreshToken);
+        var tokenResponse = _fixture.Service.Refresh(refreshToken);
 
         // Assert
-        Assert.False(string.IsNullOrWhiteSpace(newAccessToken));
+        Assert.False(string.IsNullOrWhiteSpace(tokenResponse.AccessToken));
 
         var handler = new JwtSecurityTokenHandler();
-        var jwt = handler.ReadJwtToken(newAccessToken);
+        var jwt = handler.ReadJwtToken(tokenResponse.AccessToken);
 
         Assert.Equal(_fixture.ConfigData["Jwt:Issuer"], jwt.Issuer);
         Assert.Contains(_fixture.ConfigData["Jwt:Audience"], jwt.Audiences);

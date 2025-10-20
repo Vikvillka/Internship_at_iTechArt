@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.Application.DTOs.AuthDTOs;
+﻿namespace CommunityHub.Contracts.DTOs.AuthDTOs;
 
 public class RefreshRequest
 {

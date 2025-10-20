@@ -1,4 +1,4 @@
-﻿using CommunityHub.API.DTOs.EventDTOs;
+﻿using CommunityHub.Contracts.DTOs.EventDTOs;
 using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.API.Extensions.Mappings;

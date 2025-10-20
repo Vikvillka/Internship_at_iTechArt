@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.API.DTOs.EventDTOs;
+﻿namespace CommunityHub.Contracts.DTOs.EventDTOs;
 
 public class UpdateEventRequest
 {
