@@ -1,6 +1,6 @@
 ﻿namespace CommunityHub.Contracts.DTOs.Enums;
 
-public enum EventStatus
+public enum EventStatusDto
 {
     Planned,
     Completed,

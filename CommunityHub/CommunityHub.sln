@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{36D591C7-65C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{0BCA05A8-F025-43DA-AA12-EE6EEC4AA2D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gatewat.API", "Gatewat.API\Gatewat.API.csproj", "{4B7B0DF2-169E-4C3A-A035-744ACCC2A79C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.API", "Gatewat.API\Gateway.API.csproj", "{4B7B0DF2-169E-4C3A-A035-744ACCC2A79C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityHub.Contracts", "CommunityHub.Contracts\CommunityHub.Contracts.csproj", "{0F714750-A80D-4E22-BDF6-2BAC7EA9360E}"
 EndProject

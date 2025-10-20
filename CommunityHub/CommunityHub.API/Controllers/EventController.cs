@@ -7,6 +7,7 @@ using CommunityHub.Contracts.DTOs.EventDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
+using CommunityHub.Contracts.DTOs.Enums;
 using CommunityHub.Domain.Enums;
 
 namespace CommunityHub.API.Controllers;
@@ -79,9 +80,10 @@ public class EventController : ControllerBase
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateStatus([FromBody] EventStatus newStatus, Guid id)
+    public async Task<IActionResult> UpdateStatus([FromBody] EventStatusDto newStatus, Guid id)
     {
-        await _service.UpdateStatusAsync(id, newStatus);
+        var domainStatus = _mapper.Map<EventStatus>(newStatus);
+        await _service.UpdateStatusAsync(id, domainStatus);
         return Ok();
     }
 }

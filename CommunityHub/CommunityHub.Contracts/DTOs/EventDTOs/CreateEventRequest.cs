@@ -10,7 +10,7 @@ public class CreateEventRequest
     public int MaxParticipants { get; set; }
     public string Venue { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
-    public EventStatus Status { get; set; } = EventStatus.Planned;
+    public EventStatusDto Status { get; set; } = EventStatusDto.Planned;
     public Guid CommunityId { get; set; }
     public List<Guid> TagIds { get; set; } = [];
 }

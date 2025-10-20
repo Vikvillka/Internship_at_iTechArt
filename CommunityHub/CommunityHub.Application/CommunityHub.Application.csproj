@@ -15,8 +15,4 @@
     <ProjectReference Include="..\CommunityHub.Domain\CommunityHub.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\" />
-  </ItemGroup>
-
 </Project>
