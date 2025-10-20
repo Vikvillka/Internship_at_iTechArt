@@ -26,7 +26,6 @@ public class EventController : ControllerBase
     }
 
     [HttpGet("getAll")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(List<EventResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllPlanned()
     {
