@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
+﻿using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Contracts.DTOs.AuthDTOs;
-using CommunityHub.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityHub.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(AuthenticationSchemes = "Basic")]
 public class AuthController : ControllerBase
 {
     private readonly IUserService _userService;

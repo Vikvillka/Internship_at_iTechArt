@@ -1,7 +1,7 @@
-using Refit;
-
 using Gateway.API.Clients;
 using Gateway.API.Filters;
+using Gateway.API.Handlers;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +10,11 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<ExceptionFilter>();
 });
 
+builder.Services.AddTransient<BasicAuthHandler>();
+
 builder.Services.AddRefitClient<IMyBestApi>()
-    .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]!));
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]!))
+    .AddHttpMessageHandler<BasicAuthHandler>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

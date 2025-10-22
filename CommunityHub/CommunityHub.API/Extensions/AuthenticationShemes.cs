@@ -7,7 +7,7 @@ using CommunityHub.API.Authentication;
 
 namespace CommunityHub.API.Extensions;
 
-public static class AddAuthenticationShemes
+public static class AuthenticationShemes
 {
     public static void AddAuthenticationSchemes(this IServiceCollection services, IConfiguration config)
     {

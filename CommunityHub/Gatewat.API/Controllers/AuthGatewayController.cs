@@ -5,6 +5,8 @@ using CommunityHub.Contracts.DTOs.AuthDTOs;
 
 namespace Gateway.API.Controllers;
 
+[ApiController]
+[Route("gateway/auth")]
 public class AuthGatewayController : ControllerBase
 {
     private readonly IMyBestApi _apiClient;

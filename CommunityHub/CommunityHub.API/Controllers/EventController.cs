@@ -14,6 +14,7 @@ namespace CommunityHub.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(AuthenticationSchemes = "Basic")]
 public class EventController : ControllerBase
 {
     private readonly IEventService _service;

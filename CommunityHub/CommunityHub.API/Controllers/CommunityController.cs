@@ -12,6 +12,7 @@ namespace CommunityHub.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(AuthenticationSchemes = "Basic")]
 public class CommunityController : ControllerBase
 {
     private readonly ICommunityService _service;
