@@ -1,7 +1,8 @@
-﻿using Gateway.API.Clients;
+﻿using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
+using Gateway.API.Clients;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 
 namespace Gateway.API.Controllers;
 
@@ -34,6 +35,7 @@ public class CommunityGatewayController : ControllerBase
     }
 
     [HttpPost("create")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateCommunityRequest request)
     {
@@ -42,6 +44,7 @@ public class CommunityGatewayController : ControllerBase
     }
 
     [HttpPut("update")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateCommunityRequest request)
@@ -51,6 +54,7 @@ public class CommunityGatewayController : ControllerBase
     }
 
     [HttpDelete("delete/{id:guid}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)

@@ -18,7 +18,6 @@ public class UserGatewayController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(AuthenticationSchemes = "Basic")]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] CreateUserRequest request)

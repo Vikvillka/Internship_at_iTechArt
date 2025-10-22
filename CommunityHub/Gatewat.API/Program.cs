@@ -1,8 +1,10 @@
 using Gateway.API.Clients;
+using Gateway.API.Configurations;
 using Gateway.API.Extensions;
 using Gateway.API.Filters;
 using Gateway.API.Handlers;
-using Refit;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,7 @@ builder.Services.AddControllers(options =>
 });
 
 builder.Services.AddTransient<BasicAuthMessageHandler>();
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
 
 builder.Services.AddRefitWithBasicAuth<IBestApiClient>(builder.Configuration, builder.Configuration["ApiBaseUrl"]!);
 builder.Services.AddRefitWithBasicAuth<IUserApiClient>(builder.Configuration, builder.Configuration["ApiBaseUrl"]!);

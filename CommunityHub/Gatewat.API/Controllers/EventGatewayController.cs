@@ -1,8 +1,9 @@
-﻿using Gateway.API.Clients;
-using Microsoft.AspNetCore.Mvc;
-
-using CommunityHub.Contracts.DTOs.Enums;
+﻿using CommunityHub.Contracts.DTOs.Enums;
 using CommunityHub.Contracts.DTOs.EventDTOs;
+using Gateway.API.Clients;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gateway.API.Controllers;
 
@@ -43,6 +44,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPost("create")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateEventRequest request)
     {
@@ -51,6 +53,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPut("update")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateEventRequest request)
@@ -60,6 +63,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPatch("{id:guid}/status")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] EventStatusDto newStatus)

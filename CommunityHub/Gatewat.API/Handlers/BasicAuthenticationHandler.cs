@@ -1,7 +1,6 @@
 ﻿using CommunityHub.Contracts.DTOs.AuthDTOs;
 using Gateway.API.Clients;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -35,7 +34,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         }
         try
         {
-            var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+            var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]!);
             
             if (authHeader.Scheme != "Basic")
             {
