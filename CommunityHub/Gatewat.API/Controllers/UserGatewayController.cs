@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using CommunityHub.Contracts.DTOs.UserDTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gateway.API.Controllers;
 
@@ -9,14 +10,15 @@ namespace Gateway.API.Controllers;
 [Route("gateway/user")]
 public class UserGatewayController : ControllerBase
 {
-    private readonly IMyBestApi _apiClient;
+    private readonly IBestApiClient _apiClient;
 
-    public UserGatewayController(IMyBestApi apiClient)
+    public UserGatewayController(IBestApiClient apiClient)
     {
         _apiClient = apiClient;
     }
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = "Basic")]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] CreateUserRequest request)
@@ -26,6 +28,7 @@ public class UserGatewayController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(AuthenticationSchemes = "Basic")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)

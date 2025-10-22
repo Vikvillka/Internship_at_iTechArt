@@ -9,7 +9,7 @@ using CommunityHub.Contracts.DTOs.UserDTOs;
 
 namespace Gateway.API.Clients;
 
-public interface IMyBestApi
+public interface IBestApiClient
 {
     private const string CommunityPath = "/community";
     private const string EventPath = "/event";

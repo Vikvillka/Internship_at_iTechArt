@@ -9,9 +9,9 @@ namespace Gateway.API.Controllers;
 [Route("gateway/community")]
 public class CommunityGatewayController : ControllerBase
 {
-    private readonly IMyBestApi _apiClient;
+    private readonly IBestApiClient _apiClient;
 
-    public CommunityGatewayController(IMyBestApi apiClient)
+    public CommunityGatewayController(IBestApiClient apiClient)
     {
         _apiClient = apiClient;
     }

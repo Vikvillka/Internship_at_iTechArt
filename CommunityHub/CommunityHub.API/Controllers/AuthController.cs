@@ -37,4 +37,13 @@ public class AuthController : ControllerBase
         var newAccessToken = _jwtService.Refresh(request.RefreshToken);
         return Ok(newAccessToken);
     }
+
+    [HttpPost("validateBasic")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> ValidateBasic(AuthRequest request)
+    {
+        var user = await _userService.AuthenticateAsync(request.Username, request.Password);
+        return Ok();
+    }
 }

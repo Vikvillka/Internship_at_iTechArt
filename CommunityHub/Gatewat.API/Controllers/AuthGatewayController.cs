@@ -9,9 +9,9 @@ namespace Gateway.API.Controllers;
 [Route("gateway/auth")]
 public class AuthGatewayController : ControllerBase
 {
-    private readonly IMyBestApi _apiClient;
+    private readonly IBestApiClient _apiClient;
 
-    public AuthGatewayController(IMyBestApi apiClient)
+    public AuthGatewayController(IBestApiClient apiClient)
     {
         _apiClient = apiClient;
     }

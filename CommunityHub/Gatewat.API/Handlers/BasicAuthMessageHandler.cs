@@ -3,11 +3,11 @@ using System.Text;
 
 namespace Gateway.API.Handlers;
 
-public class BasicAuthHandler : DelegatingHandler
+public class BasicAuthMessageHandler : DelegatingHandler
 {
     private readonly IConfiguration _config;
 
-    public BasicAuthHandler(IConfiguration config)
+    public BasicAuthMessageHandler(IConfiguration config)
     {
         _config = config;
     }

@@ -1,26 +1,29 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using CommunityHub.Contracts.DTOs.AuthDTOs;
+using Gateway.API.Clients;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 
-namespace CommunityHub.API.Authentication;
+namespace Gateway.API.Handlers;
 
 public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    private readonly IConfiguration _config;
-    private const string basicHeader = "Basic realm=\"CommunityHub\"";
+    private readonly IUserApiClient _userApiClient;
+    private const string basicHeader = "Basic realm=\"Gateway\"";
 
     public BasicAuthenticationHandler(
-        IOptionsMonitor<AuthenticationSchemeOptions> options, 
-        ILoggerFactory logger, 
-        UrlEncoder encoder, 
+        IOptionsMonitor<AuthenticationSchemeOptions> options,
+        ILoggerFactory logger,
+        UrlEncoder encoder,
         ISystemClock clock,
-        IConfiguration configuration
-        ) : base(options, logger, encoder, clock)
+        IUserApiClient userApiClient
+    ) : base(options, logger, encoder, clock)
     {
-        _config = configuration;
+        _userApiClient = userApiClient;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -32,8 +35,8 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         }
         try
         {
-            var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]!);
-
+            var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+            
             if (authHeader.Scheme != "Basic")
             {
                 Response.Headers["WWW-Authenticate"] = basicHeader;
@@ -50,31 +53,31 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             var username = credentials[0];
             var password = credentials[1];
 
-            var configUsername = _config["ApiCredentials:Username"];
-            var configPassword = _config["ApiCredentials:Password"];
-
-            if (username != configUsername || password != configPassword)
+            var response = await _userApiClient.ValidateBasicAsync(new AuthRequest { Username = username, Password = password });
+            if (!response.IsSuccessStatusCode)
             {
                 Response.Headers["WWW-Authenticate"] = basicHeader;
                 return AuthenticateResult.Fail("Invalid Username or Password");
             }
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, username),
-                new Claim(ClaimTypes.Name, username)
+
+            var claims = new[] 
+            { 
+                new Claim(ClaimTypes.Name, username) 
             };
 
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, Scheme.Name);
-           
+
             return AuthenticateResult.Success(ticket);
         }
-        catch(Exception e)
+        catch (Exception ex)
         {
-            Logger.LogError(e, "Error during authentication");
+            Logger.LogError(ex, "Error during Basic authentication");
             Response.Headers["WWW-Authenticate"] = basicHeader;
-            return AuthenticateResult.Fail("Invalid Authorization Header");
+            return AuthenticateResult.Fail("Error during authentication");
         }
     }
 }
+
+

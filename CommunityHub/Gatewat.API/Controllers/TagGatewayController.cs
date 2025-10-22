@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using CommunityHub.Contracts.DTOs.TagDTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gateway.API.Controllers;
 
@@ -9,9 +10,9 @@ namespace Gateway.API.Controllers;
 [Route("gateway/tag")]
 public class TagGatewayController : ControllerBase
 {
-    private readonly IMyBestApi _apiClient;
+    private readonly IBestApiClient _apiClient;
 
-    public TagGatewayController(IMyBestApi apiClient)
+    public TagGatewayController(IBestApiClient apiClient)
     {
         _apiClient = apiClient;
     }

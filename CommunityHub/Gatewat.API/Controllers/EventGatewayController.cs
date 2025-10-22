@@ -10,9 +10,9 @@ namespace Gateway.API.Controllers;
 [Route("gateway/event")]
 public class EventGatewayController : ControllerBase
 {
-    private readonly IMyBestApi _apiClient;
+    private readonly IBestApiClient _apiClient;
 
-    public EventGatewayController(IMyBestApi apiClient)
+    public EventGatewayController(IBestApiClient apiClient)
     {
         _apiClient = apiClient;
     }
