@@ -1,7 +1,9 @@
-﻿using Gateway.API.Clients;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 using CommunityHub.Contracts.DTOs.AuthDTOs;
+using Gateway.API.Clients;
 
 namespace Gateway.API.Controllers;
 
@@ -26,6 +28,7 @@ public class AuthGatewayController : ControllerBase
     }
 
     [HttpPost("refresh")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)

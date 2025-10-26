@@ -1,7 +1,7 @@
-﻿using Gateway.API.Clients;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using CommunityHub.Contracts.DTOs.TagDTOs;
+using Gateway.API.Clients;
 
 namespace Gateway.API.Controllers;
 

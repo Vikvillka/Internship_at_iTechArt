@@ -12,10 +12,7 @@
     <PackageReference Include="Refit" Version="8.0.0" />
     <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="CommunityHub.Contract.Package" Version="1.0.0" />
+	<PackageReference Include="CommunityHub.Contract.Package" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

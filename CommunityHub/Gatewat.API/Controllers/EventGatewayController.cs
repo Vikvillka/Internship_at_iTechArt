@@ -1,8 +1,8 @@
-﻿using Gateway.API.Clients;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using Gateway.API.Clients;
 using CommunityHub.Contracts.DTOs.Enums;
 using CommunityHub.Contracts.DTOs.EventDTOs;
 
