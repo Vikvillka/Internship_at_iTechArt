@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommunityHub.Contracts\CommunityHub.Contracts.csproj" />
+    <PackageReference Include="CommunityHub.Contract.Package" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,9 @@
-﻿using Gateway.API.Handlers;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+
+using Gateway.API.Handlers;
 
 namespace Gateway.API.Extensions;
 

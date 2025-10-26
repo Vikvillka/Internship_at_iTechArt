@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 
 using CommunityHub.Contracts.DTOs.TagDTOs;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Gateway.API.Controllers;
 

@@ -1,9 +1,10 @@
-﻿using CommunityHub.Contracts.DTOs.Enums;
-using CommunityHub.Contracts.DTOs.EventDTOs;
-using Gateway.API.Clients;
+﻿using Gateway.API.Clients;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using CommunityHub.Contracts.DTOs.Enums;
+using CommunityHub.Contracts.DTOs.EventDTOs;
 
 namespace Gateway.API.Controllers;
 

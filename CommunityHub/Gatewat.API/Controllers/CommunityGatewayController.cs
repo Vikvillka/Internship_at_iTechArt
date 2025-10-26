@@ -1,8 +1,9 @@
-﻿using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
-using Gateway.API.Clients;
+﻿using Gateway.API.Clients;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 
 namespace Gateway.API.Controllers;
 
