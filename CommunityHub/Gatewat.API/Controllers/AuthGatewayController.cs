@@ -19,9 +19,10 @@ public class AuthGatewayController : ControllerBase
     }
 
     [HttpPost("getTokens")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetTokens([FromBody] AuthRequest request)
+    public async Task<IActionResult> GetTokens(AuthRequest request)
     {
         var result = await _apiClient.GetTokensAsync(request);
         return Ok(result);
@@ -31,7 +32,7 @@ public class AuthGatewayController : ControllerBase
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
+    public async Task<IActionResult> Refresh(RefreshRequest request)
     {
         var result = await _apiClient.RefreshTokenAsync(request);
         return Ok(result);

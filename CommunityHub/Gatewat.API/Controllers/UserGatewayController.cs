@@ -18,9 +18,10 @@ public class UserGatewayController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register([FromBody] CreateUserRequest request)
+    public async Task<IActionResult> Register(CreateUserRequest request)
     {
         var result = await _apiClient.RegisterUserAsync(request);
         return Ok(result);

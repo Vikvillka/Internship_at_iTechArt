@@ -20,6 +20,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpGet("getAll")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(List<EventResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
@@ -28,6 +29,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpGet("get/{id:guid}")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
@@ -37,6 +39,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpGet("getAllByCommunity/{communityId:guid}")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(List<EventResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllByCommunity(Guid communityId)
     {
@@ -47,7 +50,7 @@ public class EventGatewayController : ControllerBase
     [HttpPost("create")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Create([FromBody] CreateEventRequest request)
+    public async Task<IActionResult> Create(CreateEventRequest request)
     {
         var result = await _apiClient.CreateEventAsync(request);
         return Ok(result);
@@ -57,7 +60,7 @@ public class EventGatewayController : ControllerBase
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromBody] UpdateEventRequest request)
+    public async Task<IActionResult> Update(UpdateEventRequest request)
     {
         var result = await _apiClient.UpdateEventAsync(request);
         return Ok(result);
@@ -67,7 +70,7 @@ public class EventGatewayController : ControllerBase
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] EventStatusDto newStatus)
+    public async Task<IActionResult> UpdateStatus(Guid id, EventStatusDto newStatus)
     {
         var result = await _apiClient.UpdateEventStatusAsync(id, newStatus);
         return Ok(result);

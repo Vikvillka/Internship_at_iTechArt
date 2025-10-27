@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-using CommunityHub.Contracts.DTOs.TagDTOs;
+﻿using CommunityHub.Contracts.DTOs.TagDTOs;
 using Gateway.API.Clients;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gateway.API.Controllers;
 
@@ -17,6 +17,7 @@ public class TagGatewayController : ControllerBase
     }
 
     [HttpGet("getAll")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(List<TagResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {

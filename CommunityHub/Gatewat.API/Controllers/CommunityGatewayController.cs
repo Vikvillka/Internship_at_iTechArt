@@ -19,6 +19,7 @@ public class CommunityGatewayController : ControllerBase
     }
 
     [HttpGet("getAll")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(List<CommunityResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
@@ -27,6 +28,7 @@ public class CommunityGatewayController : ControllerBase
     }
 
     [HttpGet("get/{id:guid}")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
@@ -38,23 +40,25 @@ public class CommunityGatewayController : ControllerBase
     [HttpPost("create")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Create([FromBody] CreateCommunityRequest request)
+    public async Task<IActionResult> Create(CreateCommunityRequest request)
     {
         var result = await _apiClient.CreateCommunityAsync(request);
         return Ok(result);
     }
 
     [HttpPut("update")]
+    [AllowAnonymous]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromBody] UpdateCommunityRequest request)
+    public async Task<IActionResult> Update(UpdateCommunityRequest request)
     {
         var result = await _apiClient.UpdateCommunityAsync(request);
         return Ok(result);
     }
 
     [HttpDelete("delete/{id:guid}")]
+    [AllowAnonymous]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
