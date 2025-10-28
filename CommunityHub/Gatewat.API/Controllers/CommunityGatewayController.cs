@@ -47,7 +47,6 @@ public class CommunityGatewayController : ControllerBase
     }
 
     [HttpPut("update")]
-    [AllowAnonymous]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -58,7 +57,6 @@ public class CommunityGatewayController : ControllerBase
     }
 
     [HttpDelete("delete/{id:guid}")]
-    [AllowAnonymous]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
