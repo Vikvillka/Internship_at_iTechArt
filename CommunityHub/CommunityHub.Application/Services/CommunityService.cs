@@ -66,7 +66,7 @@ public class CommunityService : ICommunityService
             country: community.Country
         );
 
-        if (existing.Any(c => !excludeId.HasValue || c.Id != excludeId.Value &&
+        if (existing.Any(c => (c.Id != excludeId) &&
             c.Name.Equals(community.Name, StringComparison.OrdinalIgnoreCase)))
         {
             throw new ConflictException("Conflict", $"Community with name '{community.Name}' is already taken");

@@ -65,7 +65,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPut("update")]
-    [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateEventRequest request)
     {

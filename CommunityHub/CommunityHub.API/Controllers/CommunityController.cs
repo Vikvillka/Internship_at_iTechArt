@@ -54,7 +54,7 @@ public class CommunityController : ControllerBase
     }
 
     [HttpPut("update")]
-    [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateCommunityRequest request)
     {
@@ -65,7 +65,7 @@ public class CommunityController : ControllerBase
 
     [HttpDelete("delete/{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteById(Guid id)
     {
         await _service.DeleteAsync(id);

@@ -1,11 +1,12 @@
 ﻿using Refit;
-
-using CommunityHub.Contracts.DTOs.AuthDTOs;
 using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 using CommunityHub.Contracts.DTOs.Enums;
-using CommunityHub.Contracts.DTOs.EventDTOs;
-using CommunityHub.Contracts.DTOs.TagDTOs;
 using CommunityHub.Contracts.DTOs.UserDTOs;
+using Gateway.API.DTOs.CommunitiesDTOs;
+using Gateway.API.DTOs.AuthDTOs;
+using Gateway.API.DTOs.TagDTOs;
+using Gateway.API.DTOs.EventDTOs;
+using CommunityHub.Contracts.DTOs.EventDTOs;
 
 namespace Gateway.API.Clients;
 
@@ -19,44 +20,44 @@ public interface IBestApiClient
 
     #region Community
     [Get(CommunityPath + "/getAll")]
-    Task<List<CommunityResponse>> GetAllCommunitiesAsync();
+    Task<List<GatewayCommunityResponse>> GetAllCommunitiesAsync();
 
     [Get(CommunityPath + "/get/{id}")]
-    Task<CommunityResponse> GetCommunityByIdAsync(Guid id);
+    Task<GatewayCommunityResponse> GetCommunityByIdAsync(Guid id);
 
     [Post(CommunityPath + "/create")]
-    Task<CommunityResponse> CreateCommunityAsync([Body] CreateCommunityRequest request);
+    Task<GatewayCommunityResponse> CreateCommunityAsync([Body] CreateCommunityRequest request);
 
     [Put(CommunityPath + "/update")]
-    Task<CommunityResponse> UpdateCommunityAsync([Body] UpdateCommunityRequest request);
+    Task<GatewayCommunityResponse> UpdateCommunityAsync([Body] UpdateCommunityRequest request);
 
     [Delete(CommunityPath + "/delete/{id}")]
-    Task<CommunityResponse> DeleteCommunityByIdAsync(Guid id);
+    Task<GatewayCommunityResponse> DeleteCommunityByIdAsync(Guid id);
     #endregion
 
     #region Event
     [Get(EventPath + "/getAll")]
-    Task<List<EventResponse>> GetAllPlannedEventsAsync();
+    Task<List<GatewayEventResponse>> GetAllPlannedEventsAsync();
 
     [Get(EventPath + "/get/{id}")]
-    Task<EventResponse> GetEventByIdAsync(Guid id);
+    Task<GatewayEventResponse> GetEventByIdAsync(Guid id);
 
     [Get(EventPath + "/getAllByCommunity/{communityId}")]
-    Task<List<EventResponse>> GetEventsByCommunityIdAsync(Guid communityId);
+    Task<List<GatewayEventResponse>> GetEventsByCommunityIdAsync(Guid communityId);
 
     [Post(EventPath + "/create")]
-    Task<EventResponse> CreateEventAsync([Body] CreateEventRequest request);
+    Task<GatewayEventResponse> CreateEventAsync([Body] CreateEventRequest request);
 
     [Put(EventPath + "/update")]
-    Task<EventResponse> UpdateEventAsync([Body] UpdateEventRequest request);
+    Task<GatewayEventResponse> UpdateEventAsync([Body] UpdateEventRequest request);
 
     [Patch(EventPath + "/{id}/status")]
-    Task<EventResponse> UpdateEventStatusAsync(Guid id, [Body] EventStatusDto newStatus);
+    Task<GatewayEventResponse> UpdateEventStatusAsync(Guid id, [Body] EventStatusDto newStatus);
     #endregion
 
     #region User
     [Post(UserPath)]
-    Task<UserResponse> RegisterUserAsync([Body] CreateUserRequest request);
+    Task<GatewayUserResponse> RegisterUserAsync([Body] GatewayCreateUserRequest request);
 
     [Delete(UserPath + "/{id}")]
     Task DeleteUserByIdAsync(Guid id);
@@ -64,14 +65,14 @@ public interface IBestApiClient
 
     #region Tag
     [Get(TagPath + "/getAll")]
-    Task<List<TagResponse>> GetAllTagsAsync();
+    Task<List<GatewayTagResponse>> GetAllTagsAsync();
     #endregion
 
     #region Auth
     [Post(AuthPath + "/getTokens")]
-    Task<TokenResponse> GetTokensAsync([Body] AuthRequest request);
+    Task<GatewayTokenResponse> GetTokensAsync([Body] GatewayAuthRequest request);
 
     [Post(AuthPath + "/refresh")]
-    Task<TokenResponse> RefreshTokenAsync([Body] RefreshRequest request);
+    Task<GatewayTokenResponse> RefreshTokenAsync([Body] GatewayRefreshRequest request);
     #endregion
 }

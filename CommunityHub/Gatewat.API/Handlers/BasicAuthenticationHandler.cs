@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Contracts.DTOs.AuthDTOs;
 using Gateway.API.Clients;
+using Gateway.API.DTOs.AuthDTOs;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
@@ -52,7 +53,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             var username = credentials[0];
             var password = credentials[1];
 
-            var response = await _userApiClient.ValidateBasicAsync(new AuthRequest { Username = username, Password = password });
+            var response = await _userApiClient.ValidateBasicAsync(new GatewayAuthRequest { Username = username, Password = password });
             if (!response.IsSuccessStatusCode)
             {
                 Response.Headers["WWW-Authenticate"] = basicHeader;

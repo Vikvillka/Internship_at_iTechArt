@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
-using Gateway.API.Clients;
 using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
+using Gateway.API.Clients;
+using Gateway.API.DTOs.CommunitiesDTOs;
 
 namespace Gateway.API.Controllers;
 
@@ -12,57 +14,64 @@ namespace Gateway.API.Controllers;
 public class CommunityGatewayController : ControllerBase
 {
     private readonly IBestApiClient _apiClient;
+    private readonly IMapper _mapper;
 
-    public CommunityGatewayController(IBestApiClient apiClient)
+    public CommunityGatewayController(IBestApiClient apiClient, IMapper mapper)
     {
         _apiClient = apiClient;
+        _mapper = mapper;
     }
 
     [HttpGet("getAll")]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(List<CommunityResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<GatewayCommunityResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
         var result = await _apiClient.GetAllCommunitiesAsync();
-        return Ok(result);
+        var gatewayResponse = _mapper.Map<List<GatewayCommunityResponse>>(result);
+        return Ok(gatewayResponse);
     }
 
     [HttpGet("get/{id:guid}")]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GatewayCommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _apiClient.GetCommunityByIdAsync(id);
-        return Ok(result);
+        var gatewayResponse = _mapper.Map<GatewayCommunityResponse>(result);
+        return Ok(gatewayResponse);
     }
 
     [HttpPost("create")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Create(CreateCommunityRequest request)
+    [ProducesResponseType(typeof(GatewayCommunityResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Create(GatewayCreateCommunityRequest request)
     {
-        var result = await _apiClient.CreateCommunityAsync(request);
-        return Ok(result);
+        var apiRequest = _mapper.Map<CreateCommunityRequest>(request);
+        var result = await _apiClient.CreateCommunityAsync(apiRequest);
+        var gatewayResponse = _mapper.Map<GatewayCommunityResponse>(result);
+        return Ok(gatewayResponse);
     }
 
     [HttpPut("update")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(UpdateCommunityRequest request)
+    public async Task<IActionResult> Update(GatewayUpdateCommunityRequest request)
     {
-        var result = await _apiClient.UpdateCommunityAsync(request);
-        return Ok(result);
+        var apiRequest = _mapper.Map<UpdateCommunityRequest>(request);
+        await _apiClient.UpdateCommunityAsync(apiRequest);
+        return Ok();
     }
 
     [HttpDelete("delete/{id:guid}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [ProducesResponseType(typeof(CommunityResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var result = await _apiClient.DeleteCommunityByIdAsync(id);
-        return Ok(result);
+        await _apiClient.DeleteCommunityByIdAsync(id);
+        return NoContent();
     }
 }

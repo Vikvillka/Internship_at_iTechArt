@@ -1,11 +1,11 @@
-using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.SwaggerGen;
-
 using Gateway.API.Clients;
 using Gateway.API.Configurations;
 using Gateway.API.Extensions;
 using Gateway.API.Filters;
 using Gateway.API.Handlers;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +22,7 @@ builder.Services.AddRefitWithBasicAuth<IUserApiClient>(builder.Configuration, bu
 
 builder.Services.AddAuthenticationSchemes(builder.Configuration);
 builder.Services.AddAuthorization();
-
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
