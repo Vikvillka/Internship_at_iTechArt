@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.Contracts.DTOs.UserDTOs;
+﻿namespace Gateway.API.DTOs.UserDTOs;
 
 public class GatewayUserResponse
 {

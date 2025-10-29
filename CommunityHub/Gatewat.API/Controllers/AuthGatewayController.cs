@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+
+using CommunityHub.Contracts.DTOs.AuthDTOs;
 using Gateway.API.Clients;
 using Gateway.API.DTOs.AuthDTOs;
 
@@ -11,10 +14,12 @@ namespace Gateway.API.Controllers;
 public class AuthGatewayController : ControllerBase
 {
     private readonly IBestApiClient _apiClient;
+    private readonly IMapper _mapper;
 
-    public AuthGatewayController(IBestApiClient apiClient)
+    public AuthGatewayController(IBestApiClient apiClient, IMapper mapper)
     {
         _apiClient = apiClient;
+        _mapper = mapper;
     }
 
     [HttpPost("getTokens")]
@@ -23,8 +28,10 @@ public class AuthGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetTokens(GatewayAuthRequest request)
     {
-        var result = await _apiClient.GetTokensAsync(request);
-        return Ok(result);
+        var apiRequest = _mapper.Map<AuthRequest>(request);
+        var result = await _apiClient.GetTokensAsync(apiRequest);
+        var gatewayResponse = _mapper.Map<GatewayTokenResponse>(result);
+        return Ok(gatewayResponse);
     }
 
     [HttpPost("refresh")]
@@ -33,7 +40,9 @@ public class AuthGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Refresh(GatewayRefreshRequest request)
     {
-        var result = await _apiClient.RefreshTokenAsync(request);
-        return Ok(result);
+        var apiRequest = _mapper.Map<RefreshRequest>(request);
+        var result = await _apiClient.RefreshTokenAsync(apiRequest);
+        var gatewayResponse = _mapper.Map<GatewayTokenResponse>(result);
+        return Ok(gatewayResponse);
     }
 }

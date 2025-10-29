@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-
+﻿using AutoMapper;
 using CommunityHub.Contracts.DTOs.UserDTOs;
 using Gateway.API.Clients;
+using Gateway.API.DTOs.UserDTOs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gateway.API.Controllers;
 
@@ -11,10 +12,12 @@ namespace Gateway.API.Controllers;
 public class UserGatewayController : ControllerBase
 {
     private readonly IBestApiClient _apiClient;
+    private readonly IMapper _mapper;
 
-    public UserGatewayController(IBestApiClient apiClient)
+    public UserGatewayController(IBestApiClient apiClient, IMapper mapper)
     {
         _apiClient = apiClient;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -23,8 +26,10 @@ public class UserGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(GatewayCreateUserRequest request)
     {
-        var result = await _apiClient.RegisterUserAsync(request);
-        return Ok(result);
+        var apiRequest = _mapper.Map<CreateUserRequest>(request);
+        var result = await _apiClient.RegisterUserAsync(apiRequest);
+        var gatewayResponse = _mapper.Map<GatewayUserResponse>(result);
+        return Ok(gatewayResponse);
     }
 
     [HttpDelete("{id:guid}")]

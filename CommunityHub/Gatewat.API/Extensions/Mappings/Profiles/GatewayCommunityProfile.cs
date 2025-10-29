@@ -10,8 +10,7 @@ public class GatewayCommunityProfile : Profile
     public GatewayCommunityProfile()
     {
         CreateMap<CommunityResponse, GatewayCommunityResponse>();
-        CreateMap<GatewayCreateCommunityRequest, CreateCommunityRequest>().ReverseMap();
-        CreateMap<GatewayUpdateCommunityRequest, UpdateCommunityRequest>().ReverseMap();
-        CreateMap<List<CommunityResponse>, List<GatewayCommunityResponse>>();
+        CreateMap<GatewayCreateCommunityRequest, CreateCommunityRequest>();
+        CreateMap<GatewayUpdateCommunityRequest, UpdateCommunityRequest>();
     }
 }

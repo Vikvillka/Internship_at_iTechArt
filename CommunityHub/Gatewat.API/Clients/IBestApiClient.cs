@@ -1,12 +1,15 @@
 ﻿using Refit;
+
 using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 using CommunityHub.Contracts.DTOs.Enums;
-using CommunityHub.Contracts.DTOs.UserDTOs;
 using Gateway.API.DTOs.CommunitiesDTOs;
 using Gateway.API.DTOs.AuthDTOs;
 using Gateway.API.DTOs.TagDTOs;
 using Gateway.API.DTOs.EventDTOs;
 using CommunityHub.Contracts.DTOs.EventDTOs;
+using Gateway.API.DTOs.UserDTOs;
+using CommunityHub.Contracts.DTOs.UserDTOs;
+using CommunityHub.Contracts.DTOs.AuthDTOs;
 
 namespace Gateway.API.Clients;
 
@@ -57,7 +60,7 @@ public interface IBestApiClient
 
     #region User
     [Post(UserPath)]
-    Task<GatewayUserResponse> RegisterUserAsync([Body] GatewayCreateUserRequest request);
+    Task<GatewayUserResponse> RegisterUserAsync([Body] CreateUserRequest request);
 
     [Delete(UserPath + "/{id}")]
     Task DeleteUserByIdAsync(Guid id);
@@ -70,9 +73,9 @@ public interface IBestApiClient
 
     #region Auth
     [Post(AuthPath + "/getTokens")]
-    Task<GatewayTokenResponse> GetTokensAsync([Body] GatewayAuthRequest request);
+    Task<GatewayTokenResponse> GetTokensAsync([Body] AuthRequest request);
 
     [Post(AuthPath + "/refresh")]
-    Task<GatewayTokenResponse> RefreshTokenAsync([Body] GatewayRefreshRequest request);
+    Task<GatewayTokenResponse> RefreshTokenAsync([Body] RefreshRequest request);
     #endregion
 }
