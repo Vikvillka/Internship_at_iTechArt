@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Refit;
-using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Gateway.API.Handlers;
 
@@ -21,46 +21,72 @@ public class GatewayExceptionHandler : IExceptionHandler
         Microsoft.AspNetCore.Mvc.ProblemDetails problemDetails;
         int statusCode = StatusCodes.Status500InternalServerError;
 
-        if (exception is ApiException apiException)
+        switch (exception)
         {
-            statusCode = (int)apiException.StatusCode;
-            object? contentObj = null;
-            if (!string.IsNullOrEmpty(apiException.Content))
-                contentObj = JsonSerializer.Deserialize<object>(apiException.Content);
+            case ValidationApiException validationException:
+                {
+                    var problem = validationException.Content;
 
-            problemDetails = new()
-            {
-                Title = "CommunityHub.API Error",
-                Detail = contentObj?.ToString() ?? apiException.Message,
-                Status = statusCode,
-                Instance = httpContext.Request.Path
-            };
+                    problemDetails = new()
+                    {
+                        Title = problem?.Title ?? "Validation error",
+                        Status = problem?.Status ?? StatusCodes.Status400BadRequest,
+                        Instance = httpContext.Request.Path
+                    };
 
-            _logger.LogWarning(apiException,
-                "CommunityHub.API exception for {Method} {Path} with status = {Status}",
-                httpContext.Request.Method,
-                httpContext.Request.Path,
-                statusCode);
+                    if (problem?.Errors is not null)
+                        problemDetails.Extensions["errors"] = problem.Errors;
+
+                    _logger.LogWarning(validationException,
+                        "ValidationApiException for {Method} {Path} with status = {Status}",
+                        httpContext.Request.Method,
+                        httpContext.Request.Path,
+                        problemDetails.Status);
+                    break;
+                }
+            case ApiException apiException:
+                {
+                    statusCode = (int)apiException.StatusCode;
+                    JsonNode? contentObj = null;
+                    if (!string.IsNullOrEmpty(apiException.Content))
+                        contentObj = JsonNode.Parse(apiException.Content);
+
+                    problemDetails = new()
+                    {
+                        Title = contentObj?["title"]?.ToString() ?? "CommunityHub.API error",
+                        Detail = contentObj?["detail"]?.ToString() ?? apiException.Message,
+                        Status = statusCode,
+                        Instance = httpContext.Request.Path
+                    };
+
+                    _logger.LogWarning(apiException,
+                        "CommunityHub.API exception for {Method} {Path} with status = {Status}",
+                        httpContext.Request.Method,
+                        httpContext.Request.Path,
+                        problemDetails.Status);
+                    break;
+                }
+            default:
+                {
+                    problemDetails = new()
+                    {
+                        Title = "Internal Server Error",
+                        Detail = exception.Message,
+                        Status = statusCode,
+                        Instance = httpContext.Request.Path
+                    };
+
+                    _logger.LogError(exception,
+                        "Unhandled exception for {Method} {Path} with status = {StatusCode}",
+                        httpContext.Request.Method,
+                        httpContext.Request.Path,
+                        problemDetails.Status
+                        );
+                    break;
+                }
         }
-        else
-        {
-            problemDetails = new()
-            {
-                Title = "Internal Server Error",
-                Detail = exception.Message,
-                Status = StatusCodes.Status500InternalServerError,
-                Instance = httpContext.Request.Path
-            };
 
-            _logger.LogError(exception,
-                "Unhandled exception for {Method} {Path} with status = {StatusCode}",
-                httpContext.Request.Method,
-                httpContext.Request.Path,
-                statusCode
-                );
-        }
-
-        httpContext.Response.StatusCode = problemDetails.Status.Value;
+        httpContext.Response.StatusCode = problemDetails.Status ?? statusCode;
         
         await httpContext.Response
             .WriteAsJsonAsync(problemDetails, cancellationToken);
