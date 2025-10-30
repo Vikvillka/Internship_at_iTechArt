@@ -1,6 +1,5 @@
 ﻿using Gateway.API.Clients;
 using Gateway.API.Configurations;
-using Gateway.API.Filters;
 using Gateway.API.Handlers;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
