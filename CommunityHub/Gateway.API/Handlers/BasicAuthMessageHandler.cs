@@ -14,8 +14,8 @@ public class BasicAuthMessageHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var username = _config["ApiCredentials:Username"];
-        var password = _config["ApiCredentials:Password"];
+        var username = _config["CommunityServiceApi:ApiCredentials:Username"];
+        var password = _config["CommunityServiceApi:ApiCredentials:Password"];
         var token = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
 
         request.Headers.Authorization = new AuthenticationHeaderValue("Basic", token);

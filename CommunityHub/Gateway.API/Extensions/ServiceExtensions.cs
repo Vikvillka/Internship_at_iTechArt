@@ -19,8 +19,8 @@ public static class ServiceExtensions
         services.AddExceptionHandler<GatewayExceptionHandler>();
         services.AddProblemDetails();
 
-        services.AddRefitWithBasicAuth<IBestApiClient>(config, config["ApiBaseUrl"]!);
-        services.AddRefitWithBasicAuth<IUserApiClient>(config, config["ApiBaseUrl"]!);
+        services.AddRefitWithBasicAuth<IBestApiClient>(config);
+        services.AddRefitWithBasicAuth<IUserApiClient>(config);
 
         services.AddAuthenticationSchemes(config);
         services.AddAuthorization();
