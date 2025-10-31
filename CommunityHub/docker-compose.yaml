@@ -24,8 +24,8 @@ services:
     environment: 
       ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}"
 
-      ApiCredentials_Username: ${BASE_USERNAME}
-      ApiCredentials_Password: ${BASE_PASSWORD}
+      ApiCredentials__Username: ${BASE_USERNAME}
+      ApiCredentials__Password: ${BASE_PASSWORD}
 
     depends_on:
       db:
@@ -46,8 +46,8 @@ services:
       CommunityServiceApi__Jwt__AccessTokenLifetimeMinutes: ${JWT_ACCESS_TOKEN_LIFETIME_MINUTES}
       CommunityServiceApi__Jwt__RefreshTokenLifetimeHours: ${JWT_REFRESH_TOKEN_LIFETIME_HOURS}
 
-      CommunityServiceApi__ApiCredentials_Username: ${BASE_USERNAME}
-      CommunityServiceApi__ApiCredentials_Password: ${BASE_PASSWORD}
+      CommunityServiceApi__ApiCredentials__Username: ${BASE_USERNAME}
+      CommunityServiceApi__ApiCredentials__Password: ${BASE_PASSWORD}
     depends_on:
       commynity_service:
         condition: service_started
