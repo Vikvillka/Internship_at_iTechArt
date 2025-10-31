@@ -15,11 +15,11 @@ namespace Gateway.API.Clients;
 
 public interface IBestApiClient
 {
-    private const string CommunityPath = "/community";
-    private const string EventPath = "/event";
-    private const string UserPath = "/user";
-    private const string TagPath = "/tag";
-    private const string AuthPath = "/auth";
+    const string CommunityPath = "/community";
+    const string EventPath = "/event";
+    const string UserPath = "/user";
+    const string TagPath = "/tag";
+    const string AuthPath = "/auth";
 
     #region Community
     [Get(CommunityPath + "/getAll")]
