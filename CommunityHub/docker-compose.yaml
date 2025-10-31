@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:16.0-alpine
+    environment:
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+        POSTGRES_USER: ${DB_USER}
+        POSTGRES_DB: ${DB_NAME}
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+    ports:
+        - "5432:5432"
+    volumes:
+        - db_data:/var/lib/postgresql/data
+  
+  commynity_service:
+    build:
+      context: .
+      dockerfile: CommunityHub.API/Dockerfile
+    ports:
+      - "8080:8080"
+    environment: 
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}"
+
+      ApiCredentials_Username: ${BASE_USERNAME}
+      ApiCredentials_Password: ${BASE_PASSWORD}
+
+    depends_on:
+      db:
+        condition: service_healthy
+  
+  gateway:
+    build:
+      context: ../
+      dockerfile: CommunityHub/Gateway.API/Dockerfile
+    ports:
+      - "8081:8080" 
+    environment:
+      CommunityServiceApi__ApiBaseUrl:  ${API_BASE_URL}
+
+      CommunityServiceApi__Jwt__Issuer: ${JWT_ISSUER}
+      CommunityServiceApi__Jwt__Audience: ${JWT_AUDIENCE}
+      CommunityServiceApi__Jwt__Key: ${JWT_KEY}
+      CommunityServiceApi__Jwt__AccessTokenLifetimeMinutes: ${JWT_ACCESS_TOKEN_LIFETIME_MINUTES}
+      CommunityServiceApi__Jwt__RefreshTokenLifetimeHours: ${JWT_REFRESH_TOKEN_LIFETIME_HOURS}
+
+      CommunityServiceApi__ApiCredentials_Username: ${BASE_USERNAME}
+      CommunityServiceApi__ApiCredentials_Password: ${BASE_PASSWORD}
+    depends_on:
+      commynity_service:
+        condition: service_started
+volumes:
+  db_data:
