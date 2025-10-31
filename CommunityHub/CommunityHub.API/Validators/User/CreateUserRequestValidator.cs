@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-using CommunityHub.API.DTOs.UserDTOs;
+using CommunityHub.Contracts.DTOs.UserDTOs;
 
 namespace CommunityHub.API.Validators.User;
 

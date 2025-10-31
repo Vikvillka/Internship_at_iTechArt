@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommunityHub.Contracts\CommunityHub.Contracts.csproj" />
     <ProjectReference Include="..\CommunityHub.Domain\CommunityHub.Domain.csproj" />
   </ItemGroup>
 

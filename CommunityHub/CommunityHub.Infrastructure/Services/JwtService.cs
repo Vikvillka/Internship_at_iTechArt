@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-using CommunityHub.Application.DTOs.AuthDTOs;
+using CommunityHub.Contracts.DTOs.AuthDTOs;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Exceptions;

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-using CommunityHub.API.DTOs.EventDTOs;
+using CommunityHub.Contracts.DTOs.EventDTOs;
 
 namespace CommunityHub.API.Validators.Event;
 

@@ -3,16 +3,18 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using CommunityHub.API.DTOs.EventDTOs;
+using CommunityHub.Contracts.DTOs.EventDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
+using CommunityHub.Contracts.DTOs.Enums;
 using CommunityHub.Domain.Enums;
 
 namespace CommunityHub.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(AuthenticationSchemes = "Basic")]
 public class EventController : ControllerBase
 {
     private readonly IEventService _service;
@@ -25,7 +27,6 @@ public class EventController : ControllerBase
     }
 
     [HttpGet("getAll")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(List<EventResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllPlanned()
     {
@@ -54,7 +55,6 @@ public class EventController : ControllerBase
     }
 
     [HttpPost("create")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateEventRequest request)
     {
@@ -65,8 +65,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPut("update")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateEventRequest request)
     {
@@ -76,12 +75,12 @@ public class EventController : ControllerBase
     }
 
     [HttpPatch("{id}/status")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateStatus([FromBody] EventStatus newStatus, Guid id)
+    public async Task<IActionResult> UpdateStatus([FromBody] EventStatusDto newStatus, Guid id)
     {
-        await _service.UpdateStatusAsync(id, newStatus);
+        var domainStatus = _mapper.Map<EventStatus>(newStatus);
+        await _service.UpdateStatusAsync(id, domainStatus);
         return Ok();
     }
 }

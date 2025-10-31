@@ -5,13 +5,11 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 
-using CommunityHub.Application.Interfaces.Services;
-
 namespace CommunityHub.API.Authentication;
 
 public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    private readonly IUserService _userService;
+    private readonly IConfiguration _config;
     private const string basicHeader = "Basic realm=\"CommunityHub\"";
 
     public BasicAuthenticationHandler(
@@ -19,10 +17,10 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         ILoggerFactory logger, 
         UrlEncoder encoder, 
         ISystemClock clock,
-        IUserService userService
+        IConfiguration configuration
         ) : base(options, logger, encoder, clock)
     {
-        _userService = userService;
+        _config = configuration;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -34,7 +32,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         }
         try
         {
-            var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+            var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]!);
 
             if (authHeader.Scheme != "Basic")
             {
@@ -51,17 +49,19 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             }
             var username = credentials[0];
             var password = credentials[1];
-            
-            var user = await _userService.GetByUsernameAsync(username);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+
+            var configUsername = _config["ApiCredentials:Username"];
+            var configPassword = _config["ApiCredentials:Password"];
+
+            if (username != configUsername || password != configPassword)
             {
                 Response.Headers["WWW-Authenticate"] = basicHeader;
                 return AuthenticateResult.Fail("Invalid Username or Password");
             }
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.NameIdentifier, username),
+                new Claim(ClaimTypes.Name, username)
             };
 
             var identity = new ClaimsIdentity(claims, Scheme.Name);

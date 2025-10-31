@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using CommunityHub.API.DTOs.UserDTOs;
+using CommunityHub.Contracts.DTOs.UserDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
@@ -11,6 +11,7 @@ namespace CommunityHub.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(AuthenticationSchemes = "Basic")]
 public class UserController : ControllerBase
 {
     private readonly IUserService _service;
@@ -34,7 +35,6 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    [Authorize(AuthenticationSchemes = "Basic")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
