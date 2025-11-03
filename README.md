@@ -25,3 +25,6 @@ To support versioning, change the version in the `.csproj` file to another one:
 <Version>1.0.1</Version>
 ```
 And build the project
+****
+### Environment Variables and Docker Compose
+The project uses a .env file to store environment-specific variables for Docker Compose. This file contains sensitive data like database credentials, JWT secrets, and API configuration. The repository contains a sample env.example file. You should copy it to .env and replace placeholders with your real values.
