@@ -16,6 +16,8 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
         builder.Property(e => e.MaxParticipants).IsRequired();
         builder.Property(e => e.Venue).IsRequired().HasMaxLength(200);
         builder.Property(e => e.Address).IsRequired().HasMaxLength(200);
+        builder.Property(e => e.Duration).IsRequired();
+        builder.Property(e => e.ImagePath).HasMaxLength(250).IsRequired(false);
         builder.Property(e => e.CreatedAt).IsRequired();
         builder.Property(e => e.UpdatedAt).IsRequired();
 
