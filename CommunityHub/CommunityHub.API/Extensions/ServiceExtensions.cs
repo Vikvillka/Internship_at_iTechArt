@@ -33,6 +33,7 @@ public static class ServiceExtensions
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IImageService, ImageService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
