@@ -11,7 +11,8 @@ public class GatewayEventProfile : Profile
     {
         CreateMap<EventResponse, GatewayEventResponse>()
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
-        CreateMap<GatewayCreateEventRequest, CreateEventRequest>();
+        CreateMap<GatewayCreateEventRequest, CreateEventRequest>()
+            .ForMember(dest => dest.ImagePath, opt => opt.Ignore());
         CreateMap<GatewayUpdateEventRequest, UpdateEventRequest>();
     }
 }
