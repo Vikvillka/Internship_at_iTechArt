@@ -7,4 +7,5 @@ namespace CommunityHub.Application.Interfaces.Services;
 public interface IImageService
 {
     Task<ImageUploadResponse> UploadAsync(IFormFile file, string storagePath);
+    Task<bool> DeleteAsync(string fileName, string storagePath);
 }

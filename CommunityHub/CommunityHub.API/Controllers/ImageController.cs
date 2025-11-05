@@ -42,4 +42,16 @@ public class ImageController : ControllerBase
         var result = await _imageService.UploadAsync(request.File, _imageStoragePath);
         return Ok(result);
     }
+
+    [HttpDelete("delete/{fileName}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(string fileName)
+    {
+        var isDeleted = await _imageService.DeleteAsync(fileName, _imageStoragePath);
+        if (!isDeleted)
+            return NotFound();
+
+        return NoContent();
+    }
 }

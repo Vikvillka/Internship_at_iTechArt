@@ -23,4 +23,18 @@ public class ImageService : IImageService
         var imageUrl = $"/images/{fileName}";
         return new ImageUploadResponse { ImageUrl = imageUrl };
     }
+
+    public async Task<bool> DeleteAsync(string fileName, string storagePath)
+    {
+        if(string.IsNullOrEmpty(fileName))
+            throw new ArgumentException("Invalid file name", nameof(fileName));
+        
+        var filePath = Path.Combine(storagePath, fileName);
+
+        if (!File.Exists(filePath))
+            return await Task.FromResult(false);
+
+        File.Delete(filePath);
+        return await Task.FromResult(true);
+    }
 }

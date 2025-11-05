@@ -34,10 +34,10 @@ public interface IBestApiClient
     Task<GatewayCommunityResponse> CreateCommunityAsync([Body] CreateCommunityRequest request);
 
     [Put(CommunityPath + "/update")]
-    Task<GatewayCommunityResponse> UpdateCommunityAsync([Body] UpdateCommunityRequest request);
+    Task UpdateCommunityAsync([Body] UpdateCommunityRequest request);
 
     [Delete(CommunityPath + "/delete/{id}")]
-    Task<GatewayCommunityResponse> DeleteCommunityByIdAsync(Guid id);
+    Task DeleteCommunityByIdAsync(Guid id);
     #endregion
 
     #region Event
@@ -54,16 +54,22 @@ public interface IBestApiClient
     Task<GatewayEventResponse> CreateEventAsync([Body] CreateEventRequest request);
 
     [Put(EventPath + "/update")]
-    Task<GatewayEventResponse> UpdateEventAsync([Body] UpdateEventRequest request);
+    Task UpdateEventAsync([Body] UpdateEventRequest request);
 
     [Patch(EventPath + "/{id}/status")]
-    Task<GatewayEventResponse> UpdateEventStatusAsync(Guid id, [Body] EventStatusDto newStatus);
+    Task UpdateEventStatusAsync(Guid id, [Body] EventStatusDto newStatus);
     #endregion
 
     #region Image
     [Multipart]
     [Post(ImagePath + "/upload")]
     Task<GatewayImageUploadResponse> UploadImageAsync([AliasAs("file")] StreamPart file);
+
+    [Get(ImagePath + "/{fileName}")]
+    Task<ApiResponse<HttpContent>> GetImageAsync(string fileName);
+
+    [Delete(ImagePath + "/{fileName}")]
+    Task DeleteImageAsync(string fileName);
     #endregion
 
     #region User
