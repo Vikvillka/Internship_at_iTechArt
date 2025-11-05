@@ -10,7 +10,7 @@ public class ImageService : IImageService
     public async Task<ImageUploadResponse> UploadAsync(IFormFile file, string storagePath)
     {
         if (file == null || file.Length == 0)
-            throw new ArgumentException("Файл не найден", nameof(file));
+            throw new ArgumentException("File not found", nameof(file));
 
         Directory.CreateDirectory(storagePath);
 

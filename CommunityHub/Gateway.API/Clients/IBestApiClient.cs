@@ -10,6 +10,7 @@ using CommunityHub.Contracts.DTOs.EventDTOs;
 using Gateway.API.DTOs.UserDTOs;
 using CommunityHub.Contracts.DTOs.UserDTOs;
 using CommunityHub.Contracts.DTOs.AuthDTOs;
+using Gateway.API.DTOs.ImageDTOs;
 
 namespace Gateway.API.Clients;
 
@@ -20,6 +21,7 @@ public interface IBestApiClient
     const string UserPath = "/user";
     const string TagPath = "/tag";
     const string AuthPath = "/auth";
+    const string ImagePath = "/image";
 
     #region Community
     [Get(CommunityPath + "/getAll")]
@@ -56,6 +58,12 @@ public interface IBestApiClient
 
     [Patch(EventPath + "/{id}/status")]
     Task<GatewayEventResponse> UpdateEventStatusAsync(Guid id, [Body] EventStatusDto newStatus);
+    #endregion
+
+    #region Image
+    [Multipart]
+    [Post(ImagePath + "/upload")]
+    Task<GatewayImageUploadResponse> UploadImageAsync([AliasAs("file")] StreamPart file);
     #endregion
 
     #region User

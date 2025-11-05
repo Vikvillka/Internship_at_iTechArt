@@ -12,5 +12,7 @@ public class GatewayEventResponse
     public string Venue { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
+    public int Duration { get; set; } 
+    public string? ImagePath { get; set; }
     public List<GatewayTagResponse> Tags { get; set; } = [];
 }

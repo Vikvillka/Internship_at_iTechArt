@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-
-using CommunityHub.Contracts.DTOs.EventDTOs;
 using Gateway.API.DTOs.EventDTOs;
+
+using CommunityHub.Contracts.DTOs.Enums;
+using CommunityHub.Contracts.DTOs.EventDTOs;
 
 namespace Gateway.API.Extensions.Mappings.Profiles;
 

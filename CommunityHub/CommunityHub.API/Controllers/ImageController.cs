@@ -1,23 +1,27 @@
-﻿using CommunityHub.Application.Interfaces.Services;
-using CommunityHub.Contracts.DTOs.ImageDTOs;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using CommunityHub.Application.Interfaces.Services;
+using CommunityHub.Contracts.DTOs.ImageDTOs;
 
 namespace CommunityHub.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ImagesController : ControllerBase
+[Authorize(AuthenticationSchemes = "Basic")]
+public class ImageController : ControllerBase
 {
     private readonly IImageService _imageService;
     private readonly string _imageStoragePath;
 
-    public ImagesController(IImageService imageService)
+    public ImageController(IImageService imageService)
     {
         _imageService = imageService;
         _imageStoragePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
     }
 
-    [HttpGet("{fileName:string}")]
+    [HttpGet("{fileName}")]
+    [Produces("image/jpeg", "image/png", "image/gif")]
     [ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetImage(string fileName)
@@ -32,9 +36,10 @@ public class ImagesController : ControllerBase
 
     [HttpPost("upload")]
     [ProducesResponseType(typeof(ImageUploadResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Upload([FromForm] IFormFile file)
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> Upload([FromForm] ImageUploadRequest request)
     {
-        var result = await _imageService.UploadAsync(file, _imageStoragePath);
+        var result = await _imageService.UploadAsync(request.File, _imageStoragePath);
         return Ok(result);
     }
 }

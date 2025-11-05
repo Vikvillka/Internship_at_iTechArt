@@ -8,6 +8,7 @@ using Gateway.API.DTOs.EventDTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Refit;
 
 namespace Gateway.API.Controllers;
 
@@ -56,18 +57,27 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPost("create")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(GatewayEventResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Create(GatewayCreateEventRequest request)
+    public async Task<IActionResult> Create([FromForm] GatewayCreateEventRequest request)
     {
+        string? imageUrl = null;
+        if(request.Image != null)
+        {
+            await using var stream = request.Image.OpenReadStream();
+            var streamPart = new StreamPart(stream, request.Image.FileName, request.Image.ContentType);
+            var uploadResult = await _apiClient.UploadImageAsync(streamPart);
+            imageUrl = uploadResult.ImageUrl;
+        }
         var apiRequest = _mapper.Map<CreateEventRequest>(request);
+        apiRequest.ImagePath = imageUrl;
         var result = await _apiClient.CreateEventAsync(apiRequest);
         var gatewayResponse = _mapper.Map<GatewayEventResponse>(result);
         return Ok(gatewayResponse);
     }
 
     [HttpPut("update")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(GatewayUpdateEventRequest request)
@@ -78,7 +88,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPatch("{id:guid}/status")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateStatus(Guid id, EventStatusDto newStatus)

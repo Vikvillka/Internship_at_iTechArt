@@ -12,7 +12,6 @@ public class CreateEventRequest
     public string Address { get; set; } = string.Empty;
     public int Duration { get; set; }
     public string? ImagePath { get; set; }
-    public EventStatusDto Status { get; set; } = EventStatusDto.Planned;
     public Guid CommunityId { get; set; }
     public List<Guid> TagIds { get; set; } = [];
 }

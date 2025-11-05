@@ -48,6 +48,7 @@ public class EventService : IEventService
 
         var tags = await _tagService.GetByIdsAsync(tagIds);
         eventEntity.Tags = tags;
+        eventEntity.Status = EventStatus.Planned;
 
         return await _eventRepository.CreateAsync(eventEntity);
     }

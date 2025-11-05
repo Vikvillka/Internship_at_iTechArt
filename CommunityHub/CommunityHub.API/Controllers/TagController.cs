@@ -1,8 +1,9 @@
-﻿using CommunityHub.API.Extensions.Mappings;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Contracts.DTOs.TagDTOs;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityHub.API.Controllers;
 
