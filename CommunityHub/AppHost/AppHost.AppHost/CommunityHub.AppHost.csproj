@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
 
@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAspireHost>true</IsAspireHost>
-    <UserSecretsId>33607953-b682-4b6b-b290-7185f169916c</UserSecretsId>
+    <UserSecretsId>adb224bf-dff7-4c66-9604-254a628b2a31</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommunityHub.API\CommunityHub.API.csproj" />
-    <ProjectReference Include="..\Gateway.API\Gateway.API.csproj" />
+    <ProjectReference Include="..\..\CommunityHub.API\CommunityHub.API.csproj" />
+    <ProjectReference Include="..\..\Gateway.API\Gateway.API.csproj" />
   </ItemGroup>
 
 </Project>

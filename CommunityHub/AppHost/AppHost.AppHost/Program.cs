@@ -1,13 +1,18 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var db = builder.AddPostgres("dbPostgres")
+var postgres = builder.AddPostgres("dbPostgres")
     .WithImage("postgres:16-alpine")
-    .WithDataVolume()
-    .AddDatabase("CommunityHub");
+    .WithDataVolume();
+
+var db = postgres.AddDatabase("CommunityHub")
+    .WithCreationScript("""
+        -- Create database
+        CREATE DATABASE "CommunityHub";
+    """);
 
 var api = builder.AddProject<Projects.CommunityHub_API>("api")
     .WithReference(db)
-    .WithEnvironment("ConnectionStrings__DefaultConnection", builder.Configuration["ConnectionStrings:DefaultConnection"])
+    .WaitFor(db)
     .WithEnvironment("Jwt__Issuer", builder.Configuration["Jwt:Issuer"])
     .WithEnvironment("Jwt__Audience", builder.Configuration["Jwt:Audience"])
     .WithEnvironment("Jwt__Key", builder.Configuration["Jwt:Key"])
@@ -17,8 +22,8 @@ var api = builder.AddProject<Projects.CommunityHub_API>("api")
     .WithEnvironment("ApiCredentials__Password", builder.Configuration["ApiCredentials:Password"]);
 
 var gateway = builder.AddProject<Projects.Gateway_API>("gateway")
-    .WaitFor(api)
     .WithReference(api)
+    .WaitFor(api)
     .WithEnvironment("CommunityServiceApi__ApiCredentials__Username", builder.Configuration["CommunityServiceApi:ApiCredentials:Username"])
     .WithEnvironment("CommunityServiceApi__ApiCredentials__Password", builder.Configuration["CommunityServiceApi:ApiCredentials:Password"])
     .WithEnvironment("CommunityServiceApi__Jwt__Issuer", builder.Configuration["CommunityServiceApi:Jwt:Issuer"])

@@ -16,4 +16,8 @@
 	<PackageReference Include="CommunityHub.Contract.Package" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AppHost\AppHost.ServiceDefaults\AppHost.ServiceDefaults.csproj" />
+  </ItemGroup>
+
 </Project>

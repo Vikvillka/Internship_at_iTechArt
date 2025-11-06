@@ -8,6 +8,7 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
 
+builder.AddServiceDefaults();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddControllers();
@@ -27,6 +28,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapDefaultEndpoints();
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
