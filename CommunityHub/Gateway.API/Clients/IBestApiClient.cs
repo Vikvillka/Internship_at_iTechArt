@@ -68,7 +68,7 @@ public interface IBestApiClient
     [Get(ImagePath + "/{fileName}")]
     Task<ApiResponse<HttpContent>> GetImageAsync(string fileName);
 
-    [Delete(ImagePath + "/{fileName}")]
+    [Delete(ImagePath + "delete/{fileName}")]
     Task DeleteImageAsync(string fileName);
     #endregion
 

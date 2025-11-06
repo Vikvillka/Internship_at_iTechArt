@@ -44,7 +44,7 @@ public class ImageController : ControllerBase
     }
 
     [HttpDelete("delete/{fileName}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(string fileName)
     {

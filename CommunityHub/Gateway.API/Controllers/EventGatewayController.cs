@@ -80,9 +80,24 @@ public class EventGatewayController : ControllerBase
     //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(GatewayUpdateEventRequest request)
+    public async Task<IActionResult> Update([FromForm] GatewayUpdateEventRequest request)
     {
+        string? imageUrl = null;
+        if(request.Image != null)
+        {
+            if (!string.IsNullOrEmpty(request.OldImagePath))
+            {
+                //var fileName = Path.GetFileName(request.OldImagePath);
+                await _apiClient.DeleteImageAsync(request.OldImagePath);
+            }
+
+            await using var stream = request.Image.OpenReadStream();
+            var streamPart = new StreamPart(stream, request.Image.FileName, request.Image.ContentType);
+            var uploadResult = await _apiClient.UploadImageAsync(streamPart);
+            imageUrl = uploadResult.ImageUrl;
+        }
         var apiRequest = _mapper.Map<UpdateEventRequest>(request);
+        apiRequest.ImagePath = imageUrl ?? request.OldImagePath;
         await _apiClient.UpdateEventAsync(apiRequest);
         return Ok();
     }
