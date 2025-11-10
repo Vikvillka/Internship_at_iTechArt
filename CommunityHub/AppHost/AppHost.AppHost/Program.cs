@@ -1,14 +1,9 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgres = builder.AddPostgres("dbPostgres")
+var db = builder.AddPostgres("dbPostgres")
     .WithImage("postgres:16-alpine")
-    .WithDataVolume();
-
-var db = postgres.AddDatabase("CommunityHub")
-    .WithCreationScript("""
-        -- Create database
-        CREATE DATABASE "CommunityHub";
-    """);
+    .WithDataVolume()
+    .AddDatabase("CommunityHub"); 
 
 var api = builder.AddProject<Projects.CommunityHub_API>("api")
     .WithReference(db)
