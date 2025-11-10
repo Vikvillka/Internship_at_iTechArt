@@ -46,16 +46,6 @@ public static class ServiceExtensions
 
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
         
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AllowAll", policy =>
-            {
-                policy.AllowAnyOrigin()
-                      .AllowAnyHeader()
-                      .AllowAnyMethod();
-            });
-        });
-
         services.AddOpenTelemetry()
             .WithTracing(tracing =>
             {
