@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using System.Reflection;
 
 using UserService.Infrastructure.Data;
 
@@ -10,6 +13,10 @@ public static class ServiceExtensions
     {
         services.AddDbContext<UserServiceDbContext>(options =>
             options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
+
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddFluentValidationAutoValidation();
     }
 }
 
