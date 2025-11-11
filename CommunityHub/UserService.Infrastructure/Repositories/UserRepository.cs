@@ -22,4 +22,14 @@ public class UserRepository : EfRepository<User>, IUserRepository
 
     public async Task<bool> ExistsByUserNameAsync(string username) =>
         await _dbSet.AnyAsync(u => u.Username == username);
+
+    public async Task<IList<User>> GetByIdsAsync(IEnumerable<Guid> ids)
+    {
+        var query = AsQueryable();
+
+        if (ids != null && ids.Any())
+            query = query.Where(u => ids.Contains(u.Id));
+
+        return await query.ToListAsync();
+    }
 }
