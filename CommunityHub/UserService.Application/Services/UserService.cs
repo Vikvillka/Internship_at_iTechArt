@@ -1,5 +1,4 @@
-﻿using System.Data;
-using UserService.Application.Intarfaces.Repositories;
+﻿using UserService.Application.Intarfaces.Repositories;
 using UserService.Application.Intarfaces.Services;
 using UserService.Domain.Entities;
 using UserService.Domain.Exceptions;
@@ -71,7 +70,7 @@ public class UserService : IUserService
 
     public async Task<IList<User>> GetByIdsAsync(IEnumerable<Guid> ids)
     {
-        if (ids == null || ids.Any())
+        if (ids == null || !ids.Any())
             throw new BadRequestException("BadRequest", "User IDs list cannot be empty");
 
         var users = await _userRepository.GetByIdsAsync(ids);

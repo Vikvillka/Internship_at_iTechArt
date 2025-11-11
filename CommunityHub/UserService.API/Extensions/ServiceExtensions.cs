@@ -5,6 +5,10 @@ using System.Reflection;
 
 using UserService.Infrastructure.Data;
 using UserService.API.ExceptionHandlers;
+using UserService.Application.Intarfaces.Repositories;
+using UserService.Application.Intarfaces.Services;
+using UserService.Infrastructure.Repositories;
+using UserService.Infrastructure.Services;
 
 namespace UserService.API.Extensions;
 
@@ -15,6 +19,11 @@ public static class ServiceExtensions
         services.AddDbContext<UserServiceDbContext>(options =>
             options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
 
+        services.AddScoped<IUserRepository, UserRepository>();
+        
+        services.AddScoped<IUserService, Application.Services.UserService>();
+        services.AddScoped<IJwtService, JwtService>();
+        
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddFluentValidationAutoValidation();
