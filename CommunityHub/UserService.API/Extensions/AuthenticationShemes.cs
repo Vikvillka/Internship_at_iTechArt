@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 
-using CommunityHub.API.Authentication;
+using UserService.API.Authentication;
 
-namespace CommunityHub.API.Extensions;
+namespace UserService.API.Extensions;
 
 public static class AuthenticationShemes
 {
