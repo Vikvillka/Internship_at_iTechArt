@@ -2,7 +2,7 @@
 
 namespace UserService.Application.Intarfaces.Repositories;
 
-public interface IEventParticipationRepository
+public interface IEventParticipationRepository : IRepository<EventParticipation>
 {
     Task<EventParticipation?> GetByUserAndEventAsync(Guid userId, Guid eventId);
     Task<IList<EventParticipation>> GetByUserAsync(Guid userId);

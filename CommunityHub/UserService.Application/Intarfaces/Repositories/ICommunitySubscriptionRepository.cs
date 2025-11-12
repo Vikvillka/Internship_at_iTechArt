@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UserService.Domain.Entities;
 
-namespace UserService.Application.Intarfaces.Repositories
+namespace UserService.Application.Intarfaces.Repositories;
+
+public interface ICommunitySubscriptionRepository : IRepository<CommunitySubscription>
 {
-    internal class ICommunitySubscriptionRepository
-    {
-    }
+    Task<CommunitySubscription?> GetByUserAndCommunityAsync(Guid userId, Guid communityId);
+    Task<IList<CommunitySubscription>> GetByUserAsync(Guid userId);
+    Task<IList<CommunitySubscription>> GetByCommunityAsync(Guid communityId);
+    Task<bool> UpdateStatusAsync(Guid id, bool isActive);
 }
