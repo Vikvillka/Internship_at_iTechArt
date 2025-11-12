@@ -9,6 +9,8 @@ public class UserServiceDbContext : DbContext
         : base(options) { }
 
     public DbSet<User> User { get; set; }
+    public DbSet<CommunitySubscription> CommunitySubscriptions { get; set; }
+    public DbSet<EventParticipation> EventParticipations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
