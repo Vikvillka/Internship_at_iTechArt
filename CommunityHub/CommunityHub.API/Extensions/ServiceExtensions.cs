@@ -1,4 +1,11 @@
-﻿using CommunityHub.API.Configurations;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
+
+using CommunityHub.API.Configurations;
 using CommunityHub.API.ExceptionHandlers;
 using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Interfaces.Services;
@@ -6,14 +13,6 @@ using CommunityHub.Application.Services;
 using CommunityHub.Infrastructure.Data;
 using CommunityHub.Infrastructure.Repositories;
 using CommunityHub.Infrastructure.Services;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Npgsql;
-using OpenTelemetry.Trace;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Reflection;
 
 namespace CommunityHub.API.Extensions;
 
@@ -45,13 +44,6 @@ public static class ServiceExtensions
         services.AddProblemDetails();
 
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
-        
-        services.AddOpenTelemetry()
-            .WithTracing(tracing =>
-            {
-                tracing.AddAspNetCoreInstrumentation();
-                tracing.AddNpgsql();
-            });
     }
 }
 

@@ -13,7 +13,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapDefaultEndpoints();
+//app.MapDefaultEndpoints();
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseAuthentication();

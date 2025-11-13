@@ -1,6 +1,5 @@
-using Serilog;
-
 using CommunityHub.API.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +27,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapDefaultEndpoints();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
