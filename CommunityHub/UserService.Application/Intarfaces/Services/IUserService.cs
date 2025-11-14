@@ -10,4 +10,5 @@ public interface IUserService
     Task<bool> DeleteAsync(Guid id);
     Task<User> AuthenticateAsync(string username, string password);
     Task<IList<User>> GetByIdsAsync(IEnumerable<Guid> ids);
+    Task<IList<User>> GetAllAsync();
 }

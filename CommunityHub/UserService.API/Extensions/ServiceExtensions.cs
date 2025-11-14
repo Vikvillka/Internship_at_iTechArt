@@ -9,6 +9,7 @@ using UserService.Application.Intarfaces.Repositories;
 using UserService.Application.Intarfaces.Services;
 using UserService.Infrastructure.Repositories;
 using UserService.Infrastructure.Services;
+using UserService.Application.Services;
 
 namespace UserService.API.Extensions;
 
@@ -20,8 +21,12 @@ public static class ServiceExtensions
             options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ICommunitySubscriptionRepository, CommunitySubscriptionRepository>();
+        services.AddScoped<IEventParticipationRepository, EventParticipationRepository>();
         
         services.AddScoped<IUserService, Application.Services.UserService>();
+        services.AddScoped<IEventParticipationService, EventParticipationService>();
+        services.AddScoped<ICommunitySubscriptionService, CommunitySubscriptionService>();
         services.AddScoped<IJwtService, JwtService>();
         
         services.AddAutoMapper(Assembly.GetExecutingAssembly());

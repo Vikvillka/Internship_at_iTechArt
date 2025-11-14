@@ -52,6 +52,15 @@ public class UserController : ControllerBase
         return Ok(user.FromEntity());
     }
 
+    [HttpGet]
+    [ProducesResponseType(typeof(List<UserResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll()
+    {
+        var users = await _service.GetAllAsync();
+        var response = users.Select(u => u.FromEntity()).ToList();
+        return Ok(response);
+    }
+
     [HttpPost("usersByIds")]
     [ProducesResponseType(typeof(List<UserResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

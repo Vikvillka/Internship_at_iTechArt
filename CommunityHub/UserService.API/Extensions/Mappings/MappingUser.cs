@@ -1,5 +1,4 @@
-﻿using UserService.Contracts.DTOs.Enums;
-using UserService.Contracts.DTOs.UserDTOs;
+﻿using UserService.Contracts.DTOs.UserDTOs;
 using UserService.Domain.Entities;
 
 namespace UserService.API.Extensions.Mappings;

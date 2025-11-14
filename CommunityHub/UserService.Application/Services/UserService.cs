@@ -14,6 +14,11 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
+    public async Task<IList<User>> GetAllAsync()
+    {
+        return await _userRepository.GetAllAsync();
+    }
+
     public async Task<User?> GetByUserIdAsync(Guid userId)
     {
         var user = await _userRepository.GetByIdAsync(userId);

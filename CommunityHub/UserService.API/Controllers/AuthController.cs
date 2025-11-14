@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using UserService.Application.Intarfaces.Services;
 using UserService.Contracts.DTOs.AuthDTOs;
 
