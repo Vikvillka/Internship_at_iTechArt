@@ -22,7 +22,7 @@ public class EventParticipationService : IEventParticipationService
         return await _eventParticipationRepository.GetByUserAsync(userId);
     }
 
-    public async Task ParticipateAsync(Guid userId, Guid eventId)
+    public async Task<EventParticipation> ParticipateAsync(Guid userId, Guid eventId)
     {
         await _userService.GetByUserIdAsync(userId);
         
@@ -33,7 +33,8 @@ public class EventParticipationService : IEventParticipationService
                 throw new ConflictException("Conflict", "Already participating");
 
             await _eventParticipationRepository.UpdateStatusAsync(existing.Id, true);
-            return;
+            existing.IsConfirmed = true;
+            return existing;
         }
 
         var participation = new EventParticipation
@@ -43,9 +44,11 @@ public class EventParticipationService : IEventParticipationService
         };
 
         await _eventParticipationRepository.CreateAsync(participation);
+        
+        return participation;
     }
 
-    public async Task CancelParticipationAsync(Guid userId, Guid eventId)
+    public async Task<EventParticipation> CancelParticipationAsync(Guid userId, Guid eventId)
     {
         await _userService.GetByUserIdAsync(userId);
         
@@ -54,5 +57,7 @@ public class EventParticipationService : IEventParticipationService
             throw new NotFoundException("NotFound", "Participation not found");
        
         await _eventParticipationRepository.UpdateStatusAsync(existing.Id, false);
+        existing.IsConfirmed = false;
+        return existing;
     }
 }

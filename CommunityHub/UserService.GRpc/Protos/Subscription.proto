@@ -1,0 +1,52 @@
+﻿syntax = "proto3";
+
+import "Protos/common.proto";
+
+option csharp_namespace = "UserService.GRpc";
+
+message SubscriptionModel {
+    string id = 1;
+    string userId = 2;
+    string communityId = 3;
+    bool isActive = 4;
+}
+
+message CreateSubscriptionRequest {
+    string userId = 1;
+    string communityId = 2;
+}
+
+message GetUserSubscriptionsRequest {
+    string userId = 1;
+}
+
+message CreateSubscriptionReply {
+    oneof result {
+        SubscriptionModel subscription = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+message UnsubscribeReply {
+    oneof result {
+        bool success = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+message SubscriptionsList {
+     repeated SubscriptionModel items = 1;
+}
+
+message GetUserSubscriptionsReply {
+    oneof result {
+        SubscriptionsList subscriptions = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+service SubscriptionService {
+    rpc Subscribe(CreateSubscriptionRequest) returns (CreateSubscriptionReply);
+    rpc Unsubscribe(CreateSubscriptionRequest) returns (UnsubscribeReply);
+    rpc GetSubscriptionsByUser(GetUserSubscriptionsRequest) returns (GetUserSubscriptionsReply);
+}

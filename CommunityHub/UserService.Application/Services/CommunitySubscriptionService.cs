@@ -23,7 +23,7 @@ public class CommunitySubscriptionService : ICommunitySubscriptionService
         return await _repository.GetByUserAsync(userId);
     }
 
-    public async Task SubscribeAsync(Guid userId, Guid communityId)
+    public async Task<CommunitySubscription> SubscribeAsync(Guid userId, Guid communityId)
     {
         await _userService.GetByUserIdAsync(userId);
 
@@ -35,7 +35,8 @@ public class CommunitySubscriptionService : ICommunitySubscriptionService
                 throw new ConflictException("Conflict", "Already subscribed");
 
             await _repository.UpdateStatusAsync(existing.Id, true);
-            return; 
+            existing.IsActive = true;
+            return existing;
         }
 
         var subscription = new CommunitySubscription
@@ -45,9 +46,10 @@ public class CommunitySubscriptionService : ICommunitySubscriptionService
         };
 
         await _repository.CreateAsync(subscription);
+        return subscription;
     }
 
-    public async Task UnsubscribeAsync(Guid userId, Guid communityId)
+    public async Task<CommunitySubscription> UnsubscribeAsync(Guid userId, Guid communityId)
     {
         await _userService.GetByUserIdAsync(userId);
 
@@ -57,6 +59,8 @@ public class CommunitySubscriptionService : ICommunitySubscriptionService
             throw new NotFoundException("NotFound", "Subscription not found");
 
         await _repository.UpdateStatusAsync(existing.Id, false);
+        existing.IsActive = false;
+        return existing;
     }
 }
 
