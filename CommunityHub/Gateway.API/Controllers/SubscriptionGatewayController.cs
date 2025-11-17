@@ -52,6 +52,10 @@ public class SubscriptionGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Unsubscribe(GatewayCreateSubscriptionRequest request)
     {
+        var community = await _communityClient.GetCommunityByIdAsync(request.CommunityId);
+        if (community == null)
+            return NotFound($"Community with id {request.CommunityId} not found");
+
         var grpcRequest = _mapper.Map<CreateSubscriptionRequest>(request);
         var grpcReply = await _apiClient.UnsubscribeAsync(grpcRequest);
         var success = _mapper.Map<bool>(grpcReply);
@@ -65,7 +69,7 @@ public class SubscriptionGatewayController : ControllerBase
     public async Task<IActionResult> GetUserSubscriptions(Guid userId)
     {
         var grpcReply = await _apiClient.GetSubscriptionsByUserAsync(
-            new GetUserSubscriptionsRequest { UserId = userId.ToString() });
+            new GetUserSubscriptionsRequest { UserId = userId.ToString()});
 
         var gatewayList = _mapper.Map<List<GatewaySubscriptionResponse>>(grpcReply);
 

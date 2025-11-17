@@ -1,4 +1,4 @@
-﻿namespace Gateway.API.DTOs.UserDTOs;
+﻿namespace Gateway.API.DTOs.ParticipantionDTOs;
 
 public class GatewayParticipationResponse
 {
