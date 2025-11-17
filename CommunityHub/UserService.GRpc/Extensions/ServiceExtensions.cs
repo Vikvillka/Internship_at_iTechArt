@@ -1,6 +1,12 @@
-﻿using System.Reflection;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+
+using UserService.Application.Intarfaces.Repositories;
 using UserService.Application.Intarfaces.Services;
 using UserService.Application.Services;
+using UserService.GRpc.Interceptors;
+using UserService.Infrastructure.Data;
+using UserService.Infrastructure.Repositories;
 using UserService.Infrastructure.Services;
 
 namespace UserService.GRpc.Extensions;
@@ -9,6 +15,18 @@ public static class ServiceExtensions
 {
     public static void AddApplicationServices(this IServiceCollection services, IConfiguration config)
     {
+        services.AddDbContext<UserServiceDbContext>(options =>
+            options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
+
+        services.AddGrpc(options =>
+        {
+            options.Interceptors.Add<GrpcExceptionInterceptor>();
+        });
+
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ICommunitySubscriptionRepository, CommunitySubscriptionRepository>();
+        services.AddScoped<IEventParticipationRepository, EventParticipationRepository>();
+
         services.AddScoped<IUserService, Application.Services.UserService>();
         services.AddScoped<IEventParticipationService, EventParticipationService>();
         services.AddScoped<ICommunitySubscriptionService, CommunitySubscriptionService>();

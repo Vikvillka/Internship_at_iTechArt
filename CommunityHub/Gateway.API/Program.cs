@@ -3,6 +3,7 @@ using Gateway.API.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddGrpcClients(builder.Configuration);
 
 var app = builder.Build();
 

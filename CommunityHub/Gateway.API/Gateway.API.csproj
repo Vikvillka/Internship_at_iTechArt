@@ -9,12 +9,18 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.20" />
     <PackageReference Include="Refit" Version="8.0.0" />
     <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 	<PackageReference Include="CommunityHub.Contract.Package" Version="1.0.1" />
 	<PackageReference Include="UserService.Contract.Package" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <ProjectReference Include="..\UserService.GRpc\UserService.GRpc.csproj" />
+	  <Protobuf Include="..\UserService.GRpc\Protos\auth.proto" Link="Protos\auth.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

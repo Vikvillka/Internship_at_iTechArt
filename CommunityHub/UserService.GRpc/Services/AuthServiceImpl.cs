@@ -2,7 +2,7 @@
 using Grpc.Core;
 using UserService.Application.Intarfaces.Services;
 
-namespace UserService.GRpc.Services;
+namespace UserService.GRpc.Server.Services;
 
 public class AuthServiceImpl : AuthService.AuthServiceBase
 {
@@ -28,13 +28,15 @@ public class AuthServiceImpl : AuthService.AuthServiceBase
         };
     }
 
-    public override async Task<RefreshReply> RefreshToken(RefreshRequest request, ServerCallContext context)
+    public override Task<RefreshReply> RefreshToken(RefreshRequest request, ServerCallContext context)
     {
         var newTokens = _jwtService.Refresh(request.RefreshToken);
-        return new RefreshReply
+        
+        RefreshReply refreshReply = new()
         {
             Tokens = _mapper.Map<TokenModel>(newTokens)
         };
+        return Task.FromResult(refreshReply);
     }
 
     public override async Task<ValidateBasicReply> ValidateBasic(AuthRequest request, ServerCallContext context)

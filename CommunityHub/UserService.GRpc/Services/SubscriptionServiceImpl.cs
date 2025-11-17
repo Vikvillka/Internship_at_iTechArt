@@ -2,7 +2,7 @@
 using Grpc.Core;
 using UserService.Application.Intarfaces.Services;
 
-namespace UserService.GRpc.Services;
+namespace UserService.GRpc.Server.Services;
 
 public class SubscriptionServiceImpl : SubscriptionService.SubscriptionServiceBase
 {

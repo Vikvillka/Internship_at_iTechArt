@@ -1,14 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>978831b5-c983-4fc3-a4d1-878a6e8a2cba</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -18,10 +23,10 @@
 
   <ItemGroup>
 	  <Protobuf Include="Protos\common.proto" />
-	  <Protobuf Include="Protos\auth.proto" GrpcServices="Server" />
-	  <Protobuf Include="Protos\user.proto" GrpcServices="Server" />
-	  <Protobuf Include="Protos\participation.proto" GrpcServices="Server" />
-	  <Protobuf Include="Protos\subscription.proto" GrpcServices="Server" />
+	  <Protobuf Include="Protos\auth.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\user.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\participation.proto" GrpcServices="Both" />
+	  <Protobuf Include="Protos\subscription.proto" GrpcServices="Both" />
   </ItemGroup>
 
 </Project>

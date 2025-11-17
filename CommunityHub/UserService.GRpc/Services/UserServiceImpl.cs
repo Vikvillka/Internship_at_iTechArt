@@ -5,7 +5,7 @@ using Grpc.Core;
 using UserService.Application.Intarfaces.Services;
 using UserService.Domain.Entities;
 
-namespace UserService.GRpc.Services;
+namespace UserService.GRpc.Server.Services;
 
 public class UserServiceImpl : UserService.UserServiceBase
 {
