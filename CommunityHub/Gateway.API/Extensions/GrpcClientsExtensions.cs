@@ -14,6 +14,7 @@ public static class GrpcClientsExtensions
 
         AddClient<AuthService.AuthServiceClient>();
         AddClient<UserService.GRpc.UserService.UserServiceClient>();
+        AddClient<SubscriptionService.SubscriptionServiceClient>();
 
         void AddClient<TClient>() where TClient : class
         {

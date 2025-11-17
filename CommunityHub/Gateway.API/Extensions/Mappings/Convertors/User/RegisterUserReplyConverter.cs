@@ -22,6 +22,6 @@ public class RegisterUserReplyConverter : ITypeConverter<RegisterUserReply, Gate
             };
         }
 
-        throw new Exception(src.Problem.Detail);
+        throw new GrpcProblemDetailsException(src.Problem);
     }
 }

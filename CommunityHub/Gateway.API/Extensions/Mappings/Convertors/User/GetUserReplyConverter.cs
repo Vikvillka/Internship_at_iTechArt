@@ -22,6 +22,6 @@ public class GetUserReplyConverter : ITypeConverter<GetUserReply, GatewayUserRes
             };
         }
 
-        throw new Exception(src.Problem.Detail);
+        throw new GrpcProblemDetailsException(src.Problem);
     }
 }

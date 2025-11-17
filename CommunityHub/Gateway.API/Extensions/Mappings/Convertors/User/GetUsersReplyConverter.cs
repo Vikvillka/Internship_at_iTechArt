@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using Gateway.API.DTOs.UserDTOs;
 using UserService.GRpc;
 
@@ -21,6 +22,6 @@ public class GetUsersReplyConverter : ITypeConverter<GetUsersReply, List<Gateway
             }).ToList();
         }
 
-        throw new Exception(src.Problem.Detail);
+        throw new GrpcProblemDetailsException(src.Problem);
     }
 }

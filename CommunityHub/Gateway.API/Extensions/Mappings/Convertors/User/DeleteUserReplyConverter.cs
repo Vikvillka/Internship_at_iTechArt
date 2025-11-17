@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using UserService.GRpc;
 
 namespace Gateway.API.Extensions.Mappings.Convertors.User;
@@ -12,6 +13,6 @@ public class DeleteUserReplyConverter : ITypeConverter<DeleteUserReply, bool>
             return src.Success;
         }
 
-        throw new Exception(src.Problem.Detail);
+        throw new GrpcProblemDetailsException(src.Problem);
     }
 }

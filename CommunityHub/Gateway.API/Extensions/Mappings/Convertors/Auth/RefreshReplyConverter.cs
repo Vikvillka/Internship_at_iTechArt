@@ -18,6 +18,6 @@ public class RefreshReplyConverter : ITypeConverter<RefreshReply, GatewayTokenRe
             };
         }
 
-        throw new Exception(src.Problem.Detail);
+        throw new GrpcProblemDetailsException(src.Problem);
     }
 }

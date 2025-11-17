@@ -6,6 +6,5 @@ public class GatewaySubscriptionResponse
     public Guid UserId { get; set; }
     public Guid CommunityId { get; set; }
     public string CommunityName { get; set; } = string.Empty;
-    public string Username { get; set; } = string.Empty;
     public bool IsActive { get; set; }
 }
