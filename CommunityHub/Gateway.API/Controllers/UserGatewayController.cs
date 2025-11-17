@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Gateway.API.DTOs.CommunitiesDTOs;
-using Gateway.API.DTOs.UserDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using Gateway.API.DTOs.UserDTOs;
 using UserService.GRpc;
 
 namespace Gateway.API.Controllers;

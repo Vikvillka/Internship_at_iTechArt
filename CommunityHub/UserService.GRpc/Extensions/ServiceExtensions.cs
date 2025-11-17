@@ -21,6 +21,7 @@ public static class ServiceExtensions
         services.AddGrpc(options =>
         {
             options.Interceptors.Add<GrpcExceptionInterceptor>();
+            options.Interceptors.Add<BasicAuthInterceptor>();
         });
 
         services.AddScoped<IUserRepository, UserRepository>();

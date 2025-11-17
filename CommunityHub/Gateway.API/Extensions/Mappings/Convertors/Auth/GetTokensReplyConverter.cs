@@ -18,6 +18,6 @@ public class GetTokensReplyConverter : ITypeConverter<GetTokensReply, GatewayTok
             };
         }
 
-        throw new Exception(src.Problem.Detail);
+        throw new GrpcProblemDetailsException(src.Problem);
     }
 }

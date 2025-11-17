@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 
 using UserService.Domain.Exceptions;
@@ -28,7 +27,7 @@ public class GrpcExceptionInterceptor : Interceptor
         {
             _logger.LogError(ex, "Unhandled gRPC exception for {Method}", context.Method);
 
-            var problem = new ProblemDetails
+            var problem = new Common.ProblemDetails
             {
                 Title = ex switch
                 {
@@ -52,14 +51,12 @@ public class GrpcExceptionInterceptor : Interceptor
             };
 
             var replyType = typeof(TResponse);
-            var oneofProperty = replyType.GetProperties()
-                .FirstOrDefault(p => p.PropertyType == typeof(ProblemDetails));
-
-            if (oneofProperty != null)
+            var replyInstance = Activator.CreateInstance(replyType);
+            var problemProperty = replyType.GetProperty("Problem");
+            if (problemProperty != null)
             {
-                var reply = Activator.CreateInstance<TResponse>();
-                oneofProperty.SetValue(reply, problem);
-                return reply;
+                problemProperty.SetValue(replyInstance, problem);
+                return (TResponse)replyInstance;
             }
 
             throw new RpcException(new Status(StatusCode.Internal, ex.Message));
