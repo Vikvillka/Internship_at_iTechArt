@@ -20,7 +20,8 @@ public static class ServiceExtensions
         services.AddProblemDetails();
 
         services.AddRefitWithBasicAuth<IBestApiClient>(config);
-        services.AddRefitWithBasicAuth<IUserApiClient>(config);
+
+        services.AddGrpcClients(config);
 
         services.AddAuthenticationSchemes(config);
         services.AddAuthorization();
