@@ -21,6 +21,7 @@
   <ItemGroup>
 	  <ProjectReference Include="..\UserService.GRpc\UserService.GRpc.csproj" />
 	  <Protobuf Include="..\UserService.GRpc\Protos\auth.proto" Link="Protos\auth.proto" GrpcServices="Client" />
+	  <Protobuf Include="..\UserService.GRpc\Protos\user.proto" Link="Protos\user.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

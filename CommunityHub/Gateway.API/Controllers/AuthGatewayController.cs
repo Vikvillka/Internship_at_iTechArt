@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 
 using UserService.GRpc;
-using CommunityHub.Contracts.DTOs.AuthDTOs;
 using Gateway.API.DTOs.AuthDTOs;
 
 namespace Gateway.API.Controllers;
@@ -28,7 +27,7 @@ public class AuthGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetTokens(GatewayAuthRequest request)
     {
-        var apiRequest = _mapper.Map<UserService.GRpc.AuthRequest>(request);
+        var apiRequest = _mapper.Map<AuthRequest>(request);
         var result = await _apiClient.GetTokensAsync(apiRequest);
         var gatewayResponse = _mapper.Map<GatewayTokenResponse>(result);
         return Ok(gatewayResponse);
@@ -40,7 +39,7 @@ public class AuthGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Refresh(GatewayRefreshRequest request)
     {
-        var apiRequest = _mapper.Map<UserService.GRpc.RefreshRequest>(request);
+        var apiRequest = _mapper.Map<RefreshRequest>(request);
         var result = await _apiClient.RefreshTokenAsync(apiRequest);
         var gatewayResponse = _mapper.Map<GatewayTokenResponse>(result);
         return Ok(gatewayResponse);

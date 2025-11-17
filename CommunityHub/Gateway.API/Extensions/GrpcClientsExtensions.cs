@@ -11,10 +11,16 @@ public static class GrpcClientsExtensions
         if (string.IsNullOrEmpty(userServiceAddress))
             throw new InvalidOperationException("ApiBaseUrl is not configured");
 
-        services.AddGrpcClient<AuthService.AuthServiceClient>(o =>
+        AddClient<AuthService.AuthServiceClient>();
+        AddClient<UserService.GRpc.UserService.UserServiceClient>();
+
+        void AddClient<TClient>() where TClient : class
         {
-            o.Address = new Uri(userServiceAddress);
-        });
+            services.AddGrpcClient<TClient>(o =>
+            {
+                o.Address = new Uri(userServiceAddress);
+            });
+        }
 
         return services;
     }
