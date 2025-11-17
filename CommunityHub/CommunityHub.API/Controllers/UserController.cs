@@ -16,11 +16,13 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _service;
     private readonly IMapper _mapper;
+    private readonly ILogger<UserController> _logger;
 
-    public UserController(IUserService service, IMapper mapper)
+    public UserController(IUserService service, IMapper mapper, ILogger<UserController> logger)
     {
         _service = service;
         _mapper = mapper;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -28,6 +30,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] CreateUserRequest request)
     {
+        _logger.LogInformation("Try to register a user");
         var user = _mapper.Map<User>(request);
         var createdUser = await _service.RegisterAsync(user, request.Password);
         var response = createdUser.FromEntity();
