@@ -26,4 +26,8 @@
 	  <Protobuf Include="..\UserService.GRpc\Protos\participation.proto" Link="Protos\participation.proto" GrpcServices="Client" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AppHost\AppHost.ServiceDefaults\AppHost.ServiceDefaults.csproj" />
+  </ItemGroup>
+
 </Project>

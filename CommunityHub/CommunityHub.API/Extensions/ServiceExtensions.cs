@@ -17,7 +17,10 @@ public static class ServiceExtensions
     public static void AddApplicationServices(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<CommunityHubDbContext>(options =>
-            options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(
+                config.GetConnectionString("CommunityHub")
+                ?? config.GetConnectionString("DefaultConnection")
+            ));
 
         services.AddScoped<ICommunityRepository, CommunityRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
