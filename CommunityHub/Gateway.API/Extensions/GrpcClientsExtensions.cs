@@ -1,5 +1,6 @@
 ﻿using Gateway.API.Extensions.Interceptors;
 using UserService.GRpc;
+using UserService.GRpc.Interceptors;
 
 namespace Gateway.API.Extensions;
 
@@ -17,17 +18,15 @@ public static class GrpcClientsExtensions
         AddClient<SubscriptionService.SubscriptionServiceClient>();
         AddClient<ParticipationService.ParticipationServiceClient>();
 
+        services.AddSingleton<BasicAuthClientInterceptor>();
+
         void AddClient<TClient>() where TClient : class
         {
             services.AddGrpcClient<TClient>(o =>
             {
                 o.Address = new Uri(userServiceAddress);
             })
-            .AddInterceptor(sp =>
-            {
-                 var config = sp.GetRequiredService<IConfiguration>();
-                 return new BasicAuthClientInterceptor(config);
-            });
+            .AddInterceptor<BasicAuthClientInterceptor>();
         }
 
         return services;
