@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
-using Gateway.API.Clients;
-using Gateway.API.DTOs.ParticipantionDTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using Gateway.API.Clients;
+using Gateway.API.DTOs.ParticipantionDTOs;
+using Gateway.API.Interfaces;
 using UserService.GRpc;
 
 namespace Gateway.API.Controllers;
@@ -13,12 +15,12 @@ namespace Gateway.API.Controllers;
 [Route("getaway/participation")]
 public class ParticipationController : ControllerBase
 {
-    private readonly ParticipationService.ParticipationServiceClient _apiClient;
+    private readonly IParticipationGrpcClient _apiClient;
     private readonly IBestApiClient _eventClient;
     private readonly IMapper _mapper;
 
     public ParticipationController(
-        ParticipationService.ParticipationServiceClient apiClient,
+        IParticipationGrpcClient apiClient,
         IBestApiClient eventClient,
         IMapper mapper)
     {

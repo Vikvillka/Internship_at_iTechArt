@@ -1,6 +1,7 @@
 ﻿using Gateway.API.Extensions.Interceptors;
+using Gateway.API.Interfaces;
+using Gateway.API.Services;
 using UserService.GRpc;
-using UserService.GRpc.Interceptors;
 
 namespace Gateway.API.Extensions;
 
@@ -28,6 +29,11 @@ public static class GrpcClientsExtensions
             })
             .AddInterceptor<BasicAuthClientInterceptor>();
         }
+
+        services.AddScoped<IAuthGrpcClient, AuthGrpcClient>();
+        services.AddScoped<IUserGrpcClient, UserGrpcClient>();
+        services.AddScoped<IParticipationGrpcClient, ParticipationGrpcClient>();
+        services.AddScoped<ISubscriptionGrpcClient, SubscriptionGrpcClient>();
 
         return services;
     }

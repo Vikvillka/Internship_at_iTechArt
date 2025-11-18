@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Gateway.API.Clients;
 using Gateway.API.DTOs.SubscriptionDTOs;
+using Gateway.API.Interfaces;
 using UserService.GRpc;
 
 namespace Gateway.API.Controllers;
@@ -13,12 +14,12 @@ namespace Gateway.API.Controllers;
 [Route("gateway/subscription")]
 public class SubscriptionGatewayController : ControllerBase
 {
-    private readonly SubscriptionService.SubscriptionServiceClient _apiClient;
+    private readonly ISubscriptionGrpcClient _apiClient;
     private readonly IBestApiClient _communityClient;
     private readonly IMapper _mapper;
 
     public SubscriptionGatewayController(
-        SubscriptionService.SubscriptionServiceClient grpcClient,
+        ISubscriptionGrpcClient grpcClient,
         IBestApiClient communityClient,
         IMapper mapper)
     {

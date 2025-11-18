@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
 
-using UserService.GRpc;
 using Gateway.API.DTOs.AuthDTOs;
+using Gateway.API.Interfaces;
+using UserService.GRpc;
 
 namespace Gateway.API.Controllers;
 
@@ -12,10 +13,10 @@ namespace Gateway.API.Controllers;
 [Route("gateway/auth")]
 public class AuthGatewayController : ControllerBase
 {
-    private readonly AuthService.AuthServiceClient _apiClient;
+    private readonly IAuthGrpcClient _apiClient;
     private readonly IMapper _mapper;
 
-    public AuthGatewayController(AuthService.AuthServiceClient apiClient, IMapper mapper)
+    public AuthGatewayController(IAuthGrpcClient apiClient, IMapper mapper)
     {
         _apiClient = apiClient;
         _mapper = mapper;

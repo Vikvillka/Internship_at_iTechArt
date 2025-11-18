@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Gateway.API.DTOs.UserDTOs;
 using UserService.GRpc;
+using Gateway.API.DTOs.UserDTOs;
+using Gateway.API.Interfaces;
 
 namespace Gateway.API.Controllers;
 
@@ -11,10 +12,10 @@ namespace Gateway.API.Controllers;
 [Route("gateway/user")]
 public class UserGatewayController : ControllerBase
 {
-    private readonly UserService.GRpc.UserService.UserServiceClient _apiClient;
+    private readonly IUserGrpcClient _apiClient;
     private readonly IMapper _mapper;
 
-    public UserGatewayController(UserService.GRpc.UserService.UserServiceClient apiClient, IMapper mapper)
+    public UserGatewayController(IUserGrpcClient apiClient, IMapper mapper)
     {
         _apiClient = apiClient;
         _mapper = mapper;

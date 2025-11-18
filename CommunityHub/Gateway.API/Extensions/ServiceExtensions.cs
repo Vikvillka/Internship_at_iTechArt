@@ -1,9 +1,10 @@
-﻿using Gateway.API.Clients;
-using Gateway.API.Configurations;
-using Gateway.API.Handlers;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+
+using Gateway.API.Clients;
+using Gateway.API.Configurations;
+using Gateway.API.Handlers;
 
 namespace Gateway.API.Extensions;
 
