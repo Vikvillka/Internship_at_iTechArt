@@ -29,4 +29,8 @@
 	  <Protobuf Include="Protos\subscription.proto" GrpcServices="Both" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validators\" />
+  </ItemGroup>
+
 </Project>
