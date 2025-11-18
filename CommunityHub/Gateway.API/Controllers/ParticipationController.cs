@@ -12,7 +12,7 @@ namespace Gateway.API.Controllers;
 
 
 [ApiController]
-[Route("getaway/participation")]
+[Route("gateway/participation")]
 public class ParticipationController : ControllerBase
 {
     private readonly IParticipationGrpcClient _apiClient;
