@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using FluentValidation;
 
 using UserService.Application.Intarfaces.Repositories;
 using UserService.Application.Intarfaces.Services;
@@ -20,6 +21,8 @@ public static class ServiceExtensions
                 config.GetConnectionString("UserService")
                 ?? config.GetConnectionString("DefaultConnection")
             ));
+
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddGrpc(options =>
         {

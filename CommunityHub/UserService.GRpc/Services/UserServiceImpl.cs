@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
 using UserService.Application.Intarfaces.Services;
 using UserService.Domain.Entities;
+using UserService.Domain.Exceptions;
 
 namespace UserService.GRpc.Server.Services;
 
@@ -11,15 +14,21 @@ public class UserServiceImpl : UserService.UserServiceBase
 {
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
+    private readonly IValidator<RegisterUserRequest> _userValidator;
 
-    public UserServiceImpl(IUserService userService, IMapper mapper)
+    public UserServiceImpl(IUserService userService, IMapper mapper, IValidator<RegisterUserRequest> userValidator)
     {
         _userService = userService;
         _mapper = mapper;
+        _userValidator = userValidator;
     }
 
     public override async Task<RegisterUserReply> RegisterUser(RegisterUserRequest request, ServerCallContext context)
     {
+        var validationResult = await _userValidator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+            throw new BadRequestException("BadRequest", string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)));
+
         var userEntity = _mapper.Map<User>(request);
         var createdUser = await _userService.RegisterAsync(userEntity, request.Password);
         return new RegisterUserReply
