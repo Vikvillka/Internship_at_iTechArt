@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace UserService.GRpc.Validators.User;
+namespace UserService.GRpc.Validators.Auth;
 
 public class AuthRequestValidator : AbstractValidator<AuthRequest>
 {
