@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using UserService.GRpc;
 using Gateway.API.DTOs.UserDTOs;
 using Gateway.API.Interfaces;
+using Gateway.API.Interfaces.Cache;
 
 namespace Gateway.API.Controllers;
 
@@ -13,12 +14,14 @@ namespace Gateway.API.Controllers;
 public class UserGatewayController : ControllerBase
 {
     private readonly IUserGrpcClient _apiClient;
+    private readonly IRedisCacheApiService _redisCacheApi;
     private readonly IMapper _mapper;
 
-    public UserGatewayController(IUserGrpcClient apiClient, IMapper mapper)
+    public UserGatewayController(IUserGrpcClient apiClient, IMapper mapper, IRedisCacheApiService redisCacheApi)
     {
         _apiClient = apiClient;
         _mapper = mapper;
+        _redisCacheApi = redisCacheApi;
     }
 
     [HttpPost("register")]
@@ -50,7 +53,7 @@ public class UserGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _apiClient.GetUserByIdAsync(new GetUserByIdRequest { UserId = id.ToString() });
+        var result = await _redisCacheApi.GetUserByIdAsync(id);
         var gatewayResponse = _mapper.Map<GatewayUserResponse>(result);
         return Ok(gatewayResponse);
     }

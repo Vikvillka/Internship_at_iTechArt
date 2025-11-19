@@ -1,6 +1,8 @@
 ﻿using Gateway.API.Extensions.Interceptors;
 using Gateway.API.Interfaces;
+using Gateway.API.Interfaces.Cache;
 using Gateway.API.Services;
+using Gateway.API.Services.Сache;
 using UserService.GRpc;
 
 namespace Gateway.API.Extensions;
@@ -18,6 +20,13 @@ public static class GrpcClientsExtensions
         AddClient<UserService.GRpc.UserService.UserServiceClient>();
         AddClient<SubscriptionService.SubscriptionServiceClient>();
         AddClient<ParticipationService.ParticipationServiceClient>();
+
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = config.GetConnectionString("redis");
+        });
+
+        services.AddScoped<IRedisCacheApiService, RedisCacheApiService>();
 
         services.AddSingleton<BasicAuthClientInterceptor>();
 
