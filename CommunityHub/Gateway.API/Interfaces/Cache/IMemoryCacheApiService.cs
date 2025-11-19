@@ -4,5 +4,5 @@ namespace Gateway.API.Interfaces.Cache;
 
 public interface IMemoryCacheApiService
 {
-    Task<GatewayCommunityResponse> GetCommynityByIdAsync(Guid id);
+    Task<GatewayCommunityResponse> GetCommunityByIdAsync(Guid id);
 }

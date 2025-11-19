@@ -20,7 +20,7 @@ public class MemoryCacheApiService : IMemoryCacheApiService
         _config = config;
     }
 
-    public async Task<GatewayCommunityResponse> GetCommynityByIdAsync(Guid id)
+    public async Task<GatewayCommunityResponse> GetCommunityByIdAsync(Guid id)
     {
         if(!_memory.TryGetValue(CommunityCacheKeyHelper.GetRecordByIdKey(id), out GatewayCommunityResponse value))
         {

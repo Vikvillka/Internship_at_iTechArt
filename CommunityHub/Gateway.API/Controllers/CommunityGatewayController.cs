@@ -41,7 +41,7 @@ public class CommunityGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _memoryCache.GetCommynityByIdAsync(id);
+        var result = await _memoryCache.GetCommunityByIdAsync(id);
         var gatewayResponse = _mapper.Map<GatewayCommunityResponse>(result);
         return Ok(gatewayResponse);
     }
