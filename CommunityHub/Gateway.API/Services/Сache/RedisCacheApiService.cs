@@ -13,12 +13,14 @@ public class RedisCacheApiService : IRedisCacheApiService
     private readonly IDistributedCache _distributedCache;
     private readonly IUserGrpcClient _apiClient;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _config;
 
-    public RedisCacheApiService(IDistributedCache distributedCache, IUserGrpcClient apiClient, IMapper mapper)
+    public RedisCacheApiService(IDistributedCache distributedCache, IUserGrpcClient apiClient, IMapper mapper, IConfiguration config)
     {
         _distributedCache = distributedCache;
         _apiClient = apiClient;
         _mapper = mapper;
+        _config = config;
     }
 
     public async Task<GetUserReply> GetUserByIdAsync(Guid id)
@@ -33,12 +35,15 @@ public class RedisCacheApiService : IRedisCacheApiService
         {
             cachedValue = await _apiClient.GetUserByIdAsync(
                 new GetUserByIdRequest { UserId = id.ToString() });
+
+            var settingTime = _config.GetValue<int>("CacheSettings:UserCacheSeconds");
+
             await _distributedCache.SetAsync(
                 key,
                 cachedValue.ToByteArray(),
                 new DistributedCacheEntryOptions
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5)
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(settingTime)
                 });
         }
         else

@@ -11,11 +11,13 @@ public class MemoryCacheApiService : IMemoryCacheApiService
 {
     private readonly IMemoryCache _memory;
     private readonly IBestApiClient _apiClient;
+    private readonly IConfiguration _config;
 
-    public MemoryCacheApiService(IMemoryCache memory, IBestApiClient apiClient)
+    public MemoryCacheApiService(IMemoryCache memory, IBestApiClient apiClient, IConfiguration config)
     {
         _memory = memory;
         _apiClient = apiClient;
+        _config = config;
     }
 
     public async Task<GatewayCommunityResponse> GetCommynityByIdAsync(Guid id)
@@ -23,9 +25,11 @@ public class MemoryCacheApiService : IMemoryCacheApiService
         if(!_memory.TryGetValue(CommunityCacheKeyHelper.GetRecordByIdKey(id), out GatewayCommunityResponse value))
         {
             value = await _apiClient.GetCommunityByIdAsync(id);
-
+            
+            var settingTime = _config.GetValue<int>("CacheSettings:CommunityCacheSeconds");
+            
             var cacheEntryOptions = new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromSeconds(5));
+                .SetSlidingExpiration(TimeSpan.FromSeconds(settingTime));
 
             _memory.Set(CommunityCacheKeyHelper.GetRecordByIdKey(id), value, cacheEntryOptions);
         }
