@@ -42,8 +42,7 @@ public class UserGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var result = await _apiClient.DeleteUserAsync(new DeleteUserRequest { UserId = id.ToString() });
-        var success = _mapper.Map<bool>(result);
+        var success = await _redisCacheApi.RemoveUserByIdAsync(id);
         return success ? NoContent() : NotFound();
     }
 

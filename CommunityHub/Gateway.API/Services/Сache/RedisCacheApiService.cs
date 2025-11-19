@@ -1,10 +1,10 @@
-﻿using Google.Protobuf;
-using Microsoft.Extensions.Caching.Distributed;
-using UserService.GRpc;
-
+﻿using AutoMapper;
 using Gateway.API.Interfaces;
 using Gateway.API.Interfaces.Cache;
 using Gateway.API.Services.Сache.CacheHelpers;
+using Google.Protobuf;
+using Microsoft.Extensions.Caching.Distributed;
+using UserService.GRpc;
 
 namespace Gateway.API.Services.Сache;
 
@@ -12,11 +12,13 @@ public class RedisCacheApiService : IRedisCacheApiService
 {
     private readonly IDistributedCache _distributedCache;
     private readonly IUserGrpcClient _apiClient;
+    private readonly IMapper _mapper;
 
-    public RedisCacheApiService(IDistributedCache distributedCache, IUserGrpcClient apiClient)
+    public RedisCacheApiService(IDistributedCache distributedCache, IUserGrpcClient apiClient, IMapper mapper)
     {
         _distributedCache = distributedCache;
         _apiClient = apiClient;
+        _mapper = mapper;
     }
 
     public async Task<GetUserReply> GetUserByIdAsync(Guid id)
@@ -45,5 +47,21 @@ public class RedisCacheApiService : IRedisCacheApiService
         }
 
         return cachedValue;
+    }
+
+    public async Task<bool> RemoveUserByIdAsync(Guid id)
+    {
+        var grpcResponse = await _apiClient.DeleteUserAsync(
+            new DeleteUserRequest { UserId = id.ToString() });
+
+        var success = _mapper.Map<bool>(grpcResponse);
+
+        if (success)
+        {
+            var key = UserCacheKeyHelper.GetRecordByIdKey(id);
+            await _distributedCache.RemoveAsync(key);
+        }
+
+        return success;
     }
 }
