@@ -10,6 +10,10 @@ var dbUser = builder.AddPostgres("dbUserService")
     .WithDataVolume()
     .AddDatabase("UserService");
 
+var redis = builder.AddRedis("redis")
+    .WithHostPort(6379)
+    .WithRedisInsight();
+
 var apiCommunity = builder.AddProject<Projects.CommunityHub_API>("apiCommunity")
     .WithReference(db)
     .WaitFor(db)
@@ -35,8 +39,10 @@ var apiUser = builder.AddProject<Projects.UserService_GRpc>("apiUser")
 var gateway = builder.AddProject<Projects.Gateway_API>("gateway")
     .WithReference(apiCommunity)
     .WithReference(apiUser)
+    .WithReference(redis)
     .WaitFor(apiCommunity)
     .WaitFor(apiUser)
+    .WaitFor(redis)
     .WithEnvironment("IsRunOnAspire", "true")
     .WithEnvironment("CommunityServiceApi__ApiCredentials__Username", builder.Configuration["CommunityServiceApi:ApiCredentials:Username"])
     .WithEnvironment("CommunityServiceApi__ApiCredentials__Password", builder.Configuration["CommunityServiceApi:ApiCredentials:Password"])

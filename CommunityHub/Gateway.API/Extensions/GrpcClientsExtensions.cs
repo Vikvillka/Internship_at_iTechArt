@@ -21,14 +21,17 @@ public static class GrpcClientsExtensions
         AddClient<SubscriptionService.SubscriptionServiceClient>();
         AddClient<ParticipationService.ParticipationServiceClient>();
 
-        services.AddStackExchangeRedisCache(options =>
-        {
-            options.Configuration = config.GetConnectionString("redis");
-        });
-
         services.AddScoped<IRedisCacheApiService, RedisCacheApiService>();
 
         services.AddSingleton<BasicAuthClientInterceptor>();
+
+
+        services.AddScoped<IAuthGrpcClient, AuthGrpcClient>();
+        services.AddScoped<IUserGrpcClient, UserGrpcClient>();
+        services.AddScoped<IParticipationGrpcClient, ParticipationGrpcClient>();
+        services.AddScoped<ISubscriptionGrpcClient, SubscriptionGrpcClient>();
+
+        return services;
 
         void AddClient<TClient>() where TClient : class
         {
@@ -38,12 +41,5 @@ public static class GrpcClientsExtensions
             })
             .AddInterceptor<BasicAuthClientInterceptor>();
         }
-
-        services.AddScoped<IAuthGrpcClient, AuthGrpcClient>();
-        services.AddScoped<IUserGrpcClient, UserGrpcClient>();
-        services.AddScoped<IParticipationGrpcClient, ParticipationGrpcClient>();
-        services.AddScoped<ISubscriptionGrpcClient, SubscriptionGrpcClient>();
-
-        return services;
     }
 }
