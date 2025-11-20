@@ -2,6 +2,7 @@
 using Grpc.Core.Interceptors;
 
 using UserService.Domain.Exceptions;
+using UserService.GRpc.Interfaces;
 
 namespace UserService.GRpc.Interceptors;
 
@@ -50,13 +51,11 @@ public class GrpcExceptionInterceptor : Interceptor
                 Instance = context.Method
             };
 
-            var replyType = typeof(TResponse);
-            var replyInstance = Activator.CreateInstance(replyType);
-            var problemProperty = replyType.GetProperty("Problem");
-            if (problemProperty != null)
+            if(typeof(IProblemReply).IsAssignableFrom(typeof(TResponse)))
             {
-                problemProperty.SetValue(replyInstance, problem);
-                return (TResponse)replyInstance;
+                var reply = (IProblemReply)Activator.CreateInstance(typeof(TResponse))!;
+                reply.SetProblem(problem);
+                return (TResponse)reply;
             }
 
             throw new RpcException(new Status(StatusCode.Internal, ex.Message));
