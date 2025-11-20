@@ -45,7 +45,7 @@ public class UserService : IUserService
 
         var existingEmail = await _userRepository.ExistsByEmailAsync(user.Email);
         if (existingEmail)
-            throw new ConflictException("Conflict", $"Email '{user.Username}' is already taken");
+            throw new ConflictException("Conflict", $"Email '{user.Email}' is already taken");
 
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
