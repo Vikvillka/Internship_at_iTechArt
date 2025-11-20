@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\CommunityHub.API\CommunityHub.API.csproj" />
     <ProjectReference Include="..\..\Gateway.API\Gateway.API.csproj" />
+    <ProjectReference Include="..\..\HistoryService.Worker\HistoryService.Worker.csproj" />
     <ProjectReference Include="..\..\UserService.GRpc\UserService.GRpc.csproj" />
   </ItemGroup>
 

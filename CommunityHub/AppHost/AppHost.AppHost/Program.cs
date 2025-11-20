@@ -47,4 +47,8 @@ var gateway = builder.AddProject<Projects.Gateway_API>("gateway")
     .WithEnvironment("CommunityServiceApi__BaseUrl", apiCommunity.GetEndpoint("https"))
     .WithEnvironment("UserServiceApi__BaseUrl", apiUser.GetEndpoint("https"));
 
+builder.AddProject<Projects.HistoryService>("historyservice");
+
+builder.AddProject<Projects.HistoryService_Worker>("historyservice-worker");
+
 builder.Build().Run();
