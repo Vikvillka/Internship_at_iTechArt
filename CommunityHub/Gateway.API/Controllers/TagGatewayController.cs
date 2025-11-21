@@ -1,7 +1,8 @@
-﻿using Gateway.API.Clients;
-using Gateway.API.DTOs.TagDTOs;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using Gateway.API.Clients;
+using Gateway.API.DTOs.TagDTOs;
 
 namespace Gateway.API.Controllers;
 

@@ -1,0 +1,77 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "Protos/common.proto";
+
+option csharp_namespace = "UserService.GRpc";
+
+message UserModel {
+    string id = 1;
+    string username = 2;
+    string email = 3;
+    Gender gender = 4;
+    string city = 5;
+    string country = 6;
+}
+
+enum Gender {
+    MALE = 0;
+    FEMALE = 1;
+    OTHER = 2;
+}
+
+message RegisterUserRequest {
+    string username = 1;
+    string password = 2;
+    string email = 3;
+    Gender gender = 4;
+    string city = 5;
+    string country = 6;
+}
+
+message DeleteUserRequest {
+    string userId = 1;
+}
+
+message GetUserByIdRequest {
+    string userId = 1;
+}
+
+message RegisterUserReply {
+    oneof result {
+        UserModel user = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+message DeleteUserReply {
+    oneof result {
+        bool success = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+message GetUserReply {
+    oneof result {
+        UserModel user = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+message UsersList {
+    repeated UserModel users = 1;
+}
+
+message GetUsersReply {
+    oneof result {
+        UsersList usersList = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+service UserService {
+    rpc RegisterUser(RegisterUserRequest) returns (RegisterUserReply);
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserReply);
+    rpc GetUserById(GetUserByIdRequest) returns (GetUserReply);
+    rpc GetAllUsers(google.protobuf.Empty) returns (GetUsersReply);
+}

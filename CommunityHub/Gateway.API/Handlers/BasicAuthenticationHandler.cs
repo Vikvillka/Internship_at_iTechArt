@@ -4,15 +4,13 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
-
-using Gateway.API.DTOs.AuthDTOs;
-using Gateway.API.Clients;
+using UserService.GRpc;
 
 namespace Gateway.API.Handlers;
 
 public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    private readonly IUserApiClient _userApiClient;
+    private readonly AuthService.AuthServiceClient _grpcClient;
     private const string basicHeader = "Basic realm=\"Gateway\"";
 
     public BasicAuthenticationHandler(
@@ -20,10 +18,10 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         ILoggerFactory logger,
         UrlEncoder encoder,
         ISystemClock clock,
-        IUserApiClient userApiClient
+        AuthService.AuthServiceClient grpcClient
     ) : base(options, logger, encoder, clock)
     {
-        _userApiClient = userApiClient;
+        _grpcClient = grpcClient;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -53,8 +51,8 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             var username = credentials[0];
             var password = credentials[1];
 
-            var response = await _userApiClient.ValidateBasicAsync(new GatewayAuthRequest { Username = username, Password = password });
-            if (!response.IsSuccessStatusCode)
+            var response = await _grpcClient.ValidateBasicAsync(new AuthRequest { Username = username, Password = password });
+            if (response.ResultCase == ValidateBasicReply.ResultOneofCase.Problem)
             {
                 Response.Headers["WWW-Authenticate"] = basicHeader;
                 return AuthenticateResult.Fail("Invalid Username or Password");

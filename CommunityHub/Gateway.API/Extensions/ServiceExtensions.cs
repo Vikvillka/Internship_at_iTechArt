@@ -1,9 +1,12 @@
-﻿using Gateway.API.Clients;
-using Gateway.API.Configurations;
-using Gateway.API.Handlers;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+
+using Gateway.API.Clients;
+using Gateway.API.Configurations;
+using Gateway.API.Handlers;
+using Gateway.API.Services.Сache;
+using Gateway.API.Interfaces.Cache;
 
 namespace Gateway.API.Extensions;
 
@@ -18,9 +21,13 @@ public static class ServiceExtensions
 
         services.AddExceptionHandler<GatewayExceptionHandler>();
         services.AddProblemDetails();
-
+        
+        services.AddMemoryCache();
+        services.AddScoped<IMemoryCacheApiService, MemoryCacheApiService>();
+        
         services.AddRefitWithBasicAuth<IBestApiClient>(config);
-        services.AddRefitWithBasicAuth<IUserApiClient>(config);
+
+        services.AddGrpcClients(config);
 
         services.AddAuthenticationSchemes(config);
         services.AddAuthorization();

@@ -1,18 +1,14 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
-using CommunityHub.API.Configurations;
 using CommunityHub.API.ExceptionHandlers;
 using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Application.Services;
 using CommunityHub.Infrastructure.Data;
 using CommunityHub.Infrastructure.Repositories;
-using CommunityHub.Infrastructure.Services;
 
 namespace CommunityHub.API.Extensions;
 
@@ -29,13 +25,10 @@ public static class ServiceExtensions
         services.AddScoped<ICommunityRepository, CommunityRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<ICommunityService, CommunityService>();
         services.AddScoped<IEventService, EventService>();
         services.AddScoped<ITagService, TagService>();
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IJwtService, JwtService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -45,8 +38,6 @@ public static class ServiceExtensions
 
         services.AddExceptionHandler<ExceptionHandler>();
         services.AddProblemDetails();
-
-        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
     }
 }
 

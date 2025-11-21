@@ -1,0 +1,52 @@
+﻿syntax = "proto3";
+
+import "Protos/common.proto";
+
+option csharp_namespace = "UserService.GRpc";
+
+message ParticipationModel {
+    string id = 1;
+    string userId = 2;
+    string eventId = 3;
+    bool isConfirmed = 4;
+}
+
+message CreateParticipationRequest {
+    string userId = 1;
+    string eventId = 2;
+}
+
+message GetUserParticipationsRequest {
+    string userId = 1;
+}
+
+message CreateParticipationReply {
+    oneof result {
+        ParticipationModel participation = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+message CancelParticipationReply {
+    oneof result {
+        bool success = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+message ParticipationsList {
+    repeated ParticipationModel items = 1;
+}
+
+message GetUserParticipationsReply {
+    oneof result {
+        ParticipationsList participations = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+service ParticipationService {
+    rpc Participate(CreateParticipationRequest) returns (CreateParticipationReply);
+    rpc CancelParticipation(CreateParticipationRequest) returns (CancelParticipationReply);
+    rpc GetParticipationsByUser(GetUserParticipationsRequest) returns (GetUserParticipationsReply);
+}
