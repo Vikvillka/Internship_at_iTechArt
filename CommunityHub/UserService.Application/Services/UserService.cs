@@ -1,5 +1,6 @@
 ﻿using UserService.Application.Intarfaces.Repositories;
 using UserService.Application.Intarfaces.Services;
+using UserService.Application.Intarfaces.Services.Cache;
 using UserService.Domain.Entities;
 using UserService.Domain.Exceptions;
 
@@ -8,10 +9,12 @@ namespace UserService.Application.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IUserCacheService _cacheService;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, IUserCacheService cacheService)
     {
         _userRepository = userRepository;
+        _cacheService = cacheService;
     }
 
     public async Task<IList<User>> GetAllAsync()
@@ -57,8 +60,11 @@ public class UserService : IUserService
         var existingUser = await _userRepository.GetByIdAsync(id);
         if (existingUser == null)
             throw new NotFoundException("NotFound", $"User with id '{id}' not found");
+        
+        var result = await _userRepository.DeleteAsync(id);
+        await _cacheService.RemoveUserByIdAsync(id);
 
-        return await _userRepository.DeleteAsync(id);
+        return result;
     }
 
     public async Task<User> AuthenticateAsync(string username, string password)

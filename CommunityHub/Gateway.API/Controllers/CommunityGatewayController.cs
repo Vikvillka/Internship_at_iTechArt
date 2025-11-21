@@ -6,6 +6,7 @@ using AutoMapper;
 using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 using Gateway.API.Clients;
 using Gateway.API.DTOs.CommunitiesDTOs;
+using Gateway.API.Interfaces.Cache;
 
 namespace Gateway.API.Controllers;
 
@@ -15,11 +16,13 @@ public class CommunityGatewayController : ControllerBase
 {
     private readonly IBestApiClient _apiClient;
     private readonly IMapper _mapper;
+    private readonly IMemoryCacheApiService _memoryCache;
 
-    public CommunityGatewayController(IBestApiClient apiClient, IMapper mapper)
+    public CommunityGatewayController(IBestApiClient apiClient, IMapper mapper, IMemoryCacheApiService memoryCache)
     {
         _apiClient = apiClient;
         _mapper = mapper;
+        _memoryCache = memoryCache;
     }
 
     [HttpGet("getAll")]
@@ -38,7 +41,7 @@ public class CommunityGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _apiClient.GetCommunityByIdAsync(id);
+        var result = await _memoryCache.GetCommunityByIdAsync(id);
         var gatewayResponse = _mapper.Map<GatewayCommunityResponse>(result);
         return Ok(gatewayResponse);
     }

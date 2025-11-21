@@ -1,6 +1,8 @@
 ﻿using Gateway.API.Extensions.Interceptors;
 using Gateway.API.Interfaces;
+using Gateway.API.Interfaces.Cache;
 using Gateway.API.Services;
+using Gateway.API.Services.Сache;
 using UserService.GRpc;
 
 namespace Gateway.API.Extensions;
@@ -19,7 +21,17 @@ public static class GrpcClientsExtensions
         AddClient<SubscriptionService.SubscriptionServiceClient>();
         AddClient<ParticipationService.ParticipationServiceClient>();
 
+        services.AddScoped<IRedisCacheApiService, RedisCacheApiService>();
+
         services.AddSingleton<BasicAuthClientInterceptor>();
+
+
+        services.AddScoped<IAuthGrpcClient, AuthGrpcClient>();
+        services.AddScoped<IUserGrpcClient, UserGrpcClient>();
+        services.AddScoped<IParticipationGrpcClient, ParticipationGrpcClient>();
+        services.AddScoped<ISubscriptionGrpcClient, SubscriptionGrpcClient>();
+
+        return services;
 
         void AddClient<TClient>() where TClient : class
         {
@@ -29,12 +41,5 @@ public static class GrpcClientsExtensions
             })
             .AddInterceptor<BasicAuthClientInterceptor>();
         }
-
-        services.AddScoped<IAuthGrpcClient, AuthGrpcClient>();
-        services.AddScoped<IUserGrpcClient, UserGrpcClient>();
-        services.AddScoped<IParticipationGrpcClient, ParticipationGrpcClient>();
-        services.AddScoped<ISubscriptionGrpcClient, SubscriptionGrpcClient>();
-
-        return services;
     }
 }
