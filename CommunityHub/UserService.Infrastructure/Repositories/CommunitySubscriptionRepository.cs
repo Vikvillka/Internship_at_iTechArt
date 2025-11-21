@@ -45,4 +45,18 @@ public class CommunitySubscriptionRepository : EfRepository<CommunitySubscriptio
 
         return update != 0;
     }
+
+    public async Task<IList<CommunitySubscription>> GetByCommunityIdAsync(Guid communityId)
+    {
+        var query = AsQueryable();
+        query = query.Where(x => x.CommunityId == communityId);
+
+        return await query.ToListAsync();
+    }
+
+    public async Task RemoveRangeAsync(IList<CommunitySubscription> subscriptions)
+    {
+        _dbSet.RemoveRange(subscriptions);
+        await _context.SaveChangesAsync();
+    }
 }
