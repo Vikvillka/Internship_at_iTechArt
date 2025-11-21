@@ -5,6 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
 
+if (builder.Configuration.GetValue<bool>("IsRunOnAspire"))
+    builder.AddRedisDistributedCache("redis");
+else
+    builder.Services.AddStackExchangeRedisCache(o =>
+        o.Configuration = builder.Configuration.GetConnectionString("redis"));
+
 var app = builder.Build();
 
 await app.MigrateDatabaseAsync();

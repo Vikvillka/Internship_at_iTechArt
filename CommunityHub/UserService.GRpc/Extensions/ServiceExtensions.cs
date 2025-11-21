@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using FluentValidation;
-
 using UserService.Application.Intarfaces.Repositories;
 using UserService.Application.Intarfaces.Services;
+using UserService.Application.Intarfaces.Services.Cache;
 using UserService.Application.Services;
 using UserService.GRpc.Interceptors;
 using UserService.Infrastructure.Data;
 using UserService.Infrastructure.Repositories;
 using UserService.Infrastructure.Services;
+using UserService.Infrastructure.Services.Cache;
 
 namespace UserService.GRpc.Extensions;
 
@@ -30,6 +31,7 @@ public static class ServiceExtensions
             options.Interceptors.Add<BasicAuthInterceptor>();
         });
 
+        services.AddScoped<IUserCacheService, UserCacheService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICommunitySubscriptionRepository, CommunitySubscriptionRepository>();
         services.AddScoped<IEventParticipationRepository, EventParticipationRepository>();
