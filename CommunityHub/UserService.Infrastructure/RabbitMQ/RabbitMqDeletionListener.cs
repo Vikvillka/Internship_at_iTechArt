@@ -1,40 +1,42 @@
 ﻿using HistoryService.Contracts.DeleteEntityDTOs;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
-
 using UserService.Application.Intarfaces.Repositories;
 
 namespace UserService.Infrastructure.RabbitMQ;
 
 public class RabbitMqDeletionListener : BackgroundService
 {
-    private readonly ConnectionFactory _factory;
+    private readonly RabbitMqSettings _settings;
     private IConnection _connection;
     private IChannel _channel;
     private readonly ILogger<RabbitMqDeletionListener> _logger;
-    private readonly ICommunitySubscriptionRepository _repository;
+    private readonly IServiceProvider _serviceProvider;
 
-    public RabbitMqDeletionListener(ConnectionFactory factory,
-        IConnection connection,
-        IChannel channel,
+    public RabbitMqDeletionListener(
+        IOptions<RabbitMqSettings> options,
         ILogger<RabbitMqDeletionListener> logger,
-        ICommunitySubscriptionRepository repository)
+        IServiceProvider serviceProvider)
     {
         _logger = logger;
-        _factory = new ConnectionFactory
-        {
-            HostName = "localhost",
-            UserName = "user",
-            Password = "user"
-        };
-        _repository = repository;
+        _settings = options.Value;
+        _serviceProvider = serviceProvider;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var _factory = new ConnectionFactory()
+        {
+            HostName = _settings.Host,
+            UserName = _settings.Username,
+            Password = _settings.Password,
+        };
+
         _connection = await _factory.CreateConnectionAsync(stoppingToken);
         _channel = await _connection.CreateChannelAsync(
             cancellationToken: stoppingToken
@@ -84,11 +86,14 @@ public class RabbitMqDeletionListener : BackgroundService
 
     private async Task DeleteCommunityReferences(Guid communityId)
     {
-        var subscriptions = await _repository.GetByCommunityIdAsync(communityId);
+        using var scope = _serviceProvider.CreateScope();
+        var repository = scope.ServiceProvider.GetRequiredService<ICommunitySubscriptionRepository>();
+
+        var subscriptions = await repository.GetByCommunityIdAsync(communityId);
 
         if (subscriptions.Any())
         {
-            await _repository.RemoveRangeAsync(subscriptions);
+            await repository.RemoveRangeAsync(subscriptions);
             _logger.LogInformation($"Deleted {subscriptions.Count} subscriptions for community {communityId}");
         }
     }

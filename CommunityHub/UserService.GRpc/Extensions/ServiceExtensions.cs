@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
-using FluentValidation;
-
 using UserService.Application.Intarfaces.Repositories;
 using UserService.Application.Intarfaces.Services;
 using UserService.Application.Services;
 using UserService.GRpc.Interceptors;
 using UserService.Infrastructure.Data;
+using UserService.Infrastructure.RabbitMQ;
 using UserService.Infrastructure.Repositories;
 using UserService.Infrastructure.Services;
 
@@ -38,6 +39,9 @@ public static class ServiceExtensions
         services.AddScoped<IEventParticipationService, EventParticipationService>();
         services.AddScoped<ICommunitySubscriptionService, CommunitySubscriptionService>();
         services.AddScoped<IJwtService, JwtService>();
+
+        services.Configure<RabbitMqSettings>(config.GetSection("RabbitMq"));
+        services.AddHostedService<RabbitMqDeletionListener>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }
