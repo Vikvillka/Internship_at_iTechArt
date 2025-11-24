@@ -4,6 +4,7 @@ using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Exceptions;
 using HistoryService.Contracts.DeleteEntityDTOs;
+using HistoryService.Contracts.HistoryRecordDTOs;
 
 namespace CommunityHub.Application.Services;
 
@@ -45,7 +46,23 @@ public class CommunityService : ICommunityService
             throw new NotFoundException("NotFound", $"Community with id '{community.Id}' not found");
 
         await EnsureUniqueCommunityNameAsync(community, community.Id);
-        return await _communityRepository.UpdateAsync(community);
+
+        var result = await _communityRepository.UpdateAsync(community);
+
+        if (result)
+        {
+            var historyDto = new HistoryRecordDTO
+            {
+                Type = "CommunityUpdated",
+                Date = DateTime.UtcNow,
+                Payload = community.Id.ToString(),
+                TriggeredBy = "CommunityService"
+            };
+
+            await _publisher.PublishUpdateEntityAsync(historyDto);
+        }
+
+        return result;
     }
 
     public async Task<bool> DeleteAsync(Guid id)

@@ -1,11 +1,11 @@
-﻿using HistoryService.Contracts.DeleteEntityDTOs;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+
 using UserService.Application.Intarfaces.RabbitMQ;
 
 namespace UserService.Infrastructure.RabbitMQ;
@@ -13,8 +13,8 @@ namespace UserService.Infrastructure.RabbitMQ;
 public class RabbitMqListener : BackgroundService
 {
     private readonly RabbitMqSettings _settings;
-    private IConnection _connection;
-    private IChannel _channel;
+    private IConnection? _connection;
+    private IChannel? _channel;
     private readonly ILogger<RabbitMqListener> _logger;
     private readonly IServiceProvider _serviceProvider;
 
