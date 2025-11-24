@@ -41,7 +41,7 @@ public static class ServiceExtensions
         services.AddScoped<IJwtService, JwtService>();
 
         services.Configure<RabbitMqSettings>(config.GetSection("RabbitMq"));
-        services.AddHostedService<RabbitMqDeletionListener>();
+        services.AddRabbitMqEventProcessors(typeof(DeletionProcessor));
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }
