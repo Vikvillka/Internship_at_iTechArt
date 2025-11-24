@@ -6,13 +6,18 @@ namespace UserService.GRpc.Extensions;
 public static class RabbitMqExtensions
 {
     public static IServiceCollection AddRabbitMqEventProcessors(
-        this IServiceCollection services, params Type[] procTypes)
+        this IServiceCollection services, string queueKey, Type processorType)
     {
-        foreach (var type in procTypes)
+        services.AddScoped(processorType);
+        services.AddScoped(typeof(IEventProcessor), sp => sp.GetRequiredService(processorType));
+
+        services.AddSingleton<RabbitMqListener>();
+
+        services.Configure<RabbitMqListenerOptions>(opts =>
         {
-            services.AddScoped(typeof(IEventProcessor), type);
-        }
-        services.AddHostedService<RabbitMqListener>();
+            if (!opts.QueueMappings.ContainsKey(processorType))
+                opts.QueueMappings[processorType] = queueKey;
+        });
         return services;
     }
 }

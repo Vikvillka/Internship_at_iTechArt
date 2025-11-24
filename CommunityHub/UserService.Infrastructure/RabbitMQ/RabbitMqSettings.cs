@@ -6,6 +6,6 @@ public class RabbitMqSettings
     public string Username { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
 
-    public string DeleteEntityQueue { get; set; } = "OnMyEntityDeleted";
-    public string DeleteEntityExchange { get; set; } = "DeleteEntity";
+    public Dictionary<string, string> Queues { get; set; } = [];
+    public string DeleteEntityExchange { get; set; } = string.Empty;
 }

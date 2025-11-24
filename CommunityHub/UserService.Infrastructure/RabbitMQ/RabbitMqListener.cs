@@ -89,7 +89,7 @@ public class RabbitMqListener : BackgroundService
                 }
             };
             await _channel.BasicConsumeAsync(
-                queue: _settings.DeleteEntityQueue,
+                queue: queueName,
                 autoAck: false,
                 consumer: consumer,
                 cancellationToken: stoppingToken
