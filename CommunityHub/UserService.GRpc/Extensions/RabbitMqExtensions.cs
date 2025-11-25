@@ -1,5 +1,4 @@
-﻿using UserService.Application.Intarfaces.RabbitMQ;
-using UserService.Infrastructure.RabbitMQ;
+﻿using UserService.Infrastructure.RabbitMQ;
 
 namespace UserService.GRpc.Extensions;
 
@@ -9,7 +8,6 @@ public static class RabbitMqExtensions
         this IServiceCollection services, string queueKey, Type processorType)
     {
         services.AddScoped(processorType);
-        services.AddScoped(typeof(IEventProcessor), sp => sp.GetRequiredService(processorType));
 
         services.Configure<RabbitMqListenerOptions>(opts =>
         {
