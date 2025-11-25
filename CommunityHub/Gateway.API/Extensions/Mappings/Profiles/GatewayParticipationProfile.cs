@@ -6,9 +6,9 @@ using UserService.GRpc;
 
 namespace Gateway.API.Extensions.Mappings.Profiles;
 
-public class ParticipationMapProfile : Profile
+public class GatewayParticipationProfile : Profile
 {
-    public ParticipationMapProfile()
+    public GatewayParticipationProfile()
     {
         CreateMap<GatewayCreateParticipationRequest, CreateParticipationRequest>()
             .ForMember(d => d.UserId, o => o.MapFrom(s => s.UserId.ToString()))

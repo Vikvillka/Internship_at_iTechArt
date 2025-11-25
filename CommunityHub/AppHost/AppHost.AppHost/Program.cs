@@ -18,8 +18,12 @@ var dbHistory = builder.AddPostgres("dbHistoryService")
     .AddDatabase("HistoryService");
 
 var rabbitmq = builder.AddRabbitMQ("messaging")
-                      .WithManagementPlugin()   
-                      .WithDataVolume();
+    .WithManagementPlugin()   
+    .WithDataVolume();
+
+var redis = builder.AddRedis("redis")
+    .WithHostPort(6379)
+    .WithRedisInsight();
 
 var apiCommunity = builder.AddProject<Projects.CommunityHub_API>("apiCommunity")
     .WithReference(db)
@@ -41,6 +45,8 @@ var apiUser = builder.AddProject<Projects.UserService_GRpc>("apiUser")
     .WaitFor(dbUser)
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq)
+    .WithReference(redis)
+    .WithEnvironment("IsRunOnAspire", "true")
     .WithEnvironment("Jwt__Issuer", builder.Configuration["Jwt:Issuer"])
     .WithEnvironment("Jwt__Audience", builder.Configuration["Jwt:Audience"])
     .WithEnvironment("Jwt__Key", builder.Configuration["Jwt:Key"])
@@ -53,8 +59,11 @@ var apiUser = builder.AddProject<Projects.UserService_GRpc>("apiUser")
 var gateway = builder.AddProject<Projects.Gateway_API>("gateway")
     .WithReference(apiCommunity)
     .WithReference(apiUser)
+    .WithReference(redis)
     .WaitFor(apiCommunity)
     .WaitFor(apiUser)
+    .WaitFor(redis)
+    .WithEnvironment("IsRunOnAspire", "true")
     .WithEnvironment("CommunityServiceApi__ApiCredentials__Username", builder.Configuration["CommunityServiceApi:ApiCredentials:Username"])
     .WithEnvironment("CommunityServiceApi__ApiCredentials__Password", builder.Configuration["CommunityServiceApi:ApiCredentials:Password"])
     .WithEnvironment("CommunityServiceApi__Jwt__Issuer", builder.Configuration["CommunityServiceApi:Jwt:Issuer"])
