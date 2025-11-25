@@ -6,5 +6,5 @@ public class HistoryRecord
     public string HistoryEventType { get; set; } = string.Empty;
     public DateTime Date { get; set; }
     public string Payload { get; set; } = string.Empty;
-    public string TriggeredBy { get; set; } = string.Empty!;
+    public string TriggeredBy { get; set; } = string.Empty;
 }

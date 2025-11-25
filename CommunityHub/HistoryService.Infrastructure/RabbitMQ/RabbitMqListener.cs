@@ -116,4 +116,27 @@ public class RabbitMqListener : BackgroundService
             cancellationToken: stoppingToken
         );
     }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (_channel != null)
+            {
+                await _channel.CloseAsync();
+                _channel.Dispose();
+            }
+
+            if (_connection != null)
+            {
+                await _connection.CloseAsync();
+                _connection.Dispose();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error closing RabbitMQ resources");
+        }
+        await base.StopAsync(cancellationToken);
+    }
 }
