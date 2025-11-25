@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System.Reflection;
+
 using UserService.Application.Intarfaces.Repositories;
 using UserService.Application.Intarfaces.Services;
 using UserService.Application.Services;
@@ -41,7 +41,9 @@ public static class ServiceExtensions
         services.AddScoped<IJwtService, JwtService>();
 
         services.Configure<RabbitMqSettings>(config.GetSection("RabbitMq"));
+        services.Configure<RabbitMqListenerOptions>(_ => { });
         services.AddRabbitMqEventProcessors("DeleteEntityQueue", typeof(DeletionProcessor));
+        services.AddSingleton<RabbitMqListener>();
         services.AddHostedService(sp => sp.GetRequiredService<RabbitMqListener>());
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());

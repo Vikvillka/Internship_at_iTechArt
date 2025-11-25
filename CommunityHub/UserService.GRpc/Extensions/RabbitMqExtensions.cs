@@ -11,8 +11,6 @@ public static class RabbitMqExtensions
         services.AddScoped(processorType);
         services.AddScoped(typeof(IEventProcessor), sp => sp.GetRequiredService(processorType));
 
-        services.AddSingleton<RabbitMqListener>();
-
         services.Configure<RabbitMqListenerOptions>(opts =>
         {
             if (!opts.QueueMappings.ContainsKey(processorType))

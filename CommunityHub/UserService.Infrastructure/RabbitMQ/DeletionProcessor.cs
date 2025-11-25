@@ -1,6 +1,6 @@
-﻿using HistoryService.Contracts.DeleteEntityDTOs;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+
+using HistoryService.Contracts.DeleteEntityDTOs;
 using UserService.Application.Intarfaces.RabbitMQ;
 using UserService.Application.Intarfaces.Repositories;
 
@@ -10,18 +10,14 @@ public class DeletionProcessor : IEventProcessor
 {
     private readonly ICommunitySubscriptionRepository _repository;
     private readonly ILogger<DeletionProcessor> _logger;
-    private readonly string _queueName;
 
     public DeletionProcessor(
         ICommunitySubscriptionRepository repository,
-        ILogger<DeletionProcessor> logger,
-        IOptions<RabbitMqSettings> options)
+        ILogger<DeletionProcessor> logger)
     {
         _repository = repository;
         _logger = logger;
-        _queueName = options.Value.Queues["DeleteEntityQueue"];
     }
-    public string QueueName => _queueName;
 
     public async Task ProcessAsync(string message, CancellationToken cancellationToken)
     {

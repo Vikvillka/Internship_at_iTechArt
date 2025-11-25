@@ -13,23 +13,26 @@ namespace UserService.Infrastructure.RabbitMQ;
 
 public class RabbitMqListener : BackgroundService
 {
+    private readonly ILogger<RabbitMqListener> _logger;
     private IConnection? _connection;
+    private readonly IServiceProvider _serviceProvider;
     private IChannel? _channel;
     private readonly RabbitMqSettings _settings;
-    private readonly ILogger<RabbitMqListener> _logger;
-    private readonly IServiceProvider _serviceProvider;
+    private readonly RabbitMqListenerOptions _map;
     private readonly string _connectionString;
 
     public RabbitMqListener(
         ILogger<RabbitMqListener> logger,
         IConfiguration config,
         IServiceProvider serviceProvider,
-        IOptions<RabbitMqSettings> settings)
+        IOptions<RabbitMqSettings> settings,
+        IOptions<RabbitMqListenerOptions> map)
     {
         _logger = logger;
         _serviceProvider = serviceProvider;
         _connectionString = config.GetConnectionString("messaging")!;
         _settings = settings.Value;
+        _map = map.Value;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -40,13 +43,12 @@ public class RabbitMqListener : BackgroundService
         };
 
         _connection = await _factory.CreateConnectionAsync(stoppingToken);
-       
-        using var scope = _serviceProvider.CreateScope();
-        var processors = scope.ServiceProvider.GetServices<IEventProcessor>();
 
-        foreach (var processor in processors)
+        foreach (var processor in _map.QueueMappings)
         {
-            var queueName = processor.QueueName;
+            var processorType = processor.Key;
+            var queueKey = processor.Value;
+            var queueName = _settings.Queues[queueKey];
             var exchangeName = _settings.DeleteEntityExchange;
 
             _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
@@ -76,16 +78,13 @@ public class RabbitMqListener : BackgroundService
             {
                 try
                 {
-                    using var innerScope = _serviceProvider.CreateScope();
-                    var proc = innerScope.ServiceProvider
-                        .GetServices<IEventProcessor>()
-                        .First(p => p.QueueName == queueName);
-
                     var msg = Encoding.UTF8.GetString(@event.Body.ToArray());
-
                     _logger.LogInformation("Recieved deletion message: " + msg);
-
-                    await proc.ProcessAsync(msg, stoppingToken);
+                    
+                    using var scope = _serviceProvider.CreateScope();
+                    var processor = (IEventProcessor)scope.ServiceProvider.GetRequiredService(processorType);
+                    
+                    await processor.ProcessAsync(msg, stoppingToken);
 
                     await _channel.BasicAckAsync(
                         @event.DeliveryTag,
