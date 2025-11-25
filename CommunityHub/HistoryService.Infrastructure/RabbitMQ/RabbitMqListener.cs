@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -20,34 +21,47 @@ public class RabbitMqListener : BackgroundService
     private IChannel? _channel;
     private readonly ILogger<RabbitMqListener> _logger;
     private readonly IServiceProvider _serviceProvider;
+    private readonly string _connectionString;
 
     public RabbitMqListener(
         IOptions<RabbitMqSettings> options,
+        IConfiguration config,
         ILogger<RabbitMqListener> logger,
         IServiceProvider serviceProvider)
     {
-        _logger = logger;
         _settings = options.Value;
+        _logger = logger;
         _serviceProvider = serviceProvider;
+        _connectionString = config.GetConnectionString("messaging")!;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var factory = new ConnectionFactory
         {
-            HostName = _settings.Host,
-            UserName = _settings.Username,
-            Password = _settings.Password
+            Uri = new Uri(_connectionString)
         };
 
         _connection = await factory.CreateConnectionAsync(stoppingToken);
         _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
 
+        await _channel.ExchangeDeclareAsync(
+            exchange: _settings.HistoryExchange,
+            type: ExchangeType.Fanout,
+            durable: true
+        );
+        
         await _channel.QueueDeclareAsync(
             queue: _settings.HistoryQueue,
             durable: true,
             exclusive: false,
             autoDelete: false
+        );
+
+        await _channel.QueueBindAsync(
+            queue: _settings.HistoryQueue,
+            exchange: _settings.HistoryExchange,
+            routingKey: ""
         );
 
         var consumer = new AsyncEventingBasicConsumer(_channel);

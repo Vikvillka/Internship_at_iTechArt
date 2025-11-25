@@ -1,3 +1,5 @@
+using Aspire.Hosting;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 var db = builder.AddPostgres("dbPostgres")
@@ -10,27 +12,43 @@ var dbUser = builder.AddPostgres("dbUserService")
     .WithDataVolume()
     .AddDatabase("UserService");
 
+var dbHistory = builder.AddPostgres("dbHistoryService")
+    .WithImage("postgres:16-alpine")
+    .WithDataVolume()
+    .AddDatabase("HistoryService");
+
+var rabbitmq = builder.AddRabbitMQ("messaging")
+                      .WithManagementPlugin()   
+                      .WithDataVolume();
+
 var apiCommunity = builder.AddProject<Projects.CommunityHub_API>("apiCommunity")
     .WithReference(db)
     .WaitFor(db)
+    .WithReference(rabbitmq)
+    .WaitFor(rabbitmq)
     .WithEnvironment("Jwt__Issuer", builder.Configuration["Jwt:Issuer"])
     .WithEnvironment("Jwt__Audience", builder.Configuration["Jwt:Audience"])
     .WithEnvironment("Jwt__Key", builder.Configuration["Jwt:Key"])
     .WithEnvironment("Jwt__AccessTokenLifetimeMinutes", builder.Configuration["Jwt:AccessTokenLifetimeMinutes"])
     .WithEnvironment("Jwt__RefreshTokenLifetimeHours", builder.Configuration["Jwt:RefreshTokenLifetimeHours"])
     .WithEnvironment("ApiCredentials__Username", builder.Configuration["ApiCredentials:Username"])
-    .WithEnvironment("ApiCredentials__Password", builder.Configuration["ApiCredentials:Password"]);
+    .WithEnvironment("ApiCredentials__Password", builder.Configuration["ApiCredentials:Password"])
+    .WithEnvironment("RabbitMq__DeleteEntityExchange", builder.Configuration["RabbitMq:DeleteEntityExchange"])
+    .WithEnvironment("RabbitMq__HistoryExchange", builder.Configuration["RabbitMq:HistoryExchange"]);
 
 var apiUser = builder.AddProject<Projects.UserService_GRpc>("apiUser")
     .WithReference(dbUser)
     .WaitFor(dbUser)
+    .WithReference(rabbitmq)
+    .WaitFor(rabbitmq)
     .WithEnvironment("Jwt__Issuer", builder.Configuration["Jwt:Issuer"])
     .WithEnvironment("Jwt__Audience", builder.Configuration["Jwt:Audience"])
     .WithEnvironment("Jwt__Key", builder.Configuration["Jwt:Key"])
     .WithEnvironment("Jwt__AccessTokenLifetimeMinutes", builder.Configuration["Jwt:AccessTokenLifetimeMinutes"])
     .WithEnvironment("Jwt__RefreshTokenLifetimeHours", builder.Configuration["Jwt:RefreshTokenLifetimeHours"])
     .WithEnvironment("ApiCredentials__Username", builder.Configuration["ApiCredentials:Username"])
-    .WithEnvironment("ApiCredentials__Password", builder.Configuration["ApiCredentials:Password"]);
+    .WithEnvironment("ApiCredentials__Password", builder.Configuration["ApiCredentials:Password"])
+    .WithEnvironment("RabbitMq__Queues", builder.Configuration["RabbitMq:Queues:DeleteEntityQueue"]);
 
 var gateway = builder.AddProject<Projects.Gateway_API>("gateway")
     .WithReference(apiCommunity)
@@ -47,8 +65,10 @@ var gateway = builder.AddProject<Projects.Gateway_API>("gateway")
     .WithEnvironment("CommunityServiceApi__BaseUrl", apiCommunity.GetEndpoint("https"))
     .WithEnvironment("UserServiceApi__BaseUrl", apiUser.GetEndpoint("https"));
 
-//builder.AddProject<Projects.HistoryService>("historyservice");
-
-//builder.AddProject<Projects.HistoryService_Worker>("historyservice-worker");
+var historyWorker = builder.AddProject<Projects.HistoryService_Worker>("history-worker")
+    .WithReference(dbHistory)
+    .WithReference(rabbitmq)
+    .WaitFor(rabbitmq)
+    .WithEnvironment("RabbitMq__HistoryQueue", "OnHistoryRecordAdded");
 
 builder.Build().Run();

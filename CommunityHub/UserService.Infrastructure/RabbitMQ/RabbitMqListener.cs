@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -12,29 +13,30 @@ namespace UserService.Infrastructure.RabbitMQ;
 
 public class RabbitMqListener : BackgroundService
 {
-    private readonly RabbitMqSettings _settings;
     private IConnection? _connection;
     private IChannel? _channel;
+    private readonly RabbitMqSettings _settings;
     private readonly ILogger<RabbitMqListener> _logger;
     private readonly IServiceProvider _serviceProvider;
+    private readonly string _connectionString;
 
     public RabbitMqListener(
-        IOptions<RabbitMqSettings> options,
         ILogger<RabbitMqListener> logger,
-        IServiceProvider serviceProvider)
+        IConfiguration config,
+        IServiceProvider serviceProvider,
+        IOptions<RabbitMqSettings> settings)
     {
         _logger = logger;
-        _settings = options.Value;
         _serviceProvider = serviceProvider;
+        _connectionString = config.GetConnectionString("messaging")!;
+        _settings = settings.Value;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var _factory = new ConnectionFactory()
         {
-            HostName = _settings.Host,
-            UserName = _settings.Username,
-            Password = _settings.Password,
+            Uri = new Uri(_connectionString)
         };
 
         _connection = await _factory.CreateConnectionAsync(stoppingToken);
@@ -45,13 +47,27 @@ public class RabbitMqListener : BackgroundService
         foreach (var processor in processors)
         {
             var queueName = processor.QueueName;
-            
+            var exchangeName = _settings.DeleteEntityExchange;
+
             _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
+            
+            await _channel.ExchangeDeclareAsync(
+                exchange: exchangeName,
+                type: ExchangeType.Fanout,
+                durable: true
+            );
+
             await _channel.QueueDeclareAsync(
                 queue: queueName,
                 durable: true,
                 exclusive: false,
                 autoDelete: false
+            );
+
+            await _channel.QueueBindAsync(
+               queue: queueName,
+               exchange: exchangeName,
+               routingKey: ""
             );
 
             var consumer = new AsyncEventingBasicConsumer(_channel);

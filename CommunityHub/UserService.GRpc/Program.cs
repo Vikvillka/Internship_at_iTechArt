@@ -4,6 +4,7 @@ using UserService.GRpc.Server.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.AddServiceDefaults();
 
 var app = builder.Build();
 

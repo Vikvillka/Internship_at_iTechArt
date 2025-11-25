@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Interfaces.RabbitMQ;
 using HistoryService.Contracts.DeleteEntityDTOs;
 using HistoryService.Contracts.HistoryRecordDTOs;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
@@ -14,16 +15,19 @@ public class RabbitMqPublisher : IRabbitMqPublisher
     private readonly RabbitMqSettings _settings;
     private readonly ConnectionFactory _factory;
     private readonly ILogger<RabbitMqPublisher> _logger;
+    private readonly string _connectionString;
 
-    public RabbitMqPublisher(IOptions<RabbitMqSettings> options, ILogger<RabbitMqPublisher> logger)
+    public RabbitMqPublisher(
+        IOptions<RabbitMqSettings> options, 
+        ILogger<RabbitMqPublisher> logger,
+        IConfiguration config)
     {
+        _connectionString = config.GetConnectionString("messaging")!;
         _settings = options.Value;
 
         _factory = new ConnectionFactory
         {
-            HostName = _settings.Host,
-            UserName = _settings.Username,
-            Password = _settings.Password
+            Uri = new Uri(_connectionString)
         };
         _logger = logger;
     }
@@ -37,7 +41,6 @@ public class RabbitMqPublisher : IRabbitMqPublisher
             dto.EntityType
         );
     }
-
 
     public async Task PublishUpdateEntityAsync(HistoryRecordDTO dto)
     {
