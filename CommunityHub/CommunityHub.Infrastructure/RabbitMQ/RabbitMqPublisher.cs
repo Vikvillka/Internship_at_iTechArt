@@ -34,7 +34,7 @@ public class RabbitMqPublisher : IRabbitMqPublisher
 
     public async Task PublishDeleteEntityAsync(DeleteEntityDTO dto)
     {
-        await PublishAsync(_settings.DeleteEntityExchange, dto);
+        await PublishAsync(_settings.DeleteEntityExchange, _settings.DeleteEntityQueue, dto);
         _logger.LogInformation(
             "Published deletion message: EntityId={EntityId}, EntityType={EntityType}",
             dto.EntityId,
@@ -44,7 +44,7 @@ public class RabbitMqPublisher : IRabbitMqPublisher
 
     public async Task PublishUpdateEntityAsync(HistoryRecordDTO dto)
     {
-        await PublishAsync(_settings.HistoryExchange, dto); 
+        await PublishAsync(_settings.HistoryExchange, _settings.HistoryQueue, dto); 
         _logger.LogInformation(
             "Published update message: Type={Type}, Payload={Payload}",
             dto.Type,
@@ -52,7 +52,7 @@ public class RabbitMqPublisher : IRabbitMqPublisher
         );
     }
 
-    private async Task PublishAsync<T>(string exchange, T dto)
+    private async Task PublishAsync<T>(string exchange, string routingKey, T dto)
     {
         await using var connection = await _factory.CreateConnectionAsync();
         await using var channel = await connection.CreateChannelAsync();
@@ -62,8 +62,10 @@ public class RabbitMqPublisher : IRabbitMqPublisher
 
         await channel.BasicPublishAsync(
             exchange: exchange,
-            routingKey: "",
+            routingKey: routingKey,
             body: body
         );
+
+        _logger.LogWarning("Publishing with routingKey = " + routingKey);
     }
 }

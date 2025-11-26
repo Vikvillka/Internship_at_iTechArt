@@ -29,7 +29,7 @@ public interface IBestApiClient
     Task<GatewayCommunityResponse> CreateCommunityAsync([Body] CreateCommunityRequest request);
 
     [Put(CommunityPath + "/update")]
-    Task<GatewayCommunityResponse> UpdateCommunityAsync([Body] UpdateCommunityRequest request);
+    Task UpdateCommunityAsync([Body] UpdateCommunityRequest request);
 
     [Delete(CommunityPath + "/delete/{id}")]
     Task DeleteCommunityByIdAsync(Guid id);
@@ -49,10 +49,10 @@ public interface IBestApiClient
     Task<GatewayEventResponse> CreateEventAsync([Body] CreateEventRequest request);
 
     [Put(EventPath + "/update")]
-    Task<GatewayEventResponse> UpdateEventAsync([Body] UpdateEventRequest request);
+    Task UpdateEventAsync([Body] UpdateEventRequest request);
 
     [Patch(EventPath + "/{id}/status")]
-    Task<GatewayEventResponse> UpdateEventStatusAsync(Guid id, [Body] EventStatusDto newStatus);
+    Task UpdateEventStatusAsync(Guid id, [Body] EventStatusDto newStatus);
     #endregion
 
     #region Tag

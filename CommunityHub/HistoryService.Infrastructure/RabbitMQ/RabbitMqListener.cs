@@ -47,7 +47,7 @@ public class RabbitMqListener : BackgroundService
 
         await _channel.ExchangeDeclareAsync(
             exchange: _settings.HistoryExchange,
-            type: ExchangeType.Fanout,
+            type: ExchangeType.Direct,
             durable: true
         );
         
@@ -61,7 +61,7 @@ public class RabbitMqListener : BackgroundService
         await _channel.QueueBindAsync(
             queue: _settings.HistoryQueue,
             exchange: _settings.HistoryExchange,
-            routingKey: ""
+            routingKey: _settings.HistoryQueue
         );
 
         var consumer = new AsyncEventingBasicConsumer(_channel);
