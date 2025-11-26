@@ -16,10 +16,11 @@ public class RabbitMqListener : BackgroundService
     private readonly ILogger<RabbitMqListener> _logger;
     private IConnection? _connection;
     private readonly IServiceProvider _serviceProvider;
-    private IChannel? _channel;
+    //private IChannel? _channel;
     private readonly RabbitMqSettings _settings;
     private readonly RabbitMqListenerOptions _map;
     private readonly string _connectionString;
+    private readonly List<IChannel> _channels = new();
 
     public RabbitMqListener(
         ILogger<RabbitMqListener> logger,
@@ -44,35 +45,36 @@ public class RabbitMqListener : BackgroundService
 
         _connection = await _factory.CreateConnectionAsync(stoppingToken);
 
-        foreach (var processor in _map.QueueMappings)
+        foreach (var mapping in _map.QueueMappings)
         {
-            var processorType = processor.Key;
-            var queueKey = processor.Value;
+            var processorType = mapping.Key;
+            var queueKey = mapping.Value;
             var queueName = _settings.Queues[queueKey];
             var exchangeName = _settings.DeleteEntityExchange;
 
-            _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
-            
-            await _channel.ExchangeDeclareAsync(
+            var channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
+            _channels.Add(channel);
+
+            await channel.ExchangeDeclareAsync(
                 exchange: exchangeName,
                 type: ExchangeType.Direct,
                 durable: true
             );
 
-            await _channel.QueueDeclareAsync(
+            await channel.QueueDeclareAsync(
                 queue: queueName,
                 durable: true,
                 exclusive: false,
                 autoDelete: false
             );
 
-            await _channel.QueueBindAsync(
+            await channel.QueueBindAsync(
                queue: queueName,
                exchange: exchangeName,
                routingKey: queueName
             );
 
-            var consumer = new AsyncEventingBasicConsumer(_channel);
+            var consumer = new AsyncEventingBasicConsumer(channel);
 
             consumer.ReceivedAsync += async (_, @event) =>
             {
@@ -86,7 +88,7 @@ public class RabbitMqListener : BackgroundService
                     
                     await processor.ProcessAsync(msg, stoppingToken);
 
-                    await _channel.BasicAckAsync(
+                    await channel.BasicAckAsync(
                         @event.DeliveryTag,
                         multiple: false,
                         cancellationToken: stoppingToken
@@ -95,7 +97,7 @@ public class RabbitMqListener : BackgroundService
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error processing deletion message");
-                    await _channel.BasicNackAsync(
+                    await channel.BasicNackAsync(
                         @event.DeliveryTag,
                         multiple: false,
                         requeue: true,
@@ -103,7 +105,7 @@ public class RabbitMqListener : BackgroundService
                     );
                 }
             };
-            await _channel.BasicConsumeAsync(
+            await channel.BasicConsumeAsync(
                 queue: queueName,
                 autoAck: false,
                 consumer: consumer,
@@ -116,12 +118,11 @@ public class RabbitMqListener : BackgroundService
     {
         try
         {
-            if (_channel != null)
+            foreach (var channel in _channels)
             {
-                await _channel.CloseAsync();
-                _channel.Dispose();
+                await channel.CloseAsync();
+                channel.Dispose();
             }
-
             if (_connection != null)
             {
                 await _connection.CloseAsync();
