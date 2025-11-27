@@ -86,7 +86,6 @@ public class EventGatewayController : ControllerBase
         {
             if (!string.IsNullOrEmpty(request.OldImagePath))
             {
-                //var fileName = Path.GetFileName(request.OldImagePath);
                 await _apiClient.DeleteImageAsync(request.OldImagePath);
             }
 
