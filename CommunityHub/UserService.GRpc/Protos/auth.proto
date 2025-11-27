@@ -1,0 +1,46 @@
+﻿syntax = "proto3";
+
+import "Protos/common.proto";
+
+option csharp_namespace = "UserService.GRpc";
+
+message TokenModel {
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+message AuthRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message RefreshRequest {
+    string refreshToken = 1;
+}
+
+message GetTokensReply {
+    oneof result {
+        TokenModel tokens = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+message RefreshReply {
+    oneof result {
+        TokenModel tokens = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+message ValidateBasicReply {
+    oneof result {
+        bool success = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+service AuthService {
+    rpc GetTokens(AuthRequest) returns (GetTokensReply);
+    rpc RefreshToken(RefreshRequest) returns (RefreshReply);
+    rpc ValidateBasic(AuthRequest) returns (ValidateBasicReply);
+}

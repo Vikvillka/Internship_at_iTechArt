@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
-using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
-using CommunityHub.Contracts.DTOs.Enums;
-using CommunityHub.Contracts.DTOs.EventDTOs;
-using Gateway.API.Clients;
-using Gateway.API.DTOs.CommunitiesDTOs;
-using Gateway.API.DTOs.EventDTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Refit;
+
+using CommunityHub.Contracts.DTOs.Enums;
+using CommunityHub.Contracts.DTOs.EventDTOs;
+using Gateway.API.Clients;
+using Gateway.API.DTOs.EventDTOs;
 
 namespace Gateway.API.Controllers;
 

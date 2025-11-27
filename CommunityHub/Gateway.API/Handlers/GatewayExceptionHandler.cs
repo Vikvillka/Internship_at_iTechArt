@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Gateway.API.Extensions.Mappings.Convertors;
+using Grpc.Core;
+using Microsoft.AspNetCore.Diagnostics;
 using Refit;
 using System.Text.Json.Nodes;
 
@@ -37,11 +39,7 @@ public class GatewayExceptionHandler : IExceptionHandler
                     if (problem?.Errors is not null)
                         problemDetails.Extensions["errors"] = problem.Errors;
 
-                    _logger.LogWarning(validationException,
-                        "ValidationApiException for {Method} {Path} with status = {Status}",
-                        httpContext.Request.Method,
-                        httpContext.Request.Path,
-                        problemDetails.Status);
+                    LogWarning(problemDetails.Title, problemDetails.Status ?? statusCode, httpContext);
                     break;
                 }
             case ApiException apiException:
@@ -59,11 +57,21 @@ public class GatewayExceptionHandler : IExceptionHandler
                         Instance = httpContext.Request.Path
                     };
 
-                    _logger.LogWarning(apiException,
-                        "CommunityHub.API exception for {Method} {Path} with status = {Status}",
-                        httpContext.Request.Method,
-                        httpContext.Request.Path,
-                        problemDetails.Status);
+                    LogWarning(problemDetails.Title, problemDetails.Status ?? statusCode, httpContext);
+                    break;
+                }
+            case GrpcProblemDetailsException grpcException:
+                {
+                    problemDetails = new()
+                    {
+                        Title = grpcException.Title,
+                        Detail = grpcException.Message,
+                        Status = grpcException.Status,
+                        Instance = grpcException.Instance ?? httpContext.Request.Path
+                    };
+
+                    statusCode = grpcException.Status;
+                    LogWarning(problemDetails.Title, problemDetails.Status ?? statusCode, httpContext);
                     break;
                 }
             default:
@@ -92,5 +100,16 @@ public class GatewayExceptionHandler : IExceptionHandler
             .WriteAsJsonAsync(problemDetails, cancellationToken);
 
         return true;
+    }
+
+    private void LogWarning(string title, int statusCode, HttpContext context)
+    {
+        _logger.LogWarning(
+            "{Title} for {Method} {Path} with status = {statusCode}",
+            title,
+            context.Request.Method,
+            context.Request.Path,
+            statusCode
+        );
     }
 }

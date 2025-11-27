@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+package common;
+
+option csharp_namespace = "UserService.GRpc.Common";
+
+message ProblemDetails {
+    string title = 1;
+    string detail = 2;
+    int32 status = 3;
+    string instance = 4;
+    string type = 5;
+}
