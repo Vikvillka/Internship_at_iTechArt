@@ -65,7 +65,5 @@ public class RabbitMqPublisher : IRabbitMqPublisher
             routingKey: routingKey,
             body: body
         );
-
-        _logger.LogWarning("Publishing with routingKey = " + routingKey);
     }
 }

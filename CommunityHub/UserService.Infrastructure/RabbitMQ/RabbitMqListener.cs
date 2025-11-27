@@ -16,7 +16,6 @@ public class RabbitMqListener : BackgroundService
     private readonly ILogger<RabbitMqListener> _logger;
     private IConnection? _connection;
     private readonly IServiceProvider _serviceProvider;
-    //private IChannel? _channel;
     private readonly RabbitMqSettings _settings;
     private readonly RabbitMqListenerOptions _map;
     private readonly string _connectionString;
