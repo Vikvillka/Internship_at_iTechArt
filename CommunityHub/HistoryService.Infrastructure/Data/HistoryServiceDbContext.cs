@@ -10,7 +10,7 @@ public class HistoryServiceDbContext : DbContext
     public HistoryServiceDbContext(DbContextOptions<HistoryServiceDbContext> options)
         : base(options) { }
 
-    public DbSet<HistoryRecord> HistoryRecords => Set<HistoryRecord>();
+    public DbSet<HistoryRecord> HistoryRecords { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

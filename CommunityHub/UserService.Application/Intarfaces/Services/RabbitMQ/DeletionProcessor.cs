@@ -5,7 +5,7 @@ using HistoryService.Contracts.DeleteEntityDTOs;
 using UserService.Application.Intarfaces.RabbitMQ;
 using UserService.Application.Intarfaces.Repositories;
 
-namespace UserService.Infrastructure.RabbitMQ;
+namespace UserService.Application.Intarfaces.Services.RabbitMQ;
 
 public class DeletionProcessor : IEventProcessor
 {

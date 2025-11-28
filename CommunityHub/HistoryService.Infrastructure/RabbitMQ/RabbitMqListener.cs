@@ -75,7 +75,7 @@ public class RabbitMqListener : BackgroundService
                 try
                 {
                     var msg = Encoding.UTF8.GetString(@event.Body.ToArray());
-                    _logger.LogInformation("Recieved deletion message: " + msg);
+                    _logger.LogInformation("Recieved history message: " + msg);
 
                     using var scope = _serviceProvider.CreateScope();
                     var processor = scope.ServiceProvider.GetKeyedService<IEventProcessor>(processorKey);
@@ -90,7 +90,7 @@ public class RabbitMqListener : BackgroundService
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error processing deletion message");
+                    _logger.LogError(ex, "Error processing history message");
                     await channel.BasicNackAsync(
                         @event.DeliveryTag,
                         multiple: false,

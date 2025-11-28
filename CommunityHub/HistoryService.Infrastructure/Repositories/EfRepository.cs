@@ -1,19 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HistoryService.Application.Intefaces.Repositories;
+using HistoryService.Domain.Entities;
+using HistoryService.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
-using UserService.Application.Intarfaces.Repositories;
-using UserService.Domain.Entities;
-using UserService.Infrastructure.Data;
+namespace HistoryService.Infrastructure.Repositories;
 
-namespace UserService.Infrastructure.Repositories;
-
-public class EfRepository<T> : IRepository<T> where T : BaseEntity
+public class EfRepository<T> : IRepository<T> where T : HistoryRecord
 {
-    protected readonly UserServiceDbContext _context;
+    protected readonly HistoryServiceDbContext _context;
     protected readonly DbSet<T> _dbSet;
     
     protected virtual IQueryable<T> CollectionWithIncludes => _dbSet;
 
-    public EfRepository(UserServiceDbContext context)
+    public EfRepository(HistoryServiceDbContext context)
     {
         _context = context;
         _dbSet = context.Set<T>();

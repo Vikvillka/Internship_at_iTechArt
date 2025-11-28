@@ -5,6 +5,7 @@ using UserService.Application.Intarfaces.RabbitMQ;
 using UserService.Application.Intarfaces.Repositories;
 using UserService.Application.Intarfaces.Services;
 using UserService.Application.Intarfaces.Services.Cache;
+using UserService.Application.Intarfaces.Services.RabbitMQ;
 using UserService.Application.Services;
 using UserService.GRpc.Interceptors;
 using UserService.Infrastructure.Data;

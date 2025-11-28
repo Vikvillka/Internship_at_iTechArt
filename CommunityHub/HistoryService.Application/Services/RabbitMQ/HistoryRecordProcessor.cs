@@ -1,23 +1,23 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-using HistoryService.Contracts.HistoryRecordDTOs;
 using HistoryService.Domain.Entities;
-using HistoryService.Infrastructure.Data;
 using HistoryService.Application.Intefaces.RabbitMQ;
+using HistoryService.Application.Intefaces.Repositories;
+using HistoryService.Contracts.HistoryRecordDTOs;
 
-namespace HistoryService.Infrastructure.RabbitMQ;
+namespace HistoryService.Application.Services.RabbitMQ;
 
 public class HistoryRecordProcessor : IEventProcessor
 {
-    private readonly HistoryServiceDbContext _db;
+    private readonly IHistoryRecordRepository _repository;
     private readonly ILogger<HistoryRecordProcessor> _logger;
 
     public HistoryRecordProcessor(
-        HistoryServiceDbContext db,
+        IHistoryRecordRepository repository,
         ILogger<HistoryRecordProcessor> logger)
     {
-        _db = db;
+        _repository = repository;
         _logger = logger;
     }
 
@@ -35,9 +35,7 @@ public class HistoryRecordProcessor : IEventProcessor
             TriggeredBy = dto.TriggeredBy
         };
 
-        _db.HistoryRecords.Add(entity);
-        await _db.SaveChangesAsync(cancellationToken);
-
+        await _repository.CreateAsync(entity);
         _logger.LogInformation("Saved history record: {Type}", dto.Type);
     }
 }
