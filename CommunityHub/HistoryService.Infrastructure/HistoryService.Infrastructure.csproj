@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HistoryService.Application\HistoryService.Application.csproj" />
     <ProjectReference Include="..\HistoryService.Contracts\HistoryService.Contracts.csproj" />
     <ProjectReference Include="..\HistoryService.Domain\HistoryService.Domain.csproj" />
   </ItemGroup>

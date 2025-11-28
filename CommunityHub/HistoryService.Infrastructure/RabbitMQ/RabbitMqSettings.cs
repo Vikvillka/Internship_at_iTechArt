@@ -2,6 +2,6 @@
 
 public class RabbitMqSettings
 {
-    public string HistoryQueue { get; set; } = string.Empty;
+    public Dictionary<string, string> Queues { get; set; } = [];
     public string HistoryExchange { get; set; } = string.Empty;
 }

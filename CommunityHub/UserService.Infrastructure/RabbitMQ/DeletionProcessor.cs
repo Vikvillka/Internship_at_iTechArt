@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 using HistoryService.Contracts.DeleteEntityDTOs;
 using UserService.Application.Intarfaces.RabbitMQ;
@@ -21,7 +22,7 @@ public class DeletionProcessor : IEventProcessor
 
     public async Task ProcessAsync(string message, CancellationToken cancellationToken)
     {
-        var dto = System.Text.Json.JsonSerializer.Deserialize<DeleteEntityDTO>(message);
+        var dto = JsonSerializer.Deserialize<DeleteEntityDTO>(message);
         if (dto != null && dto.EntityType == "Community")
         {
             var subscriptions = await _repository.GetByCommunityIdAsync(dto.EntityId);

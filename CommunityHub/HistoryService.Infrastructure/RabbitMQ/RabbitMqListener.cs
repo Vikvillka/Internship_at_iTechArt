@@ -6,22 +6,19 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
-using System.Text.Json;
 
-using HistoryService.Contracts.HistoryRecordDTOs;
-using HistoryService.Domain.Entities;
-using HistoryService.Infrastructure.Data;
+using HistoryService.Application.Intefaces.RabbitMQ;
 
 namespace HistoryService.Infrastructure.RabbitMQ;
 
 public class RabbitMqListener : BackgroundService
 {
     private readonly RabbitMqSettings _settings;
-    private IConnection? _connection;
-    private IChannel? _channel;
     private readonly ILogger<RabbitMqListener> _logger;
     private readonly IServiceProvider _serviceProvider;
     private readonly string _connectionString;
+    private IConnection? _connection;
+    private readonly List<IChannel> _channels = [];
 
     public RabbitMqListener(
         IOptions<RabbitMqSettings> options,
@@ -43,90 +40,84 @@ public class RabbitMqListener : BackgroundService
         };
 
         _connection = await factory.CreateConnectionAsync(stoppingToken);
-        _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
 
-        await _channel.ExchangeDeclareAsync(
-            exchange: _settings.HistoryExchange,
-            type: ExchangeType.Direct,
-            durable: true
-        );
-        
-        await _channel.QueueDeclareAsync(
-            queue: _settings.HistoryQueue,
-            durable: true,
-            exclusive: false,
-            autoDelete: false
-        );
-
-        await _channel.QueueBindAsync(
-            queue: _settings.HistoryQueue,
-            exchange: _settings.HistoryExchange,
-            routingKey: _settings.HistoryQueue
-        );
-
-        var consumer = new AsyncEventingBasicConsumer(_channel);
-
-        consumer.ReceivedAsync += async (_, ea) =>
+        foreach (var queue in _settings.Queues)
         {
-            try
-            {
-                var message = Encoding.UTF8.GetString(ea.Body.ToArray());
-                var dto = JsonSerializer.Deserialize<HistoryRecordDTO>(message);
+            var processorKey = queue.Key;
+            var queueName = queue.Value;
 
-                if (dto != null)
+            var channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
+            _channels.Add(channel);
+
+            await channel.ExchangeDeclareAsync(
+                exchange: _settings.HistoryExchange,
+                type: ExchangeType.Direct,
+                durable: true
+            );
+
+            await channel.QueueDeclareAsync(
+                queue: queueName,
+                durable: true,
+                exclusive: false,
+                autoDelete: false
+            );
+
+            await channel.QueueBindAsync(
+                queue: queueName,
+                exchange: _settings.HistoryExchange,
+                routingKey: queueName
+            );
+
+            var consumer = new AsyncEventingBasicConsumer(channel);
+
+            consumer.ReceivedAsync += async (_, @event) =>
+            {
+                try
                 {
+                    var msg = Encoding.UTF8.GetString(@event.Body.ToArray());
+                    _logger.LogInformation("Recieved deletion message: " + msg);
+
                     using var scope = _serviceProvider.CreateScope();
-                    var db = scope.ServiceProvider.GetRequiredService<HistoryServiceDbContext>();
+                    var processor = scope.ServiceProvider.GetKeyedService<IEventProcessor>(processorKey);
 
-                    var entity = new HistoryRecord
-                    {
-                        HistoryEventType = dto.Type,
-                        Date = dto.Date,
-                        Payload = dto.Payload,
-                        TriggeredBy = dto.TriggeredBy
-                    };
+                    await processor.ProcessAsync(msg, stoppingToken);
 
-                    db.HistoryRecords.Add(entity);
-                    await db.SaveChangesAsync(stoppingToken);
-
-                    _logger.LogInformation("Saved history record: {Type}", dto.Type);
+                    await channel.BasicAckAsync(
+                        @event.DeliveryTag,
+                        multiple: false,
+                        cancellationToken: stoppingToken
+                    );
                 }
-
-                await _channel.BasicAckAsync(ea.DeliveryTag, false, stoppingToken);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error processing history message");
-                if (_channel != null)
+                catch (Exception ex)
                 {
-                    await _channel.BasicNackAsync(
-                        ea.DeliveryTag,
+                    _logger.LogError(ex, "Error processing deletion message");
+                    await channel.BasicNackAsync(
+                        @event.DeliveryTag,
                         multiple: false,
                         requeue: true,
                         cancellationToken: stoppingToken
                     );
                 }
-            }
-        };
+            };
 
-        await _channel.BasicConsumeAsync(
-            queue: _settings.HistoryQueue,
-            autoAck: false,
-            consumer: consumer,
-            cancellationToken: stoppingToken
-        );
+            await channel.BasicConsumeAsync(
+                queue: queueName,
+                autoAck: false,
+                consumer: consumer,
+                cancellationToken: stoppingToken
+            );
+        }
     }
 
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
         try
         {
-            if (_channel != null)
+            foreach(var channel in _channels)
             {
-                await _channel.CloseAsync();
-                _channel.Dispose();
+                await channel.CloseAsync();
+                channel.Dispose();
             }
-
             if (_connection != null)
             {
                 await _connection.CloseAsync();

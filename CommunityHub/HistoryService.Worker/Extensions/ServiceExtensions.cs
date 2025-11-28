@@ -2,6 +2,7 @@
 
 using HistoryService.Infrastructure.Data;
 using HistoryService.Infrastructure.RabbitMQ;
+using HistoryService.Application.Intefaces.RabbitMQ;
 
 namespace HistoryService.Worker.Extensions;
 
@@ -16,6 +17,7 @@ public static class ServiceExtensions
             ));
 
         services.Configure<RabbitMqSettings>(config.GetSection("RabbitMq"));
+        services.AddKeyedScoped<IEventProcessor, HistoryRecordProcessor>("HistoryQueue");
         services.AddHostedService<RabbitMqListener>();
     }
 }
