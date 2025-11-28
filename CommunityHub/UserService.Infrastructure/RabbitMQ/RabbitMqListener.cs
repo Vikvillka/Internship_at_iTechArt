@@ -17,7 +17,6 @@ public class RabbitMqListener : BackgroundService
     private IConnection? _connection;
     private readonly IServiceProvider _serviceProvider;
     private readonly RabbitMqSettings _settings;
-    private readonly RabbitMqListenerOptions _map;
     private readonly string _connectionString;
     private readonly List<IChannel> _channels = new();
 
@@ -25,14 +24,12 @@ public class RabbitMqListener : BackgroundService
         ILogger<RabbitMqListener> logger,
         IConfiguration config,
         IServiceProvider serviceProvider,
-        IOptions<RabbitMqSettings> settings,
-        IOptions<RabbitMqListenerOptions> map)
+        IOptions<RabbitMqSettings> settings)
     {
         _logger = logger;
         _serviceProvider = serviceProvider;
         _connectionString = config.GetConnectionString("messaging")!;
         _settings = settings.Value;
-        _map = map.Value;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -44,18 +41,16 @@ public class RabbitMqListener : BackgroundService
 
         _connection = await _factory.CreateConnectionAsync(stoppingToken);
 
-        foreach (var mapping in _map.QueueMappings)
+        foreach (var queue in _settings.Queues)
         {
-            var processorType = mapping.Key;
-            var queueKey = mapping.Value;
-            var queueName = _settings.Queues[queueKey];
-            var exchangeName = _settings.DeleteEntityExchange;
+            var processorKey = queue.Key;
+            var queueName = queue.Value;
 
             var channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
             _channels.Add(channel);
 
             await channel.ExchangeDeclareAsync(
-                exchange: exchangeName,
+                exchange: _settings.DeleteEntityExchange,
                 type: ExchangeType.Direct,
                 durable: true
             );
@@ -69,7 +64,7 @@ public class RabbitMqListener : BackgroundService
 
             await channel.QueueBindAsync(
                queue: queueName,
-               exchange: exchangeName,
+               exchange: _settings.DeleteEntityExchange,
                routingKey: queueName
             );
 
@@ -83,7 +78,7 @@ public class RabbitMqListener : BackgroundService
                     _logger.LogInformation("Recieved deletion message: " + msg);
                     
                     using var scope = _serviceProvider.CreateScope();
-                    var processor = (IEventProcessor)scope.ServiceProvider.GetRequiredService(processorType);
+                    var processor = scope.ServiceProvider.GetKeyedService<IEventProcessor>(processorKey);
                     
                     await processor.ProcessAsync(msg, stoppingToken);
 
