@@ -14,5 +14,7 @@ public class EventResponse
     public string Status { get; set; } = string.Empty;
     public int Duration { get; set; }  
     public string? ImagePath { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
     public List<TagResponse> Tags { get; set; } = [];
 }

@@ -43,6 +43,9 @@ public static class DataInitializer
             Address = "33 Sverdlovo Street",
             MaxParticipants = 10,
             Status = EventStatus.Planned,
+            Latitude = 22.0000,
+            Longitude = 22.0000,
+            Duration = 120,
             CommunityId = communityId
         };
 

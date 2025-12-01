@@ -20,6 +20,8 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
         builder.Property(e => e.ImagePath).HasMaxLength(250).IsRequired(false);
         builder.Property(e => e.CreatedAt).IsRequired();
         builder.Property(e => e.UpdatedAt).IsRequired();
+        builder.Property(e => e.Latitude).HasColumnType("float").IsRequired(false);
+        builder.Property(e => e.Longitude).HasColumnType("float").IsRequired(false);
 
         builder.HasQueryFilter(e => !e.Community.IsDeleted);
     }
