@@ -58,7 +58,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPost("create")]
-    [Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(GatewayEventResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromForm] GatewayCreateEventRequest request)
     {
@@ -78,7 +78,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPut("update")]
-    [Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromForm] GatewayUpdateEventRequest request)

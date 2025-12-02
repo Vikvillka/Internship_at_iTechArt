@@ -15,7 +15,7 @@ public class EventRepository : EfRepository<Event>, IEventRepository
     }
 
     protected override IQueryable<Event> CollectionWithIncludes =>
-        _dbSet.Include(e => e.Tags);
+        _dbSet.Include(e => e.Tags).Include(e => e.Community);
 
     public async Task<List<Event>> GetAllPlannedAsync()
     {

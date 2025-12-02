@@ -20,7 +20,7 @@ public class ImageService : IImageService
         await using var stream = new FileStream(filePath, FileMode.Create);
         await file.CopyToAsync(stream);
 
-        var imageUrl = $"/images/{fileName}";
+        var imageUrl = $"{fileName}";
         return new ImageUploadResponse { ImageUrl = imageUrl };
     }
 

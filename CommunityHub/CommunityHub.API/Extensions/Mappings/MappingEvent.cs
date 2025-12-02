@@ -21,6 +21,7 @@ public static class MappingEvent
             ImagePath = eventModel.ImagePath,
             Latitude = eventModel.Latitude,
             Longitude = eventModel.Longitude,
+            CommunityName = eventModel.Community?.Name,
             Tags = eventModel.Tags.Select(t => t.FromEntity()).ToList()
         };
     }
