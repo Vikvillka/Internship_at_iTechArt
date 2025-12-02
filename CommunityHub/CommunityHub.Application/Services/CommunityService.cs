@@ -78,6 +78,7 @@ public class CommunityService : ICommunityService
 
     public async Task<PagedResult<Community>> PagedSearchAsync(CommunitySearchRequest request)
     {
+        request.PageSize = Math.Clamp(request.PageSize, 1, 100);
         return await _communityRepository.PagedSearchAsync(request);
     }
 }

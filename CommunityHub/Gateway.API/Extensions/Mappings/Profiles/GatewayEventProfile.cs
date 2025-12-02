@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using Gateway.API.DTOs.EventDTOs;
 
 using CommunityHub.Contracts.DTOs.EventDTOs;
+using Gateway.API.DTOs.Common;
+using Gateway.API.DTOs.EventDTOs;
 
 namespace Gateway.API.Extensions.Mappings.Profiles;
 
@@ -15,5 +16,7 @@ public class GatewayEventProfile : Profile
             .ForMember(dest => dest.ImagePath, opt => opt.Ignore());
         CreateMap<GatewayUpdateEventRequest, UpdateEventRequest>()
             .ForMember(dest => dest.ImagePath, opt => opt.Ignore());
+        CreateMap<GatewayEventSearchRequest, EventSearchRequest>();
+        CreateMap<CommunityHub.Contracts.DTOs.Common.PagedResponse<EventResponse>, PagedResponse<GatewayEventResponse>>();
     }
 }

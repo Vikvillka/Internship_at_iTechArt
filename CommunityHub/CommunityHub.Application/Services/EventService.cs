@@ -100,6 +100,7 @@ public class EventService : IEventService
 
     public async Task<PagedResult<Event>> PagedSearchAsync(EventSearchRequest request)
     {
+        request.PageSize = Math.Clamp(request.PageSize, 1, 100);
         return await _eventRepository.PagedSearchAsync(request);
     }
 }

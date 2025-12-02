@@ -9,6 +9,7 @@ using Gateway.API.DTOs.EventDTOs;
 using CommunityHub.Contracts.DTOs.EventDTOs;
 using Gateway.API.DTOs.UserDTOs;
 using Gateway.API.DTOs.ImageDTOs;
+using Gateway.API.DTOs.Common;
 
 namespace Gateway.API.Clients;
 
@@ -36,6 +37,9 @@ public interface IBestApiClient
 
     [Delete(CommunityPath + "/delete/{id}")]
     Task DeleteCommunityByIdAsync(Guid id);
+
+    [Post(CommunityPath + "/search")]
+    Task<PagedResponse<GatewayCommunityResponse>> SearchCommunitiesAsync([Body] CommunitySearchRequest request);
     #endregion
 
     #region Event
@@ -56,6 +60,9 @@ public interface IBestApiClient
 
     [Patch(EventPath + "/{id}/status")]
     Task UpdateEventStatusAsync(Guid id, [Body] EventStatusDto newStatus);
+
+    [Post(EventPath + "/search")]
+    Task<PagedResponse<GatewayEventResponse>> SearchEventsAsync([Body] EventSearchRequest request);
     #endregion
 
     #region Image

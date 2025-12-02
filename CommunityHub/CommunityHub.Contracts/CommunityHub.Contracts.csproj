@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageId>CommunityHub.Contract.Package</PackageId>
-	<Version>1.1.3</Version>
+	<Version>1.1.4</Version>
 	<Authors>Vikvillka</Authors>
 	<Description>Shared request/response models for Gateway.Api</Description>
 	<PackageOutputPath>../../packages</PackageOutputPath>

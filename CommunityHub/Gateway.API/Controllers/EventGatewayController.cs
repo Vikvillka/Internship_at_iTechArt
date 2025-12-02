@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
+using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
+using CommunityHub.Contracts.DTOs.Enums;
+using CommunityHub.Contracts.DTOs.EventDTOs;
+using Gateway.API.Clients;
+using Gateway.API.DTOs.Common;
+using Gateway.API.DTOs.CommunitiesDTOs;
+using Gateway.API.DTOs.EventDTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Refit;
-
-using CommunityHub.Contracts.DTOs.Enums;
-using CommunityHub.Contracts.DTOs.EventDTOs;
-using Gateway.API.Clients;
-using Gateway.API.DTOs.EventDTOs;
 
 namespace Gateway.API.Controllers;
 
@@ -56,7 +58,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPost("create")]
-    //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(GatewayEventResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromForm] GatewayCreateEventRequest request)
     {
@@ -76,7 +78,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPut("update")]
-    //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromForm] GatewayUpdateEventRequest request)
@@ -108,5 +110,16 @@ public class EventGatewayController : ControllerBase
     {
         await _apiClient.UpdateEventStatusAsync(id, newStatus);
         return Ok();
+    }
+
+    [HttpPost("search")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(PagedResponse<GatewayEventResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Search([FromBody] GatewayEventSearchRequest request)
+    {
+        var apiRequest = _mapper.Map<EventSearchRequest>(request);
+        var result = await _apiClient.SearchEventsAsync(apiRequest);
+        var gatewayResponse = _mapper.Map<PagedResponse<GatewayEventResponse>>(result);
+        return Ok(gatewayResponse);
     }
 }
