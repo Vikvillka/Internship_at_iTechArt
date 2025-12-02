@@ -1,12 +1,12 @@
 using AutoMapper;
+using CommunityHub.API.Extensions.Mappings;
+using CommunityHub.Application.Interfaces.Services;
+using CommunityHub.Contracts.DTOs.Common;
+using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
+using CommunityHub.Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
-using CommunityHub.API.Extensions.Mappings;
-using CommunityHub.Application.Interfaces.Services;
-using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.API.Controllers;
 
@@ -70,5 +70,14 @@ public class CommunityController : ControllerBase
     {
         await _service.DeleteAsync(id);
         return NoContent();
+    }
+
+    [HttpPost("search")]
+    [ProducesResponseType(typeof(PagedResponse<CommunityResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Search(CommunitySearchRequest request)
+    {
+        var result = await _service.PagedSearchAsync(request);
+        var response = result.ToPagedResponse(e => e.FromEntity());
+        return Ok(response);
     }
 }

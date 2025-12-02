@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-
+﻿using CommunityHub.Application.Interfaces.Repositories;
+using CommunityHub.Contracts.DTOs.EventDTOs;
+using CommunityHub.Domain.Common;
 using CommunityHub.Domain.Entities;
-using CommunityHub.Application.Interfaces.Repositories;
-using CommunityHub.Infrastructure.Data;
 using CommunityHub.Domain.Enums;
+using CommunityHub.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommunityHub.Infrastructure.Repositories;
 
@@ -41,5 +42,44 @@ public class EventRepository : EfRepository<Event>, IEventRepository
             .SetProperty(e => e.Status, newStatus));
 
         return update != 0;
+    }
+
+    public async Task<PagedResult<Event>> PagedSearchAsync(EventSearchRequest request)
+    {
+        var query = CollectionWithIncludes.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(request.Keywords))
+        {
+            query = query.Where(e =>
+                EF.Functions.ILike(e.Title, $"%{request.Keywords}%") ||
+                EF.Functions.ILike(e.Description, $"%{request.Keywords}%"));
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.City))
+            query = query.Where(e => e.Community.City == request.City);
+
+        if (!string.IsNullOrWhiteSpace(request.Country))
+            query = query.Where(e => e.Community.Country == request.Country);
+
+        if (request.DateFrom.HasValue)
+            query = query.Where(e => e.EventDate >= request.DateFrom.Value);
+
+        if (request.DateTo.HasValue)
+            query = query.Where(e => e.EventDate <= request.DateTo.Value);
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize)
+            .ToListAsync();
+
+        return new PagedResult<Event>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            Page = request.Page,
+            PageSize = request.PageSize
+        };
     }
 }

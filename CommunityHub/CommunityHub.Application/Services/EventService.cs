@@ -1,5 +1,7 @@
 ﻿using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Interfaces.Services;
+using CommunityHub.Contracts.DTOs.EventDTOs;
+using CommunityHub.Domain.Common;
 using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Enums;
 using CommunityHub.Domain.Exceptions;
@@ -94,6 +96,11 @@ public class EventService : IEventService
         }
 
         throw new ConflictException("Conflict", $"Event with title '{eventEntity.Title}' and time '{eventEntity.EventDate}' is already taken");
+    }
+
+    public async Task<PagedResult<Event>> PagedSearchAsync(EventSearchRequest request)
+    {
+        return await _eventRepository.PagedSearchAsync(request);
     }
 }
 

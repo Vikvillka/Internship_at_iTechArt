@@ -1,5 +1,8 @@
 ﻿using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Interfaces.Services;
+using CommunityHub.Contracts.DTOs.Common;
+using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
+using CommunityHub.Domain.Common;
 using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Exceptions;
 
@@ -71,5 +74,10 @@ public class CommunityService : ICommunityService
         {
             throw new ConflictException("Conflict", $"Community with name '{community.Name}' is already taken");
         }
+    }
+
+    public async Task<PagedResult<Community>> PagedSearchAsync(CommunitySearchRequest request)
+    {
+        return await _communityRepository.PagedSearchAsync(request);
     }
 }
