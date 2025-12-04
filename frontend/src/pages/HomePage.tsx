@@ -4,6 +4,7 @@ import { Event } from '../models/Event';
 import { Container, Typography, CircularProgress, Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import EventCard from '../components/event/eventCard/EventCard';
+import { loadingBox, errorContainer, errorText, pageContainer } from '../styles/common';
 
 const HomePage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -26,7 +27,7 @@ const HomePage: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
+      <Box sx={loadingBox}>
         <CircularProgress />
       </Box>
     );
@@ -34,8 +35,8 @@ const HomePage: React.FC = () => {
 
   if (error) {
     return (
-      <Container sx={{ mt: 5 }}>
-        <Typography variant='h6' color='error'>
+      <Container sx={errorContainer}>
+        <Typography variant='h6' sx={errorText}>
           {error}
         </Typography>
       </Container>
@@ -43,7 +44,7 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <Container sx={{ mt: 5 }} disableGutters>
+    <Container sx={pageContainer} disableGutters>
       <Typography variant='h4' gutterBottom>
         Events
       </Typography>
