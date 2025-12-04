@@ -1,4 +1,4 @@
-import { TagApiModel } from "./Tag";
+import { TagApiModel } from './Tag';
 
 export interface Event {
   id: string;
