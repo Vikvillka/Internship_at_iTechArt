@@ -7,4 +7,5 @@ public interface IParticipationGrpcClient
     Task<CreateParticipationReply> ParticipateAsync(CreateParticipationRequest request);
     Task<CancelParticipationReply> CancelParticipationAsync(CreateParticipationRequest request);
     Task<GetUserParticipationsReply> GetParticipationsByUserAsync(GetUserParticipationsRequest request);
+    Task<GetEventParticipantsCountReply> GetEventParticipantsCountAsync(GetEventParticipantsCountRequest request);
 }

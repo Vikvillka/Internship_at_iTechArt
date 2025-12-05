@@ -20,6 +20,10 @@ message GetUserParticipationsRequest {
     string userId = 1;
 }
 
+message GetEventParticipantsCountRequest {
+    string eventId = 1;
+}
+
 message CreateParticipationReply {
     oneof result {
         ParticipationModel participation = 1;
@@ -30,6 +34,13 @@ message CreateParticipationReply {
 message CancelParticipationReply {
     oneof result {
         bool success = 1;
+        common.ProblemDetails problem = 2;
+    }
+}
+
+message GetEventParticipantsCountReply {
+    oneof result {
+        int32 count = 1;
         common.ProblemDetails problem = 2;
     }
 }
@@ -49,4 +60,5 @@ service ParticipationService {
     rpc Participate(CreateParticipationRequest) returns (CreateParticipationReply);
     rpc CancelParticipation(CreateParticipationRequest) returns (CancelParticipationReply);
     rpc GetParticipationsByUser(GetUserParticipationsRequest) returns (GetUserParticipationsReply);
+    rpc GetEventParticipantsCount(GetEventParticipantsCountRequest) returns (GetEventParticipantsCountReply);
 }

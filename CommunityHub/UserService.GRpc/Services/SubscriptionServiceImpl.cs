@@ -53,4 +53,16 @@ public class SubscriptionServiceImpl : SubscriptionService.SubscriptionServiceBa
             Subscriptions = list
         };
     }
+
+    public override async Task<GetCommunitySubscriptionsCountReply> GetCommunitySubscriptionsCount(GetCommunitySubscriptionsCountRequest request, ServerCallContext context)
+    {
+        var count = await _service.GetCommunitySubscriptonsCountAsync(
+            Guid.Parse(request.CommunityId)
+        );
+
+        return new GetCommunitySubscriptionsCountReply
+        {
+            Count = count
+        };
+    }
 }

@@ -43,4 +43,11 @@ public class EventParticipationRepository : EfRepository<EventParticipation>, IE
 
         return update != 0;
     }
+
+    public async Task<int> GetEventParticipantsCountAsync(Guid eventId)
+    {
+        return await _dbSet
+            .Where(p => p.EventId == eventId && p.IsConfirmed)
+            .CountAsync();
+    }
 }
