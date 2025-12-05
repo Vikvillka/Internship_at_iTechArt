@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Event } from '../../../models/Event';
 import { Card, CardContent, Box, CardMedia, Typography } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import { formatDate } from '../../../helpers/formatDate';
 import { getEventImageUrl } from '../../../helpers/getEventImageUrl';
 import { useStyles } from './EventCard.styles';
+import { participationApi } from '../../../api/participation';
 
 interface EventCardProps {
   event: Event;
@@ -13,6 +14,16 @@ interface EventCardProps {
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const classes = useStyles();
   const imageUrl = getEventImageUrl(event.imagePath || '');
+  const [participantCount, setParticipantCount] = useState<number>(0);
+
+  useEffect(() => {
+    participationApi.getParticipationCounts(event.id)
+      .then((data) => {
+        if (data.length > 0) {
+          setParticipantCount(data[0].count);
+        }
+      });
+  }, [event.id]);
 
   return (
     <Card className={classes.card}>
@@ -27,10 +38,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         <Typography className={classes.communityName} variant='subtitle2' color='text.secondary'>
           {event.communityName}
         </Typography>
-        {/* I forgot to get the API data on how many participants there are. That's why it's a stub now */}
         <Box className={classes.participants}>
           <PeopleIcon fontSize='small' sx={{ mr: 1 }} />
-          <Typography variant='body2'>{event.duration || 0} attendees</Typography>
+          <Typography variant='body2'>{participantCount} attendees</Typography>
         </Box>
       </CardContent>
     </Card>
