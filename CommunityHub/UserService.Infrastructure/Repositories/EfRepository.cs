@@ -4,7 +4,6 @@ using UserService.Application.Intarfaces.Repositories;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.Data;
 
-
 namespace UserService.Infrastructure.Repositories;
 
 public class EfRepository<T> : IRepository<T> where T : BaseEntity

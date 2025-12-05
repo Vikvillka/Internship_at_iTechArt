@@ -18,6 +18,16 @@ public class SwaggerConfiguration : IConfigureOptions<SwaggerGenOptions>
             BearerFormat = "JWT"
         });
 
+        options.AddSecurityDefinition("Basic", new OpenApiSecurityScheme
+        {
+            Description = "Basic Authentication header. " +
+                              "Example: \"Authorization: Basic {base64(username:password)}\"",
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "basic"
+        });
+
         options.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {
@@ -29,8 +39,20 @@ public class SwaggerConfiguration : IConfigureOptions<SwaggerGenOptions>
                         Id = "Bearer"
                     }
                 },
-                Array.Empty<string>()
+                []
+            },
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Basic"
+                    }
+                },
+                []
             }
         });
+
     }
 }

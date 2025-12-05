@@ -4,6 +4,7 @@ using UserService.GRpc.Server.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.AddServiceDefaults();
 
 if (builder.Configuration.GetValue<bool>("IsRunOnAspire"))
     builder.AddRedisDistributedCache("redis");
