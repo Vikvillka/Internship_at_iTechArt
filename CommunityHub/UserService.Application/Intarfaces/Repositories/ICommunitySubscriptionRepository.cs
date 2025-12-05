@@ -8,4 +8,5 @@ public interface ICommunitySubscriptionRepository : IRepository<CommunitySubscri
     Task<IList<CommunitySubscription>> GetByUserAsync(Guid userId);
     Task<IList<CommunitySubscription>> GetByCommunityAsync(Guid communityId);
     Task<bool> UpdateStatusAsync(Guid id, bool isActive);
+    Task<int> GetCommunitySubscriptonsCountAsync(Guid communityId);
 }

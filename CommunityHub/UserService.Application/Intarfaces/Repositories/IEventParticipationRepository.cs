@@ -8,4 +8,5 @@ public interface IEventParticipationRepository : IRepository<EventParticipation>
     Task<IList<EventParticipation>> GetByUserAsync(Guid userId);
     Task<IList<EventParticipation>> GetByEventAsync(Guid eventId);
     Task<bool> UpdateStatusAsync(Guid id, bool isConfirmed);
+    Task<int> GetEventParticipantsCountAsync(Guid eventId);
 }

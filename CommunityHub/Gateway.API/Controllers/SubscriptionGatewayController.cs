@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using UserService.GRpc;
 using Gateway.API.Clients;
 using Gateway.API.DTOs.SubscriptionDTOs;
 using Gateway.API.Interfaces;
-using UserService.GRpc;
 
 namespace Gateway.API.Controllers;
 
@@ -81,5 +81,21 @@ public class SubscriptionGatewayController : ControllerBase
         }
 
         return Ok(gatewayList);
+    }
+
+    [HttpGet("community/{communityId:guid}/count")]
+    [ProducesResponseType(typeof(GatewayCommunitySubscriptionsCountResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetEventParticipantsCount(Guid communityId)
+    {
+        var grpcReply = await _apiClient.GetCommunitySubscriptionsCountAsync(
+            new GetCommunitySubscriptionsCountRequest
+            {
+                CommunityId = communityId.ToString()
+            });
+
+        var response = _mapper.Map<GatewayCommunitySubscriptionsCountResponse>(grpcReply);
+        response.CommunityId = communityId;
+
+        return Ok(response);
     }
 }

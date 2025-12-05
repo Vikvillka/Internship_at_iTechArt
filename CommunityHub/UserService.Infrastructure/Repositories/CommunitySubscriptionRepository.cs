@@ -45,4 +45,11 @@ public class CommunitySubscriptionRepository : EfRepository<CommunitySubscriptio
 
         return update != 0;
     }
+
+    public async Task<int> GetCommunitySubscriptonsCountAsync(Guid communityId)
+    {
+        return await _dbSet
+            .Where(s => s.CommunityId == communityId && s.IsActive)
+            .CountAsync();
+    }
 }

@@ -26,4 +26,9 @@ public class ParticipationGrpcClient : IParticipationGrpcClient
     {
         return await _client.GetParticipationsByUserAsync(request);
     }
+
+    public async Task<GetEventParticipantsCountReply> GetEventParticipantsCountAsync(GetEventParticipantsCountRequest request)
+    {
+        return await _client.GetEventParticipantsCountAsync(request);
+    }
 }
