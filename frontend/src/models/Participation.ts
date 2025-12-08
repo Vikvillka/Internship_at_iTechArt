@@ -1,5 +1,4 @@
-export interface ParticipationCount 
-{
-    eventId: string;
-    count: number;
+export interface ParticipationCount {
+  eventId: string;
+  count: number;
 }

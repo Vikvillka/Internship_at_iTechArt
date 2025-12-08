@@ -1,29 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Event } from '../../../models/Event';
 import { Card, CardContent, Box, CardMedia, Typography } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
+import { Event } from '../../../models/Event';
 import { formatDate } from '../../../helpers/formatDate';
 import { getEventImageUrl } from '../../../helpers/getEventImageUrl';
 import { useStyles } from './EventCard.styles';
-import { participationApi } from '../../../api/participation';
 
 interface EventCardProps {
   event: Event;
+  participantCount: number;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ event }) => {
+const EventCard: React.FC<EventCardProps> = ({ event, participantCount }) => {
   const classes = useStyles();
   const imageUrl = getEventImageUrl(event.imagePath || '');
-  const [participantCount, setParticipantCount] = useState<number>(0);
-
-  useEffect(() => {
-    participationApi.getParticipationCounts(event.id)
-      .then((data) => {
-        if (data.length > 0) {
-          setParticipantCount(data[0].count);
-        }
-      });
-  }, [event.id]);
 
   return (
     <Card className={classes.card}>
