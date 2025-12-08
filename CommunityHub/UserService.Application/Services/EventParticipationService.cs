@@ -61,8 +61,8 @@ public class EventParticipationService : IEventParticipationService
         return existing;
     }
 
-    public Task<int> GetEventParticipantsCountAsync(Guid eventId)
+    public Task<Dictionary<Guid, int>> GetEventParticipantsCountAsync(IEnumerable<Guid> eventIds)
     {
-        return _eventParticipationRepository.GetEventParticipantsCountAsync(eventId);
+        return _eventParticipationRepository.GetEventParticipantsCountAsync(eventIds);
     }
 }
