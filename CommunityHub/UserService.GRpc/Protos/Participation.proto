@@ -11,6 +11,11 @@ message ParticipationModel {
     bool isConfirmed = 4;
 }
 
+message EventParticipantsCountModel {
+    string eventId = 1;
+    int32 count = 2;
+}
+
 message CreateParticipationRequest {
     string userId = 1;
     string eventId = 2;
@@ -21,7 +26,7 @@ message GetUserParticipationsRequest {
 }
 
 message GetEventParticipantsCountRequest {
-    string eventId = 1;
+    repeated string eventIds = 1;
 }
 
 message CreateParticipationReply {
@@ -37,16 +42,19 @@ message CancelParticipationReply {
         common.ProblemDetails problem = 2;
     }
 }
+message ParticipationsList {
+    repeated ParticipationModel items = 1;
+}
+
+message EventsParticipantsCountList {
+    repeated EventParticipantsCountModel items = 1;
+}
 
 message GetEventParticipantsCountReply {
     oneof result {
-        int32 count = 1;
+        EventsParticipantsCountList count = 1;
         common.ProblemDetails problem = 2;
     }
-}
-
-message ParticipationsList {
-    repeated ParticipationModel items = 1;
 }
 
 message GetUserParticipationsReply {

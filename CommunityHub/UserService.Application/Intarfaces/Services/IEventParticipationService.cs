@@ -7,5 +7,5 @@ public interface IEventParticipationService
     Task<EventParticipation> ParticipateAsync(Guid userId, Guid eventId);
     Task<EventParticipation> CancelParticipationAsync(Guid userId, Guid eventId);
     Task<IList<EventParticipation>> GetParticipationsByUserAsync(Guid userId);
-    Task<int> GetEventParticipantsCountAsync(Guid eventId);
+    Task<Dictionary<Guid, int>> GetEventParticipantsCountAsync(IEnumerable<Guid> eventIds);
 }

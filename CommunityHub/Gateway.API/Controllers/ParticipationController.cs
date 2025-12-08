@@ -83,18 +83,17 @@ public class ParticipationController : ControllerBase
         return Ok(gatewayList);
     }
 
-    [HttpGet("event/{eventId:guid}/count")]
-    [ProducesResponseType(typeof(GatewayEventParticipantsCountResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetEventParticipantsCount(Guid eventId)
+    [HttpPost("event/counts")]
+    [ProducesResponseType(typeof(List<GatewayEventParticipantsCountResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetEventParticipantsCount(List<Guid> eventIds)
     {
         var grpcReply = await _apiClient.GetEventParticipantsCountAsync(
             new GetEventParticipantsCountRequest
             {
-                EventId = eventId.ToString()
+                EventIds = { eventIds.Select(id => id.ToString()) }
             });
 
-        var response = _mapper.Map<GatewayEventParticipantsCountResponse>(grpcReply);
-        response.EventId = eventId;
+        var response = _mapper.Map<List<GatewayEventParticipantsCountResponse>>(grpcReply);
 
         return Ok(response);
     }
