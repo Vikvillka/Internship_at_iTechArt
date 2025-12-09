@@ -55,12 +55,13 @@ export const useStyles = makeStyles(() => ({
     padding: '25px 20px',
     marginTop: '16px',
     borderRadius: '20px',
+    boxShadow: '0px 0px 0px rgba(0, 0, 0, 0)',
+    border: '1px dashed #C9C9C9',
   },
   dateBox: {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
-    marginTop: '16px',
   },
   tagsBox: {
     display: 'flex',

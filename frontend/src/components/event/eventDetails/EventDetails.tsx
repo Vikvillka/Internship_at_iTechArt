@@ -10,6 +10,7 @@ import { getRandomColor } from '../../../helpers/getRandomColor';
 import { Community } from '../../../models/Community';
 import { Event } from '../../../models/Event';
 import { User } from '../../../models/User';
+import EventVenueMap from '../../event/eventMap/EventVenueMap';
 import { useStyles } from './EventDetails.styles';
 
 interface EventDetailsProps {
@@ -57,6 +58,9 @@ const EventDetails: React.FC<EventDetailsProps> = ({
         <Typography className={classes.detailTextBold} variant='subtitle1'>
           {event.address} | {community.city} | {community.country}
         </Typography>
+        {event.latitude != null && event.longitude != null && (
+          <EventVenueMap address={event.address} lat={event.latitude} lng={event.longitude} />
+        )}
       </Box>
 
       <Box className={classes.rightColumn}>
