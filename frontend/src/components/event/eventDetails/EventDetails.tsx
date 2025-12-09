@@ -1,5 +1,4 @@
 import CalendarTodayIcon from '@mui/icons-material/CalendarMonth';
-import { getRandomColor } from '../../../helpers/getRandomColor';
 import VenueIcon from '@mui/icons-material/HomeWork';
 import PeopleIcon from '@mui/icons-material/PersonTwoTone';
 import AddressIcon from '@mui/icons-material/Place';
@@ -7,6 +6,7 @@ import { Box, CardMedia, Chip, Container, Divider, Paper, Typography } from '@mu
 import React from 'react';
 import { formatDate } from '../../../helpers/formatDate';
 import { getEventImageUrl } from '../../../helpers/getEventImageUrl';
+import { getRandomColor } from '../../../helpers/getRandomColor';
 import { Community } from '../../../models/Community';
 import { Event } from '../../../models/Event';
 import { User } from '../../../models/User';
