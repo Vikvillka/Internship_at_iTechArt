@@ -18,6 +18,7 @@ public class CommunityConfiguration : IEntityTypeConfiguration<Community>
         builder.Property(c => c.CreatedAt).IsRequired();
         builder.Property(c => c.UpdatedAt).IsRequired();
         builder.Property(c => c.IsDeleted).IsRequired().HasDefaultValue(false);
+        builder.Property(c => c.OwnerId).IsRequired();
 
         builder.HasMany(c => c.Events)
                .WithOne(e => e.Community)

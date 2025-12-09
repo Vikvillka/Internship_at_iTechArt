@@ -6,6 +6,11 @@ export const useStyles = makeStyles(() => ({
     minHeight: '350px',
     boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
     borderRadius: '5%',
+    '&:hover': {
+      boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.2)',
+      transform: 'scale(1.01)',
+      transition: 'transform 0.3s ease-in-out',
+    },
   },
   cardMedia: {
     height: '180px',
@@ -33,5 +38,8 @@ export const useStyles = makeStyles(() => ({
     display: 'flex',
     marginTop: '4px',
     alignItems: 'center',
+  },
+  link: {
+    textDecoration: 'none',
   },
 }));

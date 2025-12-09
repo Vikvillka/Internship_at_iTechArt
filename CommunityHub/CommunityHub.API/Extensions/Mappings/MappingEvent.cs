@@ -22,6 +22,7 @@ public static class MappingEvent
             Latitude = eventModel.Latitude,
             Longitude = eventModel.Longitude,
             CommunityName = eventModel.Community?.Name,
+            CommunityId = eventModel.CommunityId,
             Tags = eventModel.Tags.Select(t => t.FromEntity()).ToList()
         };
     }

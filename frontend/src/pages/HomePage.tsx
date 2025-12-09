@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { Box, CircularProgress, Container, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { Container, Typography, CircularProgress, Box } from '@mui/material';
-import EventCard from '../components/event/eventCard/EventCard';
+import React, { useEffect, useState } from 'react';
 import { eventsApi } from '../api/event';
 import { participationApi } from '../api/participation';
+import EventCard from '../components/event/eventCard/EventCard';
 import { Event } from '../models/Event';
-import { loadingBox, errorContainer, errorText, pageContainer } from '../styles/common';
+import { errorContainer, errorText, loadingBox, pageContainer } from '../styles/common';
 
 const HomePage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -28,7 +28,7 @@ const HomePage: React.FC = () => {
         });
         setParticipantCounts(countsMap);
       } catch (err: any) {
-        setError(`Failed to fetch events. ${err.message}`);
+        setError(err.message || 'Failed to fetch events');
       } finally {
         setLoading(false);
       }

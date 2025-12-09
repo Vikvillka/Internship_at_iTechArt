@@ -10,6 +10,7 @@ public class CommunityResponse
     public string Category { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
+    public Guid OwnerId { get; set; }
 
     public List<EventResponse> Events { get; set; } = [];
 }

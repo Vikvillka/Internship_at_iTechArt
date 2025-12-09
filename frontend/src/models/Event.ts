@@ -14,5 +14,6 @@ export interface Event {
   latitude: number | null;
   longitude: number | null;
   communityName: string;
+  communityId: string;
   tags: TagApiModel[];
 }

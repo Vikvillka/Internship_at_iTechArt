@@ -16,6 +16,7 @@ public class GatewayEventResponse
     public string? ImagePath { get; set; }
     public double? Latitude { get; set; }
     public double? Longitude { get; set; }
+    public Guid CommunityId { get; set; }
     public string CommunityName { get; set; } = string.Empty;
     public List<GatewayTagResponse> Tags { get; set; } = [];
 }

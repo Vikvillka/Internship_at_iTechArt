@@ -1,5 +1,5 @@
-import { api } from './api';
 import { ParticipationCount } from '../models/Participation';
+import { api } from './api';
 
 export const participationApi = {
   getParticipationCounts: async (eventIds: string[]): Promise<ParticipationCount[]> => {

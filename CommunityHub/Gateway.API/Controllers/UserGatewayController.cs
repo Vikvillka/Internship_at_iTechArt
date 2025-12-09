@@ -46,7 +46,7 @@ public class UserGatewayController : ControllerBase
         return success ? NoContent() : NotFound();
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("get/{id:guid}")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(GatewayUserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

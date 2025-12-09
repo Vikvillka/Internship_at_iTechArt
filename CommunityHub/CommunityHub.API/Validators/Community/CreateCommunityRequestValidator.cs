@@ -27,6 +27,9 @@ public class CreateCommunityRequestValidator : AbstractValidator<CreateCommunity
         RuleFor(x => x.Country)
             .NotEmpty().WithMessage("Country is required")
             .MaximumLength(50).WithMessage("Country cannot exceed 50 characters");
+
+        RuleFor(x => x.OwnerId)
+            .NotEmpty().WithMessage("OwnerId is required");
     }
 }
 
