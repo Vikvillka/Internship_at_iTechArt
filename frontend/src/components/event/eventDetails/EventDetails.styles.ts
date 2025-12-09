@@ -1,6 +1,4 @@
 import { makeStyles } from '@mui/styles';
-//test husky!!!!!
-import { Event } from '../../../models/Event'
 
 export const useStyles = makeStyles(() => ({
   container: {
@@ -43,7 +41,7 @@ export const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     gap: '16px',
     position: 'sticky',
-    top: '20px',        
+    top: '20px',
     alignSelf: 'flex-start',
     height: 'fit-content',
   },

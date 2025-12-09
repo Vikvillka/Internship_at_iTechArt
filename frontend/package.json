@@ -55,6 +55,11 @@
     "prettier": "^3.7.4",
     "prettier-plugin-organize-imports": "^4.3.0"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx lint-staged"
+    }
+  },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
       "prettier --write --plugin=prettier-plugin-organize-imports"
