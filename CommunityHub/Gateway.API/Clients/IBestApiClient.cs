@@ -39,7 +39,7 @@ public interface IBestApiClient
     Task DeleteCommunityByIdAsync(Guid id);
 
     [Post(CommunityPath + "/search")]
-    Task<PagedResponse<GatewayCommunityResponse>> SearchCommunitiesAsync([Body] CommunitySearchRequest request);
+    Task<PagedResponse<GatewayCommunityResponse>> GetCommunitiesBySearchAsync([Body] CommunitySearchRequest request);
     #endregion
 
     #region Event
@@ -62,7 +62,7 @@ public interface IBestApiClient
     Task UpdateEventStatusAsync(Guid id, [Body] EventStatusDto newStatus);
 
     [Post(EventPath + "/search")]
-    Task<PagedResponse<GatewayEventResponse>> SearchEventsAsync([Body] EventSearchRequest request);
+    Task<PagedResponse<GatewayEventResponse>> GetEventsBySearchAsync([Body] EventSearchRequest request);
     #endregion
 
     #region Image

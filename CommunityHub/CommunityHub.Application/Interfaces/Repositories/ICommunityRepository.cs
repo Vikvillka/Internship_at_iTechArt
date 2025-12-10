@@ -6,6 +6,6 @@ namespace CommunityHub.Application.Interfaces.Repositories;
 
 public interface ICommunityRepository : IRepository<Community>
 {
-    Task<IList<Community>> SearchAsync(string? category, string? city, string? country);
-    Task<PagedResult<Community>> PagedSearchAsync(CommunitySearchRequest request);
+    Task<IList<Community>> FindCommunitiesAsync(string? category, string? city, string? country);
+    Task<PagedResult<Community>> GetCommunitiesBySearchAsync(CommunitySearchRequest request);
 }

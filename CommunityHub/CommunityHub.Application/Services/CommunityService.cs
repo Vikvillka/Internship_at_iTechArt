@@ -56,14 +56,9 @@ public class CommunityService : ICommunityService
         return await _communityRepository.DeleteAsync(id);
     }
 
-    public async Task<IList<Community>> SearchAsync(string? category, string? city, string? country)
-    {
-        return await _communityRepository.SearchAsync(category, city, country);
-    }
-
     private async Task EnsureUniqueCommunityNameAsync(Community community, Guid? excludeId = null)
     {
-        var existing = await _communityRepository.SearchAsync(
+        var existing = await _communityRepository.FindCommunitiesAsync(
             category: null,
             city: community.City,
             country: community.Country
@@ -76,9 +71,9 @@ public class CommunityService : ICommunityService
         }
     }
 
-    public async Task<PagedResult<Community>> PagedSearchAsync(CommunitySearchRequest request)
+    public async Task<PagedResult<Community>> GetCommunitiesBySearchAsync(CommunitySearchRequest request)
     {
         request.PageSize = Math.Clamp(request.PageSize, 1, 100);
-        return await _communityRepository.PagedSearchAsync(request);
+        return await _communityRepository.GetCommunitiesBySearchAsync(request);
     }
 }

@@ -16,7 +16,7 @@ public class CommunityRepository: EfRepository<Community>, ICommunityRepository
     protected override IQueryable<Community> CollectionWithIncludes => 
         _dbSet.Include(c => c.Events);
 
-    public async Task<IList<Community>> SearchAsync(string? category, string? city, string? country)
+    public async Task<IList<Community>> FindCommunitiesAsync(string? category, string? city, string? country)
     {
         var query = AsQueryable();
 
@@ -30,15 +30,16 @@ public class CommunityRepository: EfRepository<Community>, ICommunityRepository
         return await query.ToListAsync();
     }
 
-    public async Task<PagedResult<Community>> PagedSearchAsync(CommunitySearchRequest request)
+    public async Task<PagedResult<Community>> GetCommunitiesBySearchAsync(CommunitySearchRequest request)
     {
         var query = _dbSet.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Keywords))
         {
+            var keyword = request.Keywords.ToLower();
             query = query.Where(c =>
-                EF.Functions.ILike(c.Name, $"%{request.Keywords}%") ||
-                EF.Functions.ILike(c.Description, $"%{request.Keywords}%"));
+                c.Name.ToLower().Contains(keyword) ||
+                c.Description.ToLower().Contains(keyword));
         }
 
         if (!string.IsNullOrWhiteSpace(request.Category))

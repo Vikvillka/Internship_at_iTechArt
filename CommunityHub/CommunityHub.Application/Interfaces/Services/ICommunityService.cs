@@ -11,7 +11,6 @@ public interface ICommunityService
     Task<Community> CreateAsync(Community community);
     Task<bool> UpdateAsync(Community community);
     Task<bool> DeleteAsync(Guid id);
-    Task<IList<Community>> SearchAsync(string? category, string? city, string? country);
-    Task<PagedResult<Community>> PagedSearchAsync(CommunitySearchRequest request);
+    Task<PagedResult<Community>> GetCommunitiesBySearchAsync(CommunitySearchRequest request);
 }
 

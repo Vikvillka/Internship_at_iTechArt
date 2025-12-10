@@ -13,7 +13,7 @@ public class UserServiceTestFixture
     public UserServiceTestFixture()
     {
         MockRepo = new Mock<IUserRepository>();
-        //Service = new UserService.Application.Services.UserService(MockRepo.Object);
+        Service = new UserService.Application.Services.UserService(MockRepo.Object);
 
         var password1 = "Password123!";
         var password2 = "Password456!";

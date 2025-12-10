@@ -98,10 +98,10 @@ public class EventService : IEventService
         throw new ConflictException("Conflict", $"Event with title '{eventEntity.Title}' and time '{eventEntity.EventDate}' is already taken");
     }
 
-    public async Task<PagedResult<Event>> PagedSearchAsync(EventSearchRequest request)
+    public async Task<PagedResult<Event>> GetEventsBySearchAsync(EventSearchRequest request)
     {
         request.PageSize = Math.Clamp(request.PageSize, 1, 100);
-        return await _eventRepository.PagedSearchAsync(request);
+        return await _eventRepository.GetEventsBySearchAsync(request);
     }
 }
 

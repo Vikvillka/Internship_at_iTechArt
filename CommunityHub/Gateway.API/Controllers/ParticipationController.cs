@@ -10,7 +10,6 @@ using UserService.GRpc;
 
 namespace Gateway.API.Controllers;
 
-
 [ApiController]
 [Route("gateway/participation")]
 public class ParticipationController : ControllerBase

@@ -13,6 +13,6 @@ public interface IEventService
     Task<Event> CreateAsync(Event eventEntity, List<Guid> tagIds);
     Task<bool> UpdateAsync(Event eventEntity);
     Task<bool> UpdateStatusAsync(Guid id, EventStatus newStatus);
-    Task<PagedResult<Event>> PagedSearchAsync(EventSearchRequest request);
+    Task<PagedResult<Event>> GetEventsBySearchAsync(EventSearchRequest request);
 }
 

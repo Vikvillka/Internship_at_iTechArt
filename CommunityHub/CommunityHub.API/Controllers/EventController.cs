@@ -85,9 +85,9 @@ public class EventController : ControllerBase
 
     [HttpPost("search")]
     [ProducesResponseType(typeof(PagedResponse<EventResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Search(EventSearchRequest request)
+    public async Task<IActionResult> GetBySearch(EventSearchRequest request)
     {
-        var result = await _service.PagedSearchAsync(request);
+        var result = await _service.GetEventsBySearchAsync(request);
         var response = result.ToPagedResponse(e => e.FromEntity());
         return Ok(response);
     }

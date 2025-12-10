@@ -44,15 +44,16 @@ public class EventRepository : EfRepository<Event>, IEventRepository
         return update != 0;
     }
 
-    public async Task<PagedResult<Event>> PagedSearchAsync(EventSearchRequest request)
+    public async Task<PagedResult<Event>> GetEventsBySearchAsync(EventSearchRequest request)
     {
         var query = CollectionWithIncludes.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Keywords))
         {
+            var keywords = request.Keywords.ToLower();
             query = query.Where(e =>
-                EF.Functions.ILike(e.Title, $"%{request.Keywords}%") ||
-                EF.Functions.ILike(e.Description, $"%{request.Keywords}%"));
+                e.Title.ToLower().Contains(keywords) ||
+                e.Description.ToLower().Contains(keywords));
         }
 
         if (!string.IsNullOrWhiteSpace(request.City))

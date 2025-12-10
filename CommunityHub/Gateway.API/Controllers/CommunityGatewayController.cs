@@ -82,10 +82,10 @@ public class CommunityGatewayController : ControllerBase
     [HttpPost("search")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(PagedResponse<GatewayCommunityResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Search([FromBody] GatewayCommunitySearchRequest request)
+    public async Task<IActionResult> GetBySearch([FromBody] GatewayCommunitySearchRequest request)
     {
         var apiRequest = _mapper.Map<CommunitySearchRequest>(request);
-        var result = await _apiClient.SearchCommunitiesAsync(apiRequest);
+        var result = await _apiClient.GetCommunitiesBySearchAsync(apiRequest);
         var gatewayResponse = _mapper.Map<PagedResponse<GatewayCommunityResponse>>(result);
         return Ok(gatewayResponse);
     }

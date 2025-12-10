@@ -57,7 +57,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPost("create")]
-    //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(GatewayEventResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromForm] GatewayCreateEventRequest request)
     {
@@ -77,7 +77,7 @@ public class EventGatewayController : ControllerBase
     }
 
     [HttpPut("update")]
-    //[Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Microsoft.AspNetCore.Authorization.Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromForm] GatewayUpdateEventRequest request)
@@ -114,10 +114,10 @@ public class EventGatewayController : ControllerBase
     [HttpPost("search")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(PagedResponse<GatewayEventResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Search([FromBody] GatewayEventSearchRequest request)
+    public async Task<IActionResult> GetBySearch([FromBody] GatewayEventSearchRequest request)
     {
         var apiRequest = _mapper.Map<EventSearchRequest>(request);
-        var result = await _apiClient.SearchEventsAsync(apiRequest);
+        var result = await _apiClient.GetEventsBySearchAsync(apiRequest);
         var gatewayResponse = _mapper.Map<PagedResponse<GatewayEventResponse>>(result);
         return Ok(gatewayResponse);
     }
