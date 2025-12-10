@@ -37,7 +37,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             
             if (authHeader.Scheme != "Basic")
             {
-                Response.Headers["WWW-Authenticate"] = basicHeader;
+                //Response.Headers["WWW-Authenticate"] = basicHeader;
                 return AuthenticateResult.Fail("Invalid Authorization Scheme");
             }
 
@@ -45,7 +45,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':', 2);
             if (credentials.Length != 2)
             {
-                Response.Headers["WWW-Authenticate"] = basicHeader;
+                //Response.Headers["WWW-Authenticate"] = basicHeader;
                 return AuthenticateResult.Fail("Invalid Authorization Header");
             }
             var username = credentials[0];
@@ -54,7 +54,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             var response = await _grpcClient.ValidateBasicAsync(new AuthRequest { Username = username, Password = password });
             if (response.ResultCase == ValidateBasicReply.ResultOneofCase.Problem)
             {
-                Response.Headers["WWW-Authenticate"] = basicHeader;
+                //Response.Headers["WWW-Authenticate"] = basicHeader;
                 return AuthenticateResult.Fail("Invalid Username or Password");
             }
 
@@ -72,7 +72,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error during Basic authentication");
-            Response.Headers["WWW-Authenticate"] = basicHeader;
+            //Response.Headers["WWW-Authenticate"] = basicHeader;
             return AuthenticateResult.Fail("Error during authentication");
         }
     }

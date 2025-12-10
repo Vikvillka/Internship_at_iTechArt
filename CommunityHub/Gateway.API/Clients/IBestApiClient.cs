@@ -1,9 +1,8 @@
-﻿using Refit;
+using Refit;
 
 using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 using CommunityHub.Contracts.DTOs.Enums;
 using Gateway.API.DTOs.CommunitiesDTOs;
-using Gateway.API.DTOs.AuthDTOs;
 using Gateway.API.DTOs.TagDTOs;
 using Gateway.API.DTOs.EventDTOs;
 using CommunityHub.Contracts.DTOs.EventDTOs;

@@ -1,15 +1,16 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-
 using CommunityHub.API.ExceptionHandlers;
+using CommunityHub.Application.Interfaces.RabbitMQ;
 using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Application.Services;
 using CommunityHub.Infrastructure.Data;
+using CommunityHub.Infrastructure.RabbitMQ;
 using CommunityHub.Infrastructure.Repositories;
 using CommunityHub.Infrastructure.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace CommunityHub.API.Extensions;
 
@@ -37,6 +38,9 @@ public static class ServiceExtensions
         services.AddFluentValidationAutoValidation();
 
         services.AddAuthenticationSchemes(config);
+
+        services.Configure<RabbitMqSettings>(config.GetSection("RabbitMq"));
+        services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
 
         services.AddExceptionHandler<ExceptionHandler>();
         services.AddProblemDetails();

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 using UserService.Application.Intarfaces.Repositories;
 using UserService.Domain.Entities;
@@ -51,5 +51,19 @@ public class CommunitySubscriptionRepository : EfRepository<CommunitySubscriptio
         return await _dbSet
             .Where(s => s.CommunityId == communityId && s.IsActive)
             .CountAsync();
+    }
+    
+    public async Task<IList<CommunitySubscription>> GetByCommunityIdAsync(Guid communityId)
+    {
+        var query = AsQueryable();
+        query = query.Where(x => x.CommunityId == communityId);
+
+        return await query.ToListAsync();
+    }
+
+    public async Task RemoveRangeAsync(IList<CommunitySubscription> subscriptions)
+    {
+        _dbSet.RemoveRange(subscriptions);
+        await _context.SaveChangesAsync();
     }
 }

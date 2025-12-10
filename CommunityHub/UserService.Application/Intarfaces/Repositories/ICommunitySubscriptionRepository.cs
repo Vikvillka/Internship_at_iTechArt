@@ -1,4 +1,4 @@
-﻿using UserService.Domain.Entities;
+using UserService.Domain.Entities;
 
 namespace UserService.Application.Intarfaces.Repositories;
 
@@ -9,4 +9,6 @@ public interface ICommunitySubscriptionRepository : IRepository<CommunitySubscri
     Task<IList<CommunitySubscription>> GetByCommunityAsync(Guid communityId);
     Task<bool> UpdateStatusAsync(Guid id, bool isActive);
     Task<int> GetCommunitySubscriptonsCountAsync(Guid communityId);
+    Task<IList<CommunitySubscription>> GetByCommunityIdAsync(Guid communityId);
+    Task RemoveRangeAsync(IList<CommunitySubscription> subscriptions);
 }

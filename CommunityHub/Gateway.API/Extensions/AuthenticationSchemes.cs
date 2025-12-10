@@ -20,9 +20,9 @@ public static class AuthenticationSchemes
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = config["CommunityServiceApi:Jwt:Issuer"],
-                ValidAudience = config["CommunityServiceApi:Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["CommunityServiceApi:Jwt:Key"]!)),
+                ValidIssuer = config["Jwt:Issuer"],
+                ValidAudience = config["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,

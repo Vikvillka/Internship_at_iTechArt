@@ -1,20 +1,25 @@
-﻿using CommunityHub.Application.Interfaces.Repositories;
+﻿using CommunityHub.Application.Interfaces.RabbitMQ;
+using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Interfaces.Services;
 using CommunityHub.Contracts.DTOs.Common;
 using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 using CommunityHub.Domain.Common;
 using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Exceptions;
+using HistoryService.Contracts.DeleteEntityDTOs;
+using HistoryService.Contracts.HistoryRecordDTOs;
 
 namespace CommunityHub.Application.Services;
 
 public class CommunityService : ICommunityService
 {
     private readonly ICommunityRepository _communityRepository;
+    private readonly IRabbitMqPublisher _publisher;
 
-    public CommunityService(ICommunityRepository communityRepository)
+    public CommunityService(ICommunityRepository communityRepository, IRabbitMqPublisher publisher)
     {
         _communityRepository = communityRepository;
+        _publisher = publisher;
     }
 
     public async Task<IList<Community>> GetAllAsync()
@@ -44,7 +49,23 @@ public class CommunityService : ICommunityService
             throw new NotFoundException("NotFound", $"Community with id '{community.Id}' not found");
 
         await EnsureUniqueCommunityNameAsync(community, community.Id);
-        return await _communityRepository.UpdateAsync(community);
+
+        var result = await _communityRepository.UpdateAsync(community);
+
+        if (result)
+        {
+            var historyDto = new HistoryRecordDTO
+            {
+                Type = "CommunityUpdated",
+                Date = DateTime.UtcNow,
+                Payload = community.Id.ToString(),
+                TriggeredBy = "CommunityService"
+            };
+
+            await _publisher.PublishUpdateEntityAsync(historyDto);
+        }
+
+        return result;
     }
 
     public async Task<bool> DeleteAsync(Guid id)
@@ -52,8 +73,18 @@ public class CommunityService : ICommunityService
         var existingCommunity = await _communityRepository.GetByIdAsync(id);
         if (existingCommunity == null) 
             throw new NotFoundException("NotFound", $"Community with id '{id}' not found");
-
-        return await _communityRepository.DeleteAsync(id);
+        
+        var result = await _communityRepository.DeleteAsync(id);
+        if (result)
+        {
+            await _publisher.PublishDeleteEntityAsync(
+                new DeleteEntityDTO
+                {
+                    EntityId = id,
+                    EntityType = "Community"
+                });
+        }
+        return result; 
     }
 
     private async Task EnsureUniqueCommunityNameAsync(Community community, Guid? excludeId = null)
