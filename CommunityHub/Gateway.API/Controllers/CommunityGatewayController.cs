@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-
+﻿using AutoMapper;
 using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 using Gateway.API.Clients;
-using Gateway.API.DTOs.CommunitiesDTOs;
-using Gateway.API.Interfaces.Cache;
 using Gateway.API.DTOs.Common;
+using Gateway.API.DTOs.CommunitiesDTOs;
+using Gateway.API.DTOs.UserDTOs;
+using Gateway.API.Interfaces;
+using Gateway.API.Interfaces.Cache;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using UserService.GRpc;
 
 namespace Gateway.API.Controllers;
 
@@ -18,12 +20,14 @@ public class CommunityGatewayController : ControllerBase
     private readonly IBestApiClient _apiClient;
     private readonly IMapper _mapper;
     private readonly IMemoryCacheApiService _memoryCache;
+    private readonly IUserGrpcClient _apiUserClient;
 
-    public CommunityGatewayController(IBestApiClient apiClient, IMapper mapper, IMemoryCacheApiService memoryCache)
+    public CommunityGatewayController(IBestApiClient apiClient, IMapper mapper, IMemoryCacheApiService memoryCache, IUserGrpcClient apiUserClient)
     {
         _apiClient = apiClient;
         _mapper = mapper;
         _memoryCache = memoryCache;
+        _apiUserClient = apiUserClient;
     }
 
     [HttpGet("getAll")]
@@ -48,11 +52,15 @@ public class CommunityGatewayController : ControllerBase
     }
 
     [HttpPost("create")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(GatewayCommunityResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create(GatewayCreateCommunityRequest request)
     {
         var apiRequest = _mapper.Map<CreateCommunityRequest>(request);
+        var existingUser = await _apiUserClient.GetUserByIdAsync(
+                new GetUserByIdRequest { UserId = apiRequest.OwnerId.ToString() });
+        _mapper.Map<GatewayUserResponse>(existingUser);
+
         var result = await _apiClient.CreateCommunityAsync(apiRequest);
         var gatewayResponse = _mapper.Map<GatewayCommunityResponse>(result);
         return Ok(gatewayResponse);

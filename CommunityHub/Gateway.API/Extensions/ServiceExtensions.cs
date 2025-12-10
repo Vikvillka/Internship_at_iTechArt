@@ -16,6 +16,16 @@ public static class ServiceExtensions
     {
         services.AddControllers();
 
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            });
+        });
+
         services.AddTransient<BasicAuthMessageHandler>();
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
 
