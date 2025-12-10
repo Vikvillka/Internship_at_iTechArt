@@ -1,40 +1,52 @@
-import { Box, CircularProgress, Container, Typography } from '@mui/material';
+import { Box, CircularProgress, Container, Pagination, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useEffect, useState } from 'react';
 import { eventsApi } from '../api/event';
 import { participationApi } from '../api/participation';
 import EventCard from '../components/event/eventCard/EventCard';
-import { Event } from '../models/Event';
+import { PagedResponse } from '../models/Common';
+import { Event, EventSearchRequest } from '../models/Event';
 import { errorContainer, errorText, loadingBox, pageContainer } from '../styles/common';
 
 const HomePage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [participantCounts, setParticipantCounts] = useState<Record<string, number>>({});
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchEventsAndParticipation = async () => {
-      try {
-        const eventsData = await eventsApi.getEvents();
-        setEvents(eventsData);
+  const loadEvents = async (pageNumber: number) => {
+    setLoading(true);
 
-        const eventIds = eventsData.map((event) => event.id);
-        const counts = await participationApi.getParticipationCounts(eventIds);
-
-        const countsMap: Record<string, number> = {};
-        counts.forEach((count) => {
-          countsMap[count.eventId] = count.count;
-        });
-        setParticipantCounts(countsMap);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch events');
-      } finally {
-        setLoading(false);
-      }
+    const params: EventSearchRequest = {
+      page: pageNumber,
+      pageSize: 20,
     };
-    fetchEventsAndParticipation();
-  }, []);
+
+    try {
+      const data: PagedResponse<Event> = await eventsApi.searchEvents(params);
+      setEvents(data.items);
+      setTotalPages(Math.ceil(data.totalCount / data.pageSize));
+
+      const eventIds = data.items.map((event) => event.id);
+      const counts = await participationApi.getParticipationCounts(eventIds);
+      const countsMap: Record<string, number> = {};
+      counts.forEach((count) => {
+        countsMap[count.eventId] = count.count;
+      });
+      setParticipantCounts(countsMap);
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch events');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadEvents(page);
+  }, [page]);
 
   if (loading) {
     return (
@@ -66,6 +78,15 @@ const HomePage: React.FC = () => {
           </Grid>
         ))}
       </Grid>
+      <Box mt={4} display='flex' justifyContent='center' alignItems='center'>
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={(_, value) => setPage(value)}
+          color='primary'
+          size='medium'
+        />
+      </Box>
     </Container>
   );
 };

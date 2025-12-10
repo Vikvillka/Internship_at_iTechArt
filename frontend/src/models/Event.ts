@@ -17,3 +17,13 @@ export interface Event {
   communityId: string;
   tags: TagApiModel[];
 }
+
+export interface EventSearchRequest {
+  keywords?: string;
+  city?: string;
+  country?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  page: number;
+  pageSize: number;
+}
