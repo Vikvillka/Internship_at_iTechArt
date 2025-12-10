@@ -26,4 +26,9 @@ public class SubscriptionGrpcClient : ISubscriptionGrpcClient
     {
         return await _client.GetSubscriptionsByUserAsync(request);
     }
+
+    public async Task<GetCommunitySubscriptionsCountReply> GetCommunitySubscriptionsCountAsync(GetCommunitySubscriptionsCountRequest request)
+    {
+        return await _client.GetCommunitySubscriptionsCountAsync(request);
+    }
 }

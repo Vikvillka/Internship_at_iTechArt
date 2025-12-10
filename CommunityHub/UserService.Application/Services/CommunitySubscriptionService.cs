@@ -62,5 +62,10 @@ public class CommunitySubscriptionService : ICommunitySubscriptionService
         existing.IsActive = false;
         return existing;
     }
+
+    public Task<int> GetCommunitySubscriptonsCountAsync(Guid communityId)
+    {
+        return _repository.GetCommunitySubscriptonsCountAsync(communityId);
+    }
 }
 

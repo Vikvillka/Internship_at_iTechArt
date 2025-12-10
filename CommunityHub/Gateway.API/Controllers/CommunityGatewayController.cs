@@ -7,6 +7,7 @@ using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 using Gateway.API.Clients;
 using Gateway.API.DTOs.CommunitiesDTOs;
 using Gateway.API.Interfaces.Cache;
+using Gateway.API.DTOs.Common;
 
 namespace Gateway.API.Controllers;
 
@@ -76,5 +77,16 @@ public class CommunityGatewayController : ControllerBase
     {
         await _apiClient.DeleteCommunityByIdAsync(id);
         return NoContent();
+    }
+
+    [HttpPost("search")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(PagedResponse<GatewayCommunityResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetBySearch([FromBody] GatewayCommunitySearchRequest request)
+    {
+        var apiRequest = _mapper.Map<CommunitySearchRequest>(request);
+        var result = await _apiClient.GetCommunitiesBySearchAsync(apiRequest);
+        var gatewayResponse = _mapper.Map<PagedResponse<GatewayCommunityResponse>>(result);
+        return Ok(gatewayResponse);
     }
 }

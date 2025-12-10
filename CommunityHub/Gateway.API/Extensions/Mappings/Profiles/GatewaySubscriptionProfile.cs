@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using Gateway.API.DTOs.SubscriptionDTOs;
 using Gateway.API.Extensions.Mappings.Convertors.Subscription;
 using UserService.GRpc;
@@ -15,5 +16,6 @@ public class GatewaySubscriptionProfile : Profile
         CreateMap<CreateSubscriptionReply, GatewaySubscriptionResponse>().ConvertUsing<CreateSubscriptionReplyConverter>();
         CreateMap<GetUserSubscriptionsReply, List<GatewaySubscriptionResponse>>().ConvertUsing<GetUserSubscriptionsReplyConverter>();
         CreateMap<UnsubscribeReply, bool>().ConvertUsing<UnsubscribeReplyConverter>();
+        CreateMap<GetCommunitySubscriptionsCountReply, GatewayCommunitySubscriptionsCountResponse>().ConvertUsing<GetCommunitySubscriptionsCountReplyConverter>();
     }
 }

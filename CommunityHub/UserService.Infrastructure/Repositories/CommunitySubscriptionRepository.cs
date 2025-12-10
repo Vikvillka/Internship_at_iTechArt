@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 using UserService.Application.Intarfaces.Repositories;
 using UserService.Domain.Entities;
@@ -46,6 +46,13 @@ public class CommunitySubscriptionRepository : EfRepository<CommunitySubscriptio
         return update != 0;
     }
 
+    public async Task<int> GetCommunitySubscriptonsCountAsync(Guid communityId)
+    {
+        return await _dbSet
+            .Where(s => s.CommunityId == communityId && s.IsActive)
+            .CountAsync();
+    }
+    
     public async Task<IList<CommunitySubscription>> GetByCommunityIdAsync(Guid communityId)
     {
         var query = AsQueryable();

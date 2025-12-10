@@ -1,4 +1,4 @@
-﻿using Refit;
+using Refit;
 
 using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
 using CommunityHub.Contracts.DTOs.Enums;
@@ -6,7 +6,9 @@ using Gateway.API.DTOs.CommunitiesDTOs;
 using Gateway.API.DTOs.TagDTOs;
 using Gateway.API.DTOs.EventDTOs;
 using CommunityHub.Contracts.DTOs.EventDTOs;
-
+using Gateway.API.DTOs.UserDTOs;
+using Gateway.API.DTOs.ImageDTOs;
+using Gateway.API.DTOs.Common;
 
 namespace Gateway.API.Clients;
 
@@ -17,6 +19,7 @@ public interface IBestApiClient
     const string UserPath = "/user";
     const string TagPath = "/tag";
     const string AuthPath = "/auth";
+    const string ImagePath = "/image";
 
     #region Community
     [Get(CommunityPath + "/getAll")]
@@ -33,6 +36,9 @@ public interface IBestApiClient
 
     [Delete(CommunityPath + "/delete/{id}")]
     Task DeleteCommunityByIdAsync(Guid id);
+
+    [Post(CommunityPath + "/search")]
+    Task<PagedResponse<GatewayCommunityResponse>> GetCommunitiesBySearchAsync([Body] CommunitySearchRequest request);
     #endregion
 
     #region Event
@@ -53,6 +59,21 @@ public interface IBestApiClient
 
     [Patch(EventPath + "/{id}/status")]
     Task UpdateEventStatusAsync(Guid id, [Body] EventStatusDto newStatus);
+
+    [Post(EventPath + "/search")]
+    Task<PagedResponse<GatewayEventResponse>> GetEventsBySearchAsync([Body] EventSearchRequest request);
+    #endregion
+
+    #region Image
+    [Multipart]
+    [Post(ImagePath + "/upload")]
+    Task<GatewayImageUploadResponse> UploadImageAsync([AliasAs("file")] StreamPart file);
+
+    [Get(ImagePath + "/{fileName}")]
+    Task<ApiResponse<HttpContent>> GetImageAsync(string fileName);
+
+    [Delete(ImagePath + "/delete/{fileName}")]
+    Task DeleteImageAsync(string fileName);
     #endregion
 
     #region Tag

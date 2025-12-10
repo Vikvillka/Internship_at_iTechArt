@@ -11,6 +11,11 @@ message ParticipationModel {
     bool isConfirmed = 4;
 }
 
+message EventParticipantsCountModel {
+    string eventId = 1;
+    int32 count = 2;
+}
+
 message CreateParticipationRequest {
     string userId = 1;
     string eventId = 2;
@@ -18,6 +23,10 @@ message CreateParticipationRequest {
 
 message GetUserParticipationsRequest {
     string userId = 1;
+}
+
+message GetEventParticipantsCountRequest {
+    repeated string eventIds = 1;
 }
 
 message CreateParticipationReply {
@@ -33,9 +42,19 @@ message CancelParticipationReply {
         common.ProblemDetails problem = 2;
     }
 }
-
 message ParticipationsList {
     repeated ParticipationModel items = 1;
+}
+
+message EventsParticipantsCountList {
+    repeated EventParticipantsCountModel items = 1;
+}
+
+message GetEventParticipantsCountReply {
+    oneof result {
+        EventsParticipantsCountList count = 1;
+        common.ProblemDetails problem = 2;
+    }
 }
 
 message GetUserParticipationsReply {
@@ -49,4 +68,5 @@ service ParticipationService {
     rpc Participate(CreateParticipationRequest) returns (CreateParticipationReply);
     rpc CancelParticipation(CreateParticipationRequest) returns (CancelParticipationReply);
     rpc GetParticipationsByUser(GetUserParticipationsRequest) returns (GetUserParticipationsReply);
+    rpc GetEventParticipantsCount(GetEventParticipantsCountRequest) returns (GetEventParticipantsCountReply);
 }

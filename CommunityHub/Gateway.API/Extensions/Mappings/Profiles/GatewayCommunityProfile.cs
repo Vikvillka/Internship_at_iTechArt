@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-
 using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
+using Gateway.API.DTOs.Common;
 using Gateway.API.DTOs.CommunitiesDTOs;
 
 namespace Gateway.API.Extensions.Mappings.Profiles;
@@ -12,5 +12,7 @@ public class GatewayCommunityProfile : Profile
         CreateMap<CommunityResponse, GatewayCommunityResponse>();
         CreateMap<GatewayCreateCommunityRequest, CreateCommunityRequest>();
         CreateMap<GatewayUpdateCommunityRequest, UpdateCommunityRequest>();
+        CreateMap<GatewayCommunitySearchRequest, CommunitySearchRequest>();
+        CreateMap<CommunityHub.Contracts.DTOs.Common.PagedResponse<CommunityResponse>, PagedResponse<GatewayCommunityResponse>>();
     }
 }

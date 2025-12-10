@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Contracts.DTOs.TagDTOs;
+using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.Contracts.DTOs.EventDTOs;
 
@@ -12,5 +13,10 @@ public class EventResponse
     public string Venue { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
+    public int Duration { get; set; }  
+    public string? ImagePath { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
+    public string CommunityName { get; set; } = string.Empty;
     public List<TagResponse> Tags { get; set; } = [];
 }

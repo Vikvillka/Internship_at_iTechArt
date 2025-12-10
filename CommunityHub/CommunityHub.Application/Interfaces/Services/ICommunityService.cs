@@ -1,4 +1,6 @@
-﻿using CommunityHub.Domain.Entities;
+﻿using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
+using CommunityHub.Domain.Common;
+using CommunityHub.Domain.Entities;
 
 namespace CommunityHub.Application.Interfaces.Services;
 
@@ -9,6 +11,6 @@ public interface ICommunityService
     Task<Community> CreateAsync(Community community);
     Task<bool> UpdateAsync(Community community);
     Task<bool> DeleteAsync(Guid id);
-    Task<IList<Community>> SearchAsync(string? category, string? city, string? country);
+    Task<PagedResult<Community>> GetCommunitiesBySearchAsync(CommunitySearchRequest request);
 }
 

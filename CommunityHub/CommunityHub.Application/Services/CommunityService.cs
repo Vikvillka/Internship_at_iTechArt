@@ -1,6 +1,9 @@
 ﻿using CommunityHub.Application.Interfaces.RabbitMQ;
 using CommunityHub.Application.Interfaces.Repositories;
 using CommunityHub.Application.Interfaces.Services;
+using CommunityHub.Contracts.DTOs.Common;
+using CommunityHub.Contracts.DTOs.CommunitiesDTOs;
+using CommunityHub.Domain.Common;
 using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Exceptions;
 using HistoryService.Contracts.DeleteEntityDTOs;
@@ -84,14 +87,9 @@ public class CommunityService : ICommunityService
         return result; 
     }
 
-    public async Task<IList<Community>> SearchAsync(string? category, string? city, string? country)
-    {
-        return await _communityRepository.SearchAsync(category, city, country);
-    }
-
     private async Task EnsureUniqueCommunityNameAsync(Community community, Guid? excludeId = null)
     {
-        var existing = await _communityRepository.SearchAsync(
+        var existing = await _communityRepository.FindCommunitiesAsync(
             category: null,
             city: community.City,
             country: community.Country
@@ -102,5 +100,11 @@ public class CommunityService : ICommunityService
         {
             throw new ConflictException("Conflict", $"Community with name '{community.Name}' is already taken");
         }
+    }
+
+    public async Task<PagedResult<Community>> GetCommunitiesBySearchAsync(CommunitySearchRequest request)
+    {
+        request.PageSize = Math.Clamp(request.PageSize, 1, 100);
+        return await _communityRepository.GetCommunitiesBySearchAsync(request);
     }
 }

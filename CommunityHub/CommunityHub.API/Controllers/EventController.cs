@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-using CommunityHub.Contracts.DTOs.EventDTOs;
 using CommunityHub.API.Extensions.Mappings;
 using CommunityHub.Application.Interfaces.Services;
-using CommunityHub.Domain.Entities;
+using CommunityHub.Contracts.DTOs.Common;
 using CommunityHub.Contracts.DTOs.Enums;
+using CommunityHub.Contracts.DTOs.EventDTOs;
+using CommunityHub.Domain.Entities;
 using CommunityHub.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityHub.API.Controllers;
 
@@ -82,6 +81,15 @@ public class EventController : ControllerBase
         var domainStatus = _mapper.Map<EventStatus>(newStatus);
         await _service.UpdateStatusAsync(id, domainStatus);
         return Ok();
+    }
+
+    [HttpPost("search")]
+    [ProducesResponseType(typeof(PagedResponse<EventResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetBySearch(EventSearchRequest request)
+    {
+        var result = await _service.GetEventsBySearchAsync(request);
+        var response = result.ToPagedResponse(e => e.FromEntity());
+        return Ok(response);
     }
 }
 

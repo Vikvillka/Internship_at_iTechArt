@@ -52,4 +52,26 @@ public class ParticipationServiceImpl : ParticipationService.ParticipationServic
             Participations = list
         };
     }
+
+    public override async Task<GetEventParticipantsCountReply> GetEventParticipantsCount(GetEventParticipantsCountRequest request, ServerCallContext context)
+    {
+        var eventIds = request.EventIds
+            .Select(Guid.Parse)
+            .ToList();
+
+        var counts = await _participationService.GetEventParticipantsCountAsync(eventIds);
+
+        var list = new EventsParticipantsCountList();
+
+        list.Items.AddRange(counts.Select(c => new EventParticipantsCountModel
+        {
+            EventId = c.Key.ToString(),
+            Count = c.Value
+        }));
+
+        return new GetEventParticipantsCountReply
+        {
+            Count = list
+        };
+    }
 }

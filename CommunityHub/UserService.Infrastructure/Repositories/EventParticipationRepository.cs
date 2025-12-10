@@ -43,4 +43,13 @@ public class EventParticipationRepository : EfRepository<EventParticipation>, IE
 
         return update != 0;
     }
+
+    public async Task<Dictionary<Guid, int>> GetEventParticipantsCountAsync(IEnumerable<Guid> eventIds)
+    {
+        return await _dbSet
+            .Where(p => eventIds.Contains(p.EventId) && p.IsConfirmed)
+            .GroupBy(p => p.EventId)
+            .Select(g => new { g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.Key, x => x.Count);
+    }
 }

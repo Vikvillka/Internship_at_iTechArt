@@ -17,6 +17,11 @@ public static class MappingEvent
             Venue = eventModel.Venue,
             Address = eventModel.Address,
             Status = eventModel.Status.ToString(),
+            Duration = eventModel.Duration,
+            ImagePath = eventModel.ImagePath,
+            Latitude = eventModel.Latitude,
+            Longitude = eventModel.Longitude,
+            CommunityName = eventModel.Community?.Name,
             Tags = eventModel.Tags.Select(t => t.FromEntity()).ToList()
         };
     }

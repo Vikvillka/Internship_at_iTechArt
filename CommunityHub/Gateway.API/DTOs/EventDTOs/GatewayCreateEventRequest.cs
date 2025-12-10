@@ -1,4 +1,4 @@
-﻿using Gateway.API.DTOs.Enums;
+﻿using CommunityHub.Contracts.DTOs.Enums;
 
 namespace Gateway.API.DTOs.EventDTOs;
 
@@ -10,7 +10,10 @@ public class GatewayCreateEventRequest
     public int MaxParticipants { get; set; }
     public string Venue { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
-    public GatewayEventStatusDto Status { get; set; } = GatewayEventStatusDto.Planned;
+    public int Duration { get; set; }
+    public IFormFile? Image { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
     public Guid CommunityId { get; set; }
     public List<Guid> TagIds { get; set; } = [];
 }

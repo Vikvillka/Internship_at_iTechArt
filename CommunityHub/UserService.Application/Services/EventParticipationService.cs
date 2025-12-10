@@ -60,4 +60,9 @@ public class EventParticipationService : IEventParticipationService
         existing.IsConfirmed = false;
         return existing;
     }
+
+    public Task<Dictionary<Guid, int>> GetEventParticipantsCountAsync(IEnumerable<Guid> eventIds)
+    {
+        return _eventParticipationRepository.GetEventParticipantsCountAsync(eventIds);
+    }
 }

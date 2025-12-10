@@ -94,8 +94,21 @@ namespace CommunityHub.Infrastructure.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
+                    b.Property<int>("Duration")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("EventDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ImagePath")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("float");
 
                     b.Property<int>("MaxParticipants")
                         .HasColumnType("integer");

@@ -10,7 +10,6 @@ using UserService.GRpc;
 
 namespace Gateway.API.Controllers;
 
-
 [ApiController]
 [Route("gateway/participation")]
 public class ParticipationController : ControllerBase
@@ -81,5 +80,20 @@ public class ParticipationController : ControllerBase
         }
 
         return Ok(gatewayList);
+    }
+
+    [HttpPost("event/counts")]
+    [ProducesResponseType(typeof(List<GatewayEventParticipantsCountResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetEventParticipantsCount(List<Guid> eventIds)
+    {
+        var grpcReply = await _apiClient.GetEventParticipantsCountAsync(
+            new GetEventParticipantsCountRequest
+            {
+                EventIds = { eventIds.Select(id => id.ToString()) }
+            });
+
+        var response = _mapper.Map<List<GatewayEventParticipantsCountResponse>>(grpcReply);
+
+        return Ok(response);
     }
 }

@@ -16,5 +16,6 @@ public class GatewayParticipationProfile : Profile
         CreateMap<CreateParticipationReply, GatewayParticipationResponse>().ConvertUsing<CreateParticipationReplyConverter>();
         CreateMap<GetUserParticipationsReply, List<GatewayParticipationResponse>>().ConvertUsing<GetUserParticipationsReplyConverter>();
         CreateMap<CancelParticipationReply, bool>().ConvertUsing<CancelParticipationReplyConverter>();
+        CreateMap<GetEventParticipantsCountReply, List<GatewayEventParticipantsCountResponse>>().ConvertUsing<GetEventParticipantsCountReplyConverter>();
     }
 }

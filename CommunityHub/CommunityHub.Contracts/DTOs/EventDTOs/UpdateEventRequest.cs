@@ -9,6 +9,10 @@ public class UpdateEventRequest
     public int MaxParticipants { get; set; }
     public string Venue { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
+    public int Duration { get; set; }             
+    public string? ImagePath { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
     public Guid CommunityId { get; set; }
 }
 

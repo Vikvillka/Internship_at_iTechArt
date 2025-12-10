@@ -33,11 +33,11 @@ public class CreateEventRequestValidator : AbstractValidator<CreateEventRequest>
         RuleFor(x => x.CommunityId)
             .NotEmpty().WithMessage("CommunityId is required");
 
+        RuleFor(x => x.Duration)
+            .GreaterThan(0).WithMessage("Duration must be greater than 0");
+
         RuleForEach(x => x.TagIds)
             .NotEmpty().WithMessage("TagId cannot be empty");
-
-        RuleFor(x => x.Status)
-            .IsInEnum().WithMessage("Status must be a valid EventStatus value");
     }
 }
 
