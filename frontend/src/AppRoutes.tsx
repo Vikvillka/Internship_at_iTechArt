@@ -1,12 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
-import EventDetailsPage from './pages/EventDetailsPage';
-import HomePage from './pages/HomePage';
+import EventDetailsContainer from './pages/eventDetailsPage/EventDetailsContainer';
+import HomePageContainer from './pages/homePage/HomePageContainer';
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path='/' element={<HomePage />} />
-      <Route path='/events/:eventId' element={<EventDetailsPage />} />
+      <Route path='/' element={<HomePageContainer />} />
+      <Route path='/events/:eventId' element={<EventDetailsContainer />} />
     </Routes>
   );
 };

@@ -22,6 +22,7 @@ export interface EventSearchRequest {
   keywords?: string;
   city?: string;
   country?: string;
+  category?: string;
   dateFrom?: string;
   dateTo?: string;
   page: number;

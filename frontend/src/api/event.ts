@@ -11,7 +11,7 @@ export const eventsApi = {
     const response = await api.get<Event>(`/event/get/${eventId}`);
     return response.data;
   },
-  searchEvents: async (searchParams: EventSearchRequest): Promise<PagedResponse<Event>> => {
+  getEventsBySearch: async (searchParams: EventSearchRequest): Promise<PagedResponse<Event>> => {
     const response = await api.post('/event/search', searchParams);
     return response.data;
   },

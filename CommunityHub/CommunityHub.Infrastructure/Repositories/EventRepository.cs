@@ -56,6 +56,9 @@ public class EventRepository : EfRepository<Event>, IEventRepository
                 e.Description.ToLower().Contains(keywords));
         }
 
+        if (!string.IsNullOrWhiteSpace(request.Category))
+            query = query.Where(e => e.Community.Category == request.Category);
+
         if (!string.IsNullOrWhiteSpace(request.City))
             query = query.Where(e => e.Community.City == request.City);
 
