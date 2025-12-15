@@ -20,8 +20,7 @@ export interface Event {
 
 export interface EventSearchRequest {
   keywords?: string;
-  city?: string;
-  country?: string;
+  location?: string;
   category?: string;
   dateFrom?: string;
   dateTo?: string;

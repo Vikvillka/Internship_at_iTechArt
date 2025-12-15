@@ -18,5 +18,24 @@ export const theme = createTheme({
     success: {
       main: '#099a30ff',
     },
+    customText: {
+      primary: '#ddddddff',
+      secondary: '#939393ff',
+    },
   },
 });
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    customText: {
+      primary: string;
+      secondary: string;
+    };
+  }
+  interface PaletteOptions {
+    customText?: {
+      primary?: string;
+      secondary?: string;
+    };
+  }
+}

@@ -35,7 +35,6 @@ const CategorySlider: React.FC<CategorySliderProps> = ({ onSelect }) => {
       <Slider {...settings}>
         {categories.map((cat) => {
           const IconComponent = cat.icon;
-          const isSelected = selectedCategory === cat.label;
 
           return (
             <Box key={cat.label}>

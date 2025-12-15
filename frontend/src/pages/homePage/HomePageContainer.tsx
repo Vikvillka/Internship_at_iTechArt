@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { eventsApi } from '../../api/event';
 import { participationApi } from '../../api/participation';
 import { getDateRange } from '../../helpers/getDateRange';
@@ -15,8 +16,15 @@ const HomePageContainer: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [selectedCategory, setSelectedCategory] = useState<string>('All events');
   const [selectedDate, setSelectedDate] = useState<DateOption>('any');
+  const [searchParams] = useSearchParams();
+  const keywordsFromUrl = searchParams.get('keywords') || undefined;
+  const locationFromUrl = searchParams.get('location') || undefined;
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPage(1);
+  }, [keywordsFromUrl, locationFromUrl]);
 
   const handleDateChange = (value: DateOption) => {
     setSelectedDate(value);
@@ -32,6 +40,8 @@ const HomePageContainer: React.FC = () => {
         : getDateRange(selectedDate);
 
     const params: EventSearchRequest = {
+      keywords: keywordsFromUrl,
+      location: locationFromUrl,
       category: category === 'All events' ? undefined : category,
       dateFrom,
       dateTo,
@@ -62,7 +72,7 @@ const HomePageContainer: React.FC = () => {
 
   useEffect(() => {
     loadEvents(page, selectedCategory);
-  }, [page, selectedCategory, selectedDate]);
+  }, [page, keywordsFromUrl, locationFromUrl, selectedCategory, selectedDate]);
 
   return (
     <HomePageView
