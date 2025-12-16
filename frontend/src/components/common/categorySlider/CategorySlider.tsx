@@ -1,9 +1,10 @@
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Button } from '@mui/material';
+import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import { categories } from '../../../helpers/sliderCategory/categories';
+import useBreakpoints from '../../../hooks/useBreakpoints';
 import { sliderStyles } from './CategorySlider.styles';
 import SliderArrow from './SliderArrow';
 
@@ -12,12 +13,7 @@ interface CategorySliderProps {
 }
 
 const CategorySlider: React.FC<CategorySliderProps> = ({ onSelect }) => {
-  const [selectedCategory, setSelectedCategory] = useState('All events');
-
-  const theme = useTheme();
-  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
-  const isSm = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const isMd = useMediaQuery(theme.breakpoints.between('md', 'lg'));
+  const { isXs, isSm, isMd } = useBreakpoints();
 
   const settings = {
     dots: false,
@@ -40,7 +36,6 @@ const CategorySlider: React.FC<CategorySliderProps> = ({ onSelect }) => {
             <Box key={cat.label}>
               <Button
                 onClick={() => {
-                  setSelectedCategory(cat.label);
                   onSelect?.(cat.label);
                 }}
                 sx={{

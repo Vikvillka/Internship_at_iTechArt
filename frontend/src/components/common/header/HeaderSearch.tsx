@@ -8,8 +8,8 @@ import { headerStyles } from './Header.styles';
 const HeaderSearch: React.FC = () => {
   const navigate = useNavigate();
 
-  const [keywords, setKeywords] = useState('');
-  const [location, setLocation] = useState('');
+  const [keywords, setKeywords] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
 
   const hasValue = Boolean(keywords.trim() || location.trim());
 

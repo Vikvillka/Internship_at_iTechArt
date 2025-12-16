@@ -15,7 +15,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ value, onChange }) => {
       <FormControl fullWidth size='small'>
         <Select
           sx={dateFilterStyles.filter}
-          value={value || 'any'}
+          value={value || DateOption.Any}
           startAdornment={
             <InputAdornment position='start'>
               <CalendarTodayIcon fontSize='small' />
@@ -23,11 +23,11 @@ const DateFilter: React.FC<DateFilterProps> = ({ value, onChange }) => {
           }
           onChange={(e) => onChange(e.target.value as DateOption)}
         >
-          <MenuItem value='any'>Any day</MenuItem>
-          <MenuItem value='today'>Today</MenuItem>
-          <MenuItem value='tomorrow'>Tomorrow</MenuItem>
-          <MenuItem value='thisWeek'>This week</MenuItem>
-          <MenuItem value='nextWeek'>Next week</MenuItem>
+          <MenuItem value={DateOption.Any}>Any day</MenuItem>
+          <MenuItem value={DateOption.Today}>Today</MenuItem>
+          <MenuItem value={DateOption.Tomorrow}>Tomorrow</MenuItem>
+          <MenuItem value={DateOption.ThisWeek}>This week</MenuItem>
+          <MenuItem value={DateOption.NextWeek}>Next week</MenuItem>
         </Select>
       </FormControl>
     </Box>

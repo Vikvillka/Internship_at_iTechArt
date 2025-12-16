@@ -1,1 +1,7 @@
-export type DateOption = 'any' | 'today' | 'tomorrow' | 'thisWeek' | 'nextWeek';
+export enum DateOption {
+  Any = 'any',
+  Today = 'today',
+  Tomorrow = 'tomorrow',
+  ThisWeek = 'thisWeek',
+  NextWeek = 'nextWeek',
+}

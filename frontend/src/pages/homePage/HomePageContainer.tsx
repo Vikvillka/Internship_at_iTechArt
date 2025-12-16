@@ -3,19 +3,19 @@ import { useSearchParams } from 'react-router-dom';
 import { eventsApi } from '../../api/event';
 import { participationApi } from '../../api/participation';
 import { getDateRange } from '../../helpers/getDateRange';
+import { categories } from '../../helpers/sliderCategory/categories';
 import { PagedResponse } from '../../models/Common';
+import { DateOption } from '../../models/Date';
 import { Event, EventSearchRequest } from '../../models/Event';
 import HomePageView from './HomePageView';
-
-type DateOption = 'any' | 'today' | 'tomorrow' | 'thisWeek' | 'nextWeek';
 
 const HomePageContainer: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [participantCounts, setParticipantCounts] = useState<Record<string, number>>({});
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All events');
-  const [selectedDate, setSelectedDate] = useState<DateOption>('any');
+  const [selectedCategory, setSelectedCategory] = useState<string>(categories[0].label);
+  const [selectedDate, setSelectedDate] = useState<DateOption>(DateOption.Any);
   const [searchParams] = useSearchParams();
   const keywordsFromUrl = searchParams.get('keywords') || undefined;
   const locationFromUrl = searchParams.get('location') || undefined;
@@ -35,14 +35,14 @@ const HomePageContainer: React.FC = () => {
     setLoading(true);
 
     const { dateFrom, dateTo } =
-      selectedDate === 'any'
+      selectedDate === DateOption.Any
         ? { dateFrom: undefined, dateTo: undefined }
         : getDateRange(selectedDate);
 
     const params: EventSearchRequest = {
       keywords: keywordsFromUrl,
       location: locationFromUrl,
-      category: category === 'All events' ? undefined : category,
+      category: category === categories[0].label ? undefined : category,
       dateFrom,
       dateTo,
       page: pageNumber,

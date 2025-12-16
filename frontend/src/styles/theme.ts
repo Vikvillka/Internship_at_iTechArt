@@ -23,6 +23,14 @@ export const theme = createTheme({
       secondary: '#939393ff',
     },
   },
+  typography: {
+    h5: {
+      fontWeight: 700,
+    },
+    h6: {
+      fontWeight: 700,
+    },
+  },
 });
 
 declare module '@mui/material/styles' {

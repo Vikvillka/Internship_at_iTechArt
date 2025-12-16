@@ -9,7 +9,7 @@ interface Props {
 const TitleBlock: React.FC<Props> = ({ title, rightSlot }) => {
   return (
     <Box sx={pageTitleStyles.titleBox}>
-      <Typography variant='h4'>{title}</Typography>
+      <Typography variant='h5'>{title}</Typography>
       {rightSlot && <Box>{rightSlot}</Box>}
     </Box>
   );
