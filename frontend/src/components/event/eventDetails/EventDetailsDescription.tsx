@@ -6,10 +6,11 @@ import { useStyles } from './EventDetails.styles';
 interface EventDescriptionProps {
   description: string;
   address: string;
-  city: string;
-  country: string;
+  city?: string | null;
+  country?: string | null;
   lat?: number;
   lng?: number;
+  error?: string | null;
 }
 
 const EventDescriptionDetails: React.FC<EventDescriptionProps> = ({
@@ -19,6 +20,7 @@ const EventDescriptionDetails: React.FC<EventDescriptionProps> = ({
   country,
   lat,
   lng,
+  error,
 }) => {
   const classes = useStyles();
 

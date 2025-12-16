@@ -1,27 +1,16 @@
 import { Box, CircularProgress, Container, Typography } from '@mui/material';
 import EventDetails from '../../components/event/eventDetails/EventDetails';
-import { Community } from '../../models/Community';
 import { Event } from '../../models/Event';
-import { User } from '../../models/User';
 import { errorContainer, errorText, loadingBox, pageContainer } from '../../styles/common';
 
 interface Props {
   event: Event | null;
-  community: Community | null;
-  owner: User | null;
   participantCount: number;
   loading: boolean;
   error: string | null;
 }
 
-const EventDetailsView: React.FC<Props> = ({
-  event,
-  community,
-  owner,
-  participantCount,
-  loading,
-  error,
-}) => {
+const EventDetailsView: React.FC<Props> = ({ event, participantCount, loading, error }) => {
   if (loading) {
     return (
       <Box sx={loadingBox}>
@@ -42,14 +31,7 @@ const EventDetailsView: React.FC<Props> = ({
 
   return (
     <Container sx={pageContainer}>
-      {event && community && owner && (
-        <EventDetails
-          event={event}
-          participantCount={participantCount}
-          community={community}
-          owner={owner}
-        />
-      )}
+      {event && <EventDetails event={event} participantCount={participantCount} />}
     </Container>
   );
 };

@@ -9,27 +9,30 @@ import EventDetailsHeader from './EventDetailsHeader';
 
 interface Props {
   event: Event;
-  community: Community;
-  owner: User;
+  community?: Community;
+  owner?: User;
+  error?: string | null;
 }
 
-const EventDetailsLeftColumn: React.FC<Props> = ({ event, community, owner }) => {
+const EventDetailsLeftColumn: React.FC<Props> = ({ event, community, owner, error }) => {
   const classes = useStyles();
 
   return (
     <Box className={classes.leftColumn}>
       <EventDetailsHeader
         title={event.title}
-        ownerName={owner.username}
-        communityName={community.name}
+        ownerName={owner?.username}
+        communityName={community?.name}
+        error={error ?? undefined}
       />
       <EventDescriptionDetails
         description={event.description}
         address={event.address}
-        city={community.city}
-        country={community.country}
+        city={community?.city}
+        country={community?.country}
         lat={event.latitude ?? undefined}
         lng={event.longitude ?? undefined}
+        error={error ?? undefined}
       />
     </Box>
   );

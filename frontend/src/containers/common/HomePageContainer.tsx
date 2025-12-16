@@ -7,7 +7,7 @@ import { categories } from '../../helpers/sliderCategory/categories';
 import { PagedResponse } from '../../models/Common';
 import { DateOption } from '../../models/Date';
 import { Event, EventSearchRequest } from '../../models/Event';
-import HomePageView from './HomePageView';
+import HomePage from '../../pages/homePage/HomePage';
 
 const HomePageContainer: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -75,7 +75,7 @@ const HomePageContainer: React.FC = () => {
   }, [page, keywordsFromUrl, locationFromUrl, selectedCategory, selectedDate]);
 
   return (
-    <HomePageView
+    <HomePage
       events={events}
       participantCounts={participantCounts}
       page={page}

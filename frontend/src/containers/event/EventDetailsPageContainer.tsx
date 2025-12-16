@@ -1,34 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { communityApi } from '../../api/community';
 import { eventsApi } from '../../api/event';
 import { participationApi } from '../../api/participation';
-import { userApi } from '../../api/user';
-import { Community } from '../../models/Community';
 import { Event } from '../../models/Event';
-import { User } from '../../models/User';
-import EventDetailsView from './EventDetailsView';
+import EventDetailsView from '../../pages/eventDetailsPage/EventDetailsPage';
 
-const EventDetailsContainer: React.FC = () => {
+const EventDetailsPageContainer: React.FC = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState<Event | null>(null);
   const [participantsCount, setParticipantsCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [community, setCommunity] = useState<Community | null>(null);
-  const [owner, setOwner] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
         const eventData = await eventsApi.getEventById(eventId!);
         setEvent(eventData);
-
-        const communityData = await communityApi.getCommunityById(eventData.communityId);
-        setCommunity(communityData);
-
-        const ownerData = await userApi.getUserById(communityData.ownerId);
-        setOwner(ownerData);
 
         const counts = await participationApi.getParticipationCounts([eventId!]);
         setParticipantsCount(counts.length > 0 ? counts[0].count : 0);
@@ -45,8 +33,6 @@ const EventDetailsContainer: React.FC = () => {
   return (
     <EventDetailsView
       event={event}
-      community={community}
-      owner={owner}
       participantCount={participantsCount}
       loading={loading}
       error={error}
@@ -54,4 +40,4 @@ const EventDetailsContainer: React.FC = () => {
   );
 };
 
-export default EventDetailsContainer;
+export default EventDetailsPageContainer;

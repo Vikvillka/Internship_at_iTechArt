@@ -5,11 +5,17 @@ import { useStyles } from './EventDetails.styles';
 
 interface EventHeaderProps {
   title: string;
-  ownerName: string;
-  communityName: string;
+  ownerName?: string | null;
+  communityName?: string | null;
+  error?: string | null;
 }
 
-const EventDetailsHeader: React.FC<EventHeaderProps> = ({ title, ownerName, communityName }) => {
+const EventDetailsHeader: React.FC<EventHeaderProps> = ({
+  title,
+  ownerName,
+  communityName,
+  error,
+}) => {
   const classes = useStyles();
 
   return (
@@ -17,6 +23,11 @@ const EventDetailsHeader: React.FC<EventHeaderProps> = ({ title, ownerName, comm
       <Typography className={classes.title} variant='h4'>
         {title}
       </Typography>
+      {error && (
+        <Typography color='error' variant='subtitle2'>
+          {error}
+        </Typography>
+      )}
       <Box className={classes.ownerBox}>
         <PeopleIcon />
         <Typography variant='subtitle1'>

@@ -19,7 +19,7 @@ interface Props {
   onDateChange: (value: DateOption) => void;
 }
 
-const HomePageView: React.FC<Props> = ({
+const HomePage: React.FC<Props> = ({
   events,
   participantCounts,
   page,
@@ -52,4 +52,4 @@ const HomePageView: React.FC<Props> = ({
   );
 };
 
-export default HomePageView;
+export default HomePage;

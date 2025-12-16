@@ -1,30 +1,21 @@
 import { Container } from '@mui/material';
 import React from 'react';
-import { Community } from '../../../models/Community';
+import EventDetailsLeftColumnContainer from '../../../containers/event/EventDetailsLeftColumnContainer';
 import { Event } from '../../../models/Event';
-import { User } from '../../../models/User';
 import { useStyles } from './EventDetails.styles';
-import EventDetailsLeftColumn from './EventDetailsLeftColumn';
 import EventDetailsRightColumn from './EventDetailsRightColumn';
 
 interface EventDetailsProps {
   event: Event;
   participantCount: number;
-  community: Community;
-  owner: User;
 }
 
-const EventDetails: React.FC<EventDetailsProps> = ({
-  event,
-  participantCount,
-  community,
-  owner,
-}) => {
+const EventDetails: React.FC<EventDetailsProps> = ({ event, participantCount }) => {
   const classes = useStyles();
 
   return (
     <Container className={classes.container}>
-      <EventDetailsLeftColumn event={event} community={community} owner={owner} />
+      <EventDetailsLeftColumnContainer event={event} />
       <EventDetailsRightColumn event={event} />
     </Container>
   );
