@@ -7,5 +7,5 @@ public interface ICommunitySubscriptionService
     Task<CommunitySubscription> SubscribeAsync(Guid userId, Guid communityId);
     Task<CommunitySubscription> UnsubscribeAsync(Guid userId, Guid communityId);
     Task<IList<CommunitySubscription>> GetSubscriptionsByUserAsync(Guid userId);
-    Task<int> GetCommunitySubscriptonsCountAsync(Guid communityId);
+    Task<Dictionary<Guid, int>> GetCommunitySubscriptonsCountAsync(IEnumerable<Guid> communityId);
 }

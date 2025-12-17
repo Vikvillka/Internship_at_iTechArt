@@ -10,3 +10,11 @@ export interface Community {
   ownerId: string;
   events: Event[];
 }
+
+export interface CommunitySearchRequest {
+  keywords?: string;
+  location?: string;
+  category?: string;
+  page: number;
+  pageSize: number;
+}

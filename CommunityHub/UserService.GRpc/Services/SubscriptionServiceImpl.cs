@@ -56,13 +56,22 @@ public class SubscriptionServiceImpl : SubscriptionService.SubscriptionServiceBa
 
     public override async Task<GetCommunitySubscriptionsCountReply> GetCommunitySubscriptionsCount(GetCommunitySubscriptionsCountRequest request, ServerCallContext context)
     {
-        var count = await _service.GetCommunitySubscriptonsCountAsync(
-            Guid.Parse(request.CommunityId)
-        );
+        var communityIds = request.CommunityIds
+            .Select(Guid.Parse)
+            .ToList();
+
+        var counts = await _service.GetCommunitySubscriptonsCountAsync(communityIds);
+
+        var list = new CommunitySubscriptionsCountList();
+        list.Items.AddRange(counts.Select(c => new CommunitySubscriptionsCountModel
+        {
+            CommunityId = c.Key.ToString(),
+            Count = c.Value
+        }));
 
         return new GetCommunitySubscriptionsCountReply
         {
-            Count = count
+            Count = list
         };
     }
 }

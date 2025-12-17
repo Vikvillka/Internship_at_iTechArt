@@ -1,83 +1,95 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { eventsApi } from '../../api/event';
-import { participationApi } from '../../api/participation';
-import { getDateRange } from '../../helpers/getDateRange';
-import { categories } from '../../helpers/sliderCategory/categories';
-import { PagedResponse } from '../../models/Common';
-import { DateOption } from '../../models/Date';
-import { Event, EventSearchRequest } from '../../models/Event';
+import { useCommunitiesData } from '../../hooks/useCommunityData';
+import { useEventsData } from '../../hooks/useEventsData';
+import { useHomePageData } from '../../hooks/useHomePageData';
+import { Community } from '../../models/Community';
+import { Event } from '../../models/Event';
+import { ContentMode as Mode } from '../../models/Mode';
 import HomePage from '../../pages/homePage/HomePage';
 
 const HomePageContainer: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const { loadEvents } = useEventsData();
+  const { loadCommunities } = useCommunitiesData();
+
+  const {
+    mode,
+    setMode,
+    page,
+    setPage,
+    selectedCategory,
+    setSelectedCategory,
+    selectedDate,
+    setSelectedDate,
+    keywordsFromUrl,
+    locationFromUrl,
+    resetPage,
+  } = useHomePageData();
+
+  const [items, setItems] = useState<Event[] | Community[]>([]);
   const [participantCounts, setParticipantCounts] = useState<Record<string, number>>({});
-  const [page, setPage] = useState<number>(1);
+  const [subscriptionCounts, setSubscriptionCounts] = useState<Record<string, number>>({});
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [selectedCategory, setSelectedCategory] = useState<string>(categories[0].label);
-  const [selectedDate, setSelectedDate] = useState<DateOption>(DateOption.Any);
-  const [searchParams] = useSearchParams();
-  const keywordsFromUrl = searchParams.get('keywords') || undefined;
-  const locationFromUrl = searchParams.get('location') || undefined;
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setPage(1);
-  }, [keywordsFromUrl, locationFromUrl]);
-
-  const handleDateChange = (value: DateOption) => {
-    setSelectedDate(value);
-    setPage(1);
-  };
-
-  const loadEvents = async (pageNumber: number, category: string) => {
-    setLoading(true);
-
-    const { dateFrom, dateTo } =
-      selectedDate === DateOption.Any
-        ? { dateFrom: undefined, dateTo: undefined }
-        : getDateRange(selectedDate);
-
-    const params: EventSearchRequest = {
-      keywords: keywordsFromUrl,
-      location: locationFromUrl,
-      category: category === categories[0].label ? undefined : category,
-      dateFrom,
-      dateTo,
-      page: pageNumber,
-      pageSize: 20,
-    };
-
-    try {
-      const data: PagedResponse<Event> = await eventsApi.getEventsBySearch(params);
-
-      setEvents(data.items);
-      setTotalPages(Math.ceil(data.totalCount / data.pageSize));
-
-      const eventIds = data.items.map((event) => event.id);
-
-      const counts = await participationApi.getParticipationCounts(eventIds);
-      const countsMap: Record<string, number> = {};
-      counts.forEach((count) => {
-        countsMap[count.eventId] = count.count;
-      });
-      setParticipantCounts(countsMap);
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch events');
-    } finally {
-      setLoading(false);
-    }
-  };
+    resetPage();
+  }, [keywordsFromUrl, locationFromUrl, selectedCategory, selectedDate, mode, resetPage]);
 
   useEffect(() => {
-    loadEvents(page, selectedCategory);
-  }, [page, keywordsFromUrl, locationFromUrl, selectedCategory, selectedDate]);
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        if (mode === Mode.Events) {
+          const data = await loadEvents(
+            page,
+            selectedCategory,
+            selectedDate,
+            keywordsFromUrl,
+            locationFromUrl,
+          );
+          setItems(data.items);
+          setParticipantCounts(data.participantCounts);
+          setTotalPages(data.totalPages);
+          setSubscriptionCounts({});
+        } else {
+          const data = await loadCommunities(
+            page,
+            selectedCategory,
+            keywordsFromUrl,
+            locationFromUrl,
+          );
+          setItems(data.items);
+          setSubscriptionCounts(data.subscriptionCounts);
+          setTotalPages(data.totalPages);
+          setParticipantCounts({});
+        }
+      } catch (err: any) {
+        setError(err.message || 'Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [
+    page,
+    keywordsFromUrl,
+    locationFromUrl,
+    selectedCategory,
+    selectedDate,
+    mode,
+    loadEvents,
+    loadCommunities,
+  ]);
 
   return (
     <HomePage
-      events={events}
+      mode={mode}
+      setMode={setMode}
+      items={items}
       participantCounts={participantCounts}
+      subscriptionCounts={subscriptionCounts}
       page={page}
       totalPages={totalPages}
       loading={loading}
@@ -86,7 +98,7 @@ const HomePageContainer: React.FC = () => {
       selectedDate={selectedDate}
       onPageChange={setPage}
       onCategorySelect={setSelectedCategory}
-      onDateChange={handleDateChange}
+      onDateChange={setSelectedDate}
     />
   );
 };

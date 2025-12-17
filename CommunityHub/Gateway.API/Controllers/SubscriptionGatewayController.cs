@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
+using Gateway.API.Clients;
+using Gateway.API.DTOs.ParticipantionDTOs;
+using Gateway.API.DTOs.SubscriptionDTOs;
+using Gateway.API.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using UserService.GRpc;
-using Gateway.API.Clients;
-using Gateway.API.DTOs.SubscriptionDTOs;
-using Gateway.API.Interfaces;
 
 namespace Gateway.API.Controllers;
 
@@ -83,18 +83,17 @@ public class SubscriptionGatewayController : ControllerBase
         return Ok(gatewayList);
     }
 
-    [HttpGet("community/{communityId:guid}/count")]
-    [ProducesResponseType(typeof(GatewayCommunitySubscriptionsCountResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetEventParticipantsCount(Guid communityId)
+    [HttpPost("community/counts")]
+    [ProducesResponseType(typeof(List<GatewayCommunitySubscriptionsCountResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCommunitySubscriptionsCount(List<Guid> communityIds)
     {
         var grpcReply = await _apiClient.GetCommunitySubscriptionsCountAsync(
             new GetCommunitySubscriptionsCountRequest
             {
-                CommunityId = communityId.ToString()
+                CommunityIds = { communityIds.Select(id => id.ToString()) }
             });
 
-        var response = _mapper.Map<GatewayCommunitySubscriptionsCountResponse>(grpcReply);
-        response.CommunityId = communityId;
+        var response = _mapper.Map<List<GatewayCommunitySubscriptionsCountResponse>>(grpcReply);
 
         return Ok(response);
     }

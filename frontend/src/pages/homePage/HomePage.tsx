@@ -1,13 +1,17 @@
-import { Container } from '@mui/material';
+import CommunityListSection from '../../components/community/communityList/CommunityList';
 import EventsListSection from '../../components/event/eventsList/EventsList';
 import HomePageLayout from '../../layouts/homePageLayout/HomePageLayout';
+import { Community } from '../../models/Community';
 import { DateOption } from '../../models/Date';
 import { Event } from '../../models/Event';
-import { pageContainer } from '../../styles/common';
+import { ContentMode } from '../../models/Mode';
 
 interface Props {
-  events: Event[];
+  mode: ContentMode.Events | ContentMode.Communities;
+  setMode: (mode: ContentMode.Events | ContentMode.Communities) => void;
+  items: Event[] | Community[];
   participantCounts: Record<string, number>;
+  subscriptionCounts: Record<string, number>;
   page: number;
   totalPages: number;
   loading: boolean;
@@ -20,8 +24,11 @@ interface Props {
 }
 
 const HomePage: React.FC<Props> = ({
-  events,
+  mode,
+  setMode,
+  items,
   participantCounts,
+  subscriptionCounts,
   page,
   totalPages,
   loading,
@@ -32,23 +39,36 @@ const HomePage: React.FC<Props> = ({
   onDateChange,
 }) => {
   return (
-    <Container sx={pageContainer} disableGutters>
+    <>
       <HomePageLayout
+        mode={mode}
+        setMode={setMode}
         loading={loading}
         error={error}
         selectedDate={selectedDate}
         onDateChange={onDateChange}
         onCategorySelect={onCategorySelect}
       >
-        <EventsListSection
-          events={events}
-          participantCounts={participantCounts}
-          page={page}
-          totalPages={totalPages}
-          onPageChange={onPageChange}
-        />
+        {mode === ContentMode.Events && (
+          <EventsListSection
+            events={items as Event[]}
+            participantCounts={participantCounts}
+            page={page}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+          />
+        )}
+        {mode === ContentMode.Communities && (
+          <CommunityListSection
+            communities={items as Community[]}
+            subscriptionCounts={subscriptionCounts}
+            page={page}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+          />
+        )}
       </HomePageLayout>
-    </Container>
+    </>
   );
 };
 

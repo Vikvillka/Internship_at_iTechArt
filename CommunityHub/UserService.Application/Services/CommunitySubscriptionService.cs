@@ -63,9 +63,9 @@ public class CommunitySubscriptionService : ICommunitySubscriptionService
         return existing;
     }
 
-    public Task<int> GetCommunitySubscriptonsCountAsync(Guid communityId)
+    public Task<Dictionary<Guid, int>> GetCommunitySubscriptonsCountAsync(IEnumerable<Guid> communityIds)
     {
-        return _repository.GetCommunitySubscriptonsCountAsync(communityId);
+        return _repository.GetCommunitySubscriptonsCountAsync(communityIds);
     }
 }
 

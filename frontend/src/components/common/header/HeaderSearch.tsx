@@ -1,18 +1,19 @@
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, IconButton, InputBase } from '@mui/material';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { headerStyles } from './Header.styles';
 
 const HeaderSearch: React.FC = () => {
   const navigate = useNavigate();
-
+  const locationRouter = useLocation();
   const [keywords, setKeywords] = useState<string>('');
   const [location, setLocation] = useState<string>('');
 
   const hasValue = Boolean(keywords.trim() || location.trim());
 
+  const searchPath = locationRouter.pathname.startsWith('/events') ? '/events' : '/communities';
   const handleSearch = () => {
     if (!hasValue) return;
 
@@ -26,13 +27,13 @@ const HeaderSearch: React.FC = () => {
       params.append('location', location.trim());
     }
 
-    navigate(`/events?${params.toString()}`);
+    navigate(`${searchPath}?${params.toString()}`);
   };
 
   const handleReset = () => {
     setKeywords('');
     setLocation('');
-    navigate('/');
+    navigate(searchPath);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -40,6 +41,12 @@ const HeaderSearch: React.FC = () => {
       handleSearch();
     }
   };
+
+  useEffect(() => {
+    if (!keywords.trim() && !location.trim()) {
+      navigate(searchPath);
+    }
+  }, [keywords, location, navigate, searchPath]);
 
   return (
     <Box sx={headerStyles.searchWrapper}>

@@ -4,7 +4,8 @@ export const pageTitleStyles = {
   titleBox: {
     display: 'flex',
     alignItems: 'center',
-    mb: 4,
+    height: 40,
+    mb: 2,
     justifyContent: 'space-between',
   } as SxProps<Theme>,
 };
