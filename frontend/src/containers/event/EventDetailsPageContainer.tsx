@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { eventsApi } from '../../api/event';
 import { participationApi } from '../../api/participation';
 import { Event } from '../../models/Event';
-import EventDetailsView from '../../pages/eventDetailsPage/EventDetailsPage';
+import EventDetailsPage from '../../pages/eventDetailsPage/EventDetailsPage';
 
 const EventDetailsPageContainer: React.FC = () => {
   const { eventId } = useParams();
@@ -31,7 +31,7 @@ const EventDetailsPageContainer: React.FC = () => {
   }, [eventId]);
 
   return (
-    <EventDetailsView
+    <EventDetailsPage
       event={event}
       participantCount={participantsCount}
       loading={loading}

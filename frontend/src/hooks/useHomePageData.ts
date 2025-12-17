@@ -1,48 +1,50 @@
-import { useCallback, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useCallback } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { DateOption } from '../models/Date';
 import { ContentMode as Mode } from '../models/Mode';
 
 export const useHomePageData = () => {
-  const [mode, setMode] = useState<Mode>(Mode.Events);
-  const [page, setPage] = useState<number>(1);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedDate, setSelectedDate] = useState<DateOption>(DateOption.Any);
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const mode: Mode = location.pathname.startsWith('/communities') ? Mode.Communities : Mode.Events;
 
-  const keywordsFromUrl = searchParams.get('keywords') || undefined;
-  const locationFromUrl = searchParams.get('location') || undefined;
+  const page = Number(searchParams.get('page') ?? 1);
+  const selectedCategory = searchParams.get('category') ?? '';
+  const selectedDate = (searchParams.get('date') as DateOption) ?? DateOption.Any;
 
-  const handleDateChange = useCallback((value: DateOption) => {
-    setSelectedDate(value);
-    setPage(1);
-  }, []);
+  const keywordsFromUrl = searchParams.get('keywords') ?? undefined;
+  const locationFromUrl = searchParams.get('location') ?? undefined;
 
-  const handleCategorySelect = useCallback((category: string) => {
-    setSelectedCategory(category);
-    setPage(1);
-  }, []);
+  const updateParams = (updates: Record<string, string | undefined>) => {
+    const next = new URLSearchParams(searchParams);
 
-  const handleModeChange = useCallback((newMode: Mode) => {
-    setMode(newMode);
-    setPage(1);
-  }, []);
+    Object.entries(updates).forEach(([key, value]) => {
+      if (!value) next.delete(key);
+      else next.set(key, value);
+    });
 
-  const resetPage = useCallback(() => {
-    setPage(1);
-  }, []);
+    next.set('page', '1');
+    setSearchParams(next);
+  };
+
+  const setMode = useCallback(
+    (newMode: Mode) => {
+      navigate(`/${newMode}?${searchParams.toString()}`);
+    },
+    [navigate, searchParams],
+  );
 
   return {
     mode,
-    setMode: handleModeChange,
+    setMode,
     page,
-    setPage,
+    setPage: (p: number) => updateParams({ page: String(p) }),
     selectedCategory,
-    setSelectedCategory: handleCategorySelect,
+    setSelectedCategory: (c: string) => updateParams({ category: c }),
     selectedDate,
-    setSelectedDate: handleDateChange,
+    setSelectedDate: (d: DateOption) => updateParams({ date: d }),
     keywordsFromUrl,
     locationFromUrl,
-    resetPage,
   };
 };

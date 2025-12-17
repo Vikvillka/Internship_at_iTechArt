@@ -13,7 +13,7 @@ interface CommunityCardProps {
 
 const CommunityCard: React.FC<CommunityCardProps> = ({ community, subscriberCount }) => {
   return (
-    <Link to={`/communities/${community.id}`} style={{ textDecoration: 'none' }}>
+    <Link to={`/community/${community.id}`} style={{ textDecoration: 'none' }}>
       <Card sx={communityCardStyles.card}>
         <CardContent>
           <Typography variant='h6' sx={communityCardStyles.title}>

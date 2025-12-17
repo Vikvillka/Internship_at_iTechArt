@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { communityApi } from '../api/community';
-import { subscriptionsApi } from '../api/subscriptions';
+import { subscriptionApi } from '../api/subscription';
 import { categories } from '../helpers/sliderCategory/categories';
 import { PagedResponse } from '../models/Common';
 import { Community } from '../models/Community';
@@ -30,7 +30,7 @@ export const useCommunitiesData = () => {
       const data: PagedResponse<Community> = await communityApi.getCommunitiesBySearch(params);
 
       const communityIds = data.items.map((community) => community.id);
-      const counts = await subscriptionsApi.getSubscriptionCounts(communityIds);
+      const counts = await subscriptionApi.getSubscriptionCounts(communityIds);
       const subscriptionCounts: Record<string, number> = {};
       counts.forEach((count) => {
         subscriptionCounts[count.communityId] = count.count;

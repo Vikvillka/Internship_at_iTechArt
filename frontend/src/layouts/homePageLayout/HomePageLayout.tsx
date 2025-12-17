@@ -2,7 +2,6 @@ import EventIcon from '@mui/icons-material/Event';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { Box, Button, ButtonGroup, CircularProgress, Container, Typography } from '@mui/material';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import CategorySlider from '../../components/common/categorySlider/CategorySlider';
 import DateFilter from '../../components/common/dataFilter/DateFilter';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
@@ -32,13 +31,6 @@ const HomePageLayout: React.FC<Props> = ({
   onCategorySelect,
   children,
 }) => {
-  const navigate = useNavigate();
-
-  const handleModeChange = (newMode: ContentMode.Events | ContentMode.Communities) => {
-    setMode(newMode);
-    navigate(`/${newMode}`);
-  };
-
   return (
     <Container sx={pageContainer} disableGutters>
       <Box>
@@ -50,7 +42,7 @@ const HomePageLayout: React.FC<Props> = ({
                 ? homePageStyles.activeButton
                 : homePageStyles.inactiveButton
             }
-            onClick={() => handleModeChange(ContentMode.Events)}
+            onClick={() => setMode(ContentMode.Events)}
           >
             Events
           </Button>
@@ -61,7 +53,7 @@ const HomePageLayout: React.FC<Props> = ({
                 ? homePageStyles.activeButton
                 : homePageStyles.inactiveButton
             }
-            onClick={() => handleModeChange(ContentMode.Communities)}
+            onClick={() => setMode(ContentMode.Communities)}
           >
             Communities
           </Button>

@@ -22,7 +22,6 @@ const HomePageContainer: React.FC = () => {
     setSelectedDate,
     keywordsFromUrl,
     locationFromUrl,
-    resetPage,
   } = useHomePageData();
 
   const [items, setItems] = useState<Event[] | Community[]>([]);
@@ -31,10 +30,6 @@ const HomePageContainer: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    resetPage();
-  }, [keywordsFromUrl, locationFromUrl, selectedCategory, selectedDate, mode, resetPage]);
 
   useEffect(() => {
     const fetchData = async () => {
