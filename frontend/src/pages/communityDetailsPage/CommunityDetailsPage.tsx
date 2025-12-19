@@ -1,5 +1,7 @@
 import { Box, CircularProgress, Container, Typography } from '@mui/material';
 import CommunityDetails from '../../components/community/communityDetails/CommunityDetails';
+import CommunityDetailsEventsListContainer from '../../containers/community/CommunityDetailsEventsListContainer';
+import CommunityDetailsInfoContainer from '../../containers/community/CommunityDetailsInfoContainer';
 import { Community } from '../../models/Community';
 import { errorContainer, errorText, loadingBox, pageContainer } from '../../styles/common';
 
@@ -36,7 +38,15 @@ const CommunityDetailsPage: React.FC<Props> = ({
   return (
     <Container sx={pageContainer}>
       {community && (
-        <CommunityDetails community={community} subscriptionCount={subscriptionCount} />
+        <Box>
+          <CommunityDetails community={community} subscriptionCount={subscriptionCount} />
+          <CommunityDetailsInfoContainer
+            ownerId={community.ownerId}
+            communityName={community.name}
+            description={community.description}
+          />
+          <CommunityDetailsEventsListContainer communityId={community.id} />
+        </Box>
       )}
     </Container>
   );

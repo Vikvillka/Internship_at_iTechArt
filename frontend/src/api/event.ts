@@ -15,4 +15,8 @@ export const eventsApi = {
     const response = await api.post('/event/search', searchParams);
     return response.data;
   },
+  getEventsByCommunityId: async (communityId: string): Promise<Event[]> => {
+    const response = await api.get<Event[]>(`/event/getAllByCommunity/${communityId}`);
+    return response.data;
+  },
 };

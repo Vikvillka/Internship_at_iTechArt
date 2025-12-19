@@ -1,18 +1,14 @@
-import { Container } from '@mui/material';
 import React from 'react';
 import { Community } from '../../../models/Community';
+import CommunityDetailsHeader from './CommunityDetailsHeader';
 
 interface CommunityDetailsProps {
   community: Community;
-  subscriptionCount: number;
+  subscriptionCount?: number | undefined;
 }
 
 const CommunityDetails: React.FC<CommunityDetailsProps> = ({ community, subscriptionCount }) => {
-  return (
-    <Container>
-      <h1>{community.name}</h1>
-    </Container>
-  );
+  return <CommunityDetailsHeader community={community} subscriptionCount={subscriptionCount} />;
 };
 
 export default CommunityDetails;
