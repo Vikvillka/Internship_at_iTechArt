@@ -17,7 +17,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, participantCount }) => {
   const imageUrl = getEventImageUrl(event.imagePath || '');
 
   return (
-    <Link className={classes.link} to={`/events/${event.id}`}>
+    <Link className={classes.link} to={`/event/${event.id}`}>
       <Card className={classes.card}>
         <CardMedia
           className={classes.cardMedia}

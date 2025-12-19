@@ -1,4 +1,5 @@
-import { Event } from '../models/Event';
+import { PagedResponse } from '../models/Common';
+import { Event, EventSearchRequest } from '../models/Event';
 import { api } from './api';
 
 export const eventsApi = {
@@ -8,6 +9,14 @@ export const eventsApi = {
   },
   getEventById: async (eventId: string): Promise<Event> => {
     const response = await api.get<Event>(`/event/get/${eventId}`);
+    return response.data;
+  },
+  getEventsBySearch: async (searchParams: EventSearchRequest): Promise<PagedResponse<Event>> => {
+    const response = await api.post('/event/search', searchParams);
+    return response.data;
+  },
+  getEventsByCommunityId: async (communityId: string): Promise<Event[]> => {
+    const response = await api.get<Event[]>(`/event/getAllByCommunity/${communityId}`);
     return response.data;
   },
 };

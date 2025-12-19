@@ -16,12 +16,17 @@ message CreateSubscriptionRequest {
     string communityId = 2;
 }
 
+message CommunitySubscriptionsCountModel {
+    string communityId = 1;
+    int32 count = 2;
+}
+
 message GetUserSubscriptionsRequest {
     string userId = 1;
 }
 
 message GetCommunitySubscriptionsCountRequest {
-    string communityId = 1;
+    repeated string communityIds = 1;
 }
 
 message CreateSubscriptionReply {
@@ -38,9 +43,13 @@ message UnsubscribeReply {
     }
 }
 
+message CommunitySubscriptionsCountList {
+    repeated CommunitySubscriptionsCountModel items = 1;
+}
+
 message GetCommunitySubscriptionsCountReply {
     oneof result {
-        int32 count = 1;
+        CommunitySubscriptionsCountList count = 1;
         common.ProblemDetails problem = 2;
     }
 }

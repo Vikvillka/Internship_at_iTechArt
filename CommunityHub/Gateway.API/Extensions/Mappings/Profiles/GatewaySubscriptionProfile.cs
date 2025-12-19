@@ -16,6 +16,6 @@ public class GatewaySubscriptionProfile : Profile
         CreateMap<CreateSubscriptionReply, GatewaySubscriptionResponse>().ConvertUsing<CreateSubscriptionReplyConverter>();
         CreateMap<GetUserSubscriptionsReply, List<GatewaySubscriptionResponse>>().ConvertUsing<GetUserSubscriptionsReplyConverter>();
         CreateMap<UnsubscribeReply, bool>().ConvertUsing<UnsubscribeReplyConverter>();
-        CreateMap<GetCommunitySubscriptionsCountReply, GatewayCommunitySubscriptionsCountResponse>().ConvertUsing<GetCommunitySubscriptionsCountReplyConverter>();
+        CreateMap<GetCommunitySubscriptionsCountReply, List<GatewayCommunitySubscriptionsCountResponse>>().ConvertUsing<GetCommunitySubscriptionsCountReplyConverter>();
     }
 }

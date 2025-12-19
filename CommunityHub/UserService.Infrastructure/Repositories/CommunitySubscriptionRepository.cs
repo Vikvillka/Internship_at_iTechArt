@@ -46,13 +46,15 @@ public class CommunitySubscriptionRepository : EfRepository<CommunitySubscriptio
         return update != 0;
     }
 
-    public async Task<int> GetCommunitySubscriptonsCountAsync(Guid communityId)
+    public async Task<Dictionary<Guid, int>> GetCommunitySubscriptonsCountAsync(IEnumerable<Guid> communityIds)
     {
         return await _dbSet
-            .Where(s => s.CommunityId == communityId && s.IsActive)
-            .CountAsync();
+            .Where(p => communityIds.Contains(p.CommunityId) && p.IsActive)
+            .GroupBy(p => p.CommunityId)
+            .Select(g => new { g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.Key, x => x.Count);
     }
-    
+
     public async Task<IList<CommunitySubscription>> GetByCommunityIdAsync(Guid communityId)
     {
         var query = AsQueryable();

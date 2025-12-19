@@ -22,11 +22,13 @@ export const useStyles = makeStyles(() => ({
   },
   ownerBox: {
     display: 'flex',
+    marginTop: '8px',
     alignItems: 'center',
     gap: '8px',
   },
   detailTextBold: {
     fontWeight: '700',
+    margin: '16px 0px 8px 0px',
   },
   detailsBox: {
     marginTop: '24px',

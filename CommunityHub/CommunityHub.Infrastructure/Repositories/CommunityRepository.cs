@@ -45,11 +45,14 @@ public class CommunityRepository: EfRepository<Community>, ICommunityRepository
         if (!string.IsNullOrWhiteSpace(request.Category))
             query = query.Where(c => c.Category == request.Category);
 
-        if (!string.IsNullOrWhiteSpace(request.City))
-            query = query.Where(c => c.City == request.City);
+        if (!string.IsNullOrWhiteSpace(request.Location))
+        {
+            var value = request.Location.ToLower();
 
-        if (!string.IsNullOrWhiteSpace(request.Country))
-            query = query.Where(c => c.Country == request.Country);
+            query = query.Where(с =>
+                с.City.ToLower().Contains(value) ||
+                с.Country.ToLower().Contains(value));
+        }
 
         var totalCount = await query.CountAsync();
 

@@ -14,7 +14,7 @@ const containerStyle = {
   borderRadius: '20px',
 };
 
-const EventVenueMap: React.FC<EventVenueMapProps> = ({ address, lat, lng, zoom = 5 }) => {
+const EventVenueMap: React.FC<EventVenueMapProps> = ({ address, lat, lng, zoom = 10 }) => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '',
   });
