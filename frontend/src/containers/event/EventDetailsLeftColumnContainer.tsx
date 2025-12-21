@@ -1,35 +1,35 @@
-import { useEffect, useState } from 'react';
-import { communityApi } from '../../api/community';
-import { userApi } from '../../api/user';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import EventDetailsLeftColumn from '../../components/event/eventDetails/EventDetailsLeftColumn';
-import { Community } from '../../models/Community';
 import { Event } from '../../models/Event';
-import { User } from '../../models/User';
+import {
+  selectCommunityDetails,
+  selectCommunityDetailsError,
+} from '../../store/features/communityDetails/communityDetailsSelectors';
+import { getCommunityDetails } from '../../store/features/communityDetails/communityDetailsSlice';
+import {
+  selectUserDetails,
+  selectUserDetailsError,
+} from '../../store/features/userDetails/userDetailsSelectors';
 
 interface Props {
   event: Event;
 }
 
 const EventDetailsLeftColumnContainer: React.FC<Props> = ({ event }) => {
-  const [community, setCommunity] = useState<Community | null>(null);
-  const [owner, setOwner] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const community = useSelector(selectCommunityDetails);
+  const owner = useSelector(selectUserDetails);
+  const errorCommunity = useSelector(selectCommunityDetailsError);
+  const errorUser = useSelector(selectUserDetailsError);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const community = await communityApi.getCommunityById(event.communityId);
-        setCommunity(community);
+    if (event.communityId) {
+      dispatch(getCommunityDetails({ id: event.communityId }));
+    }
+  }, [event.communityId, dispatch]);
 
-        const ownerData = await userApi.getUserById(community.ownerId);
-        setOwner(ownerData);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch event details');
-      }
-    };
-
-    fetchData();
-  }, [event.communityId]);
+  const error = errorCommunity || errorUser || null;
 
   return (
     <EventDetailsLeftColumn
