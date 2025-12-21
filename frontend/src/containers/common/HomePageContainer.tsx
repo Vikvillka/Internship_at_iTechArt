@@ -1,95 +1,103 @@
 import React, { useEffect, useState } from 'react';
-import { useCommunitiesData } from '../../hooks/useCommunityData';
-import { useEventsData } from '../../hooks/useEventsData';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHomePageData } from '../../hooks/useHomePageData';
-import { Community } from '../../models/Community';
-import { Event } from '../../models/Event';
 import { ContentMode as Mode } from '../../models/Mode';
 import HomePage from '../../pages/homePage/HomePage';
+import {
+  selectCommunities,
+  selectCommunitySubscriptionCounts,
+  selectCommunityTotalPages,
+} from '../../store/features/communities/communitiesSelectors';
+import { getCommunities } from '../../store/features/communities/communitiesSlice';
+import {
+  selectEvents,
+  selectParticipationCounts,
+  selectTotalEventPages,
+} from '../../store/features/events/eventsSelectors';
+import { getEvents } from '../../store/features/events/eventsSlice';
+import { selectIsLoading } from '../../store/features/loader/loaderSelectors';
 
 const HomePageContainer: React.FC = () => {
-  const { loadEvents } = useEventsData();
-  const { loadCommunities } = useCommunitiesData();
+  const dispatch = useDispatch();
 
   const {
     mode,
     setMode,
     page,
     setPage,
-    selectedCategory,
+    category,
     setSelectedCategory,
+    dateFrom,
+    dateTo,
     selectedDate,
     setSelectedDate,
     keywordsFromUrl,
     locationFromUrl,
   } = useHomePageData();
 
-  const [items, setItems] = useState<Event[] | Community[]>([]);
-  const [participantCounts, setParticipantCounts] = useState<Record<string, number>>({});
-  const [subscriptionCounts, setSubscriptionCounts] = useState<Record<string, number>>({});
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(true);
+  const events = useSelector(selectEvents);
+  const participantCounts = useSelector(selectParticipationCounts);
+  const totalEventPages = useSelector(selectTotalEventPages);
+
+  const communities = useSelector(selectCommunities);
+  const subscriptionCounts = useSelector(selectCommunitySubscriptionCounts);
+  const totalCommunityPages = useSelector(selectCommunityTotalPages);
+
+  const loading = useSelector(selectIsLoading);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        if (mode === Mode.Events) {
-          const data = await loadEvents(
+    try {
+      if (mode === Mode.Events) {
+        dispatch(
+          getEvents({
             page,
-            selectedCategory,
-            selectedDate,
-            keywordsFromUrl,
-            locationFromUrl,
-          );
-          setItems(data.items);
-          setParticipantCounts(data.participantCounts);
-          setTotalPages(data.totalPages);
-          setSubscriptionCounts({});
-        } else {
-          const data = await loadCommunities(
+            pageSize: 20,
+            dateTo: dateTo,
+            dateFrom: dateFrom,
+            category: category || undefined,
+            keywords: keywordsFromUrl,
+            location: locationFromUrl,
+          }),
+        );
+      } else {
+        dispatch(
+          getCommunities({
             page,
-            selectedCategory,
-            keywordsFromUrl,
-            locationFromUrl,
-          );
-          setItems(data.items);
-          setSubscriptionCounts(data.subscriptionCounts);
-          setTotalPages(data.totalPages);
-          setParticipantCounts({});
-        }
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch data');
-      } finally {
-        setLoading(false);
+            pageSize: 20,
+            category: category || undefined,
+            keywords: keywordsFromUrl,
+            location: locationFromUrl,
+          }),
+        );
       }
-    };
-    fetchData();
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch data');
+    }
   }, [
+    mode,
     page,
+    category,
+    dateFrom,
+    dateTo,
+    selectedDate,
     keywordsFromUrl,
     locationFromUrl,
-    selectedCategory,
-    selectedDate,
-    mode,
-    loadEvents,
-    loadCommunities,
+    dispatch,
   ]);
 
   return (
     <HomePage
       mode={mode}
       setMode={setMode}
-      items={items}
+      items={mode === Mode.Events ? events : communities}
       participantCounts={participantCounts}
       subscriptionCounts={subscriptionCounts}
       page={page}
-      totalPages={totalPages}
+      totalPages={mode === Mode.Events ? totalEventPages : totalCommunityPages}
       loading={loading}
       error={error}
-      selectedCategory={selectedCategory}
+      selectedCategory={category}
       selectedDate={selectedDate}
       onPageChange={setPage}
       onCategorySelect={setSelectedCategory}

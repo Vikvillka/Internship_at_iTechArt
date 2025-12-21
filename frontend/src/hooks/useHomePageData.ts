@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { getDateRange } from '../helpers/getDateRange';
+import { categories } from '../helpers/sliderCategory/categories';
 import { DateOption } from '../models/Date';
 import { ContentMode as Mode } from '../models/Mode';
 
@@ -11,7 +13,13 @@ export const useHomePageData = () => {
 
   const page = Number(searchParams.get('page') ?? 1);
   const selectedCategory = searchParams.get('category') ?? '';
+  const category = selectedCategory === categories[0].label ? '' : selectedCategory;
+
   const selectedDate = (searchParams.get('date') as DateOption) ?? DateOption.Any;
+  const { dateFrom, dateTo } =
+    selectedDate === DateOption.Any
+      ? { dateFrom: undefined, dateTo: undefined }
+      : getDateRange(selectedDate);
 
   const keywordsFromUrl = searchParams.get('keywords') ?? undefined;
   const locationFromUrl = searchParams.get('location') ?? undefined;
@@ -40,8 +48,10 @@ export const useHomePageData = () => {
     setMode,
     page,
     setPage: (p: number) => updateParams({ page: String(p) }),
-    selectedCategory,
+    category,
     setSelectedCategory: (c: string) => updateParams({ category: c }),
+    dateFrom,
+    dateTo,
     selectedDate,
     setSelectedDate: (d: DateOption) => updateParams({ date: d }),
     keywordsFromUrl,
