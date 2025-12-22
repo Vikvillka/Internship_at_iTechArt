@@ -10,7 +10,6 @@ function* fetchUserById(action: { payload: { id: string; showLoader?: boolean } 
     const user = yield call(userApi.getUserById, action.payload.id);
     yield put(setUserById({ user }));
   } catch (error: any) {
-    console.error('Failed to fetch user details:', error);
     yield put(setUserError(error.message || 'Failed to fetch user details'));
   } finally {
     if (action.payload.showLoader) yield put(hideLoader());

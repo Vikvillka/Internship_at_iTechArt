@@ -20,7 +20,7 @@ const CommunityDetailsInfoContainer: React.FC<Props> = ({
   const error = useSelector(selectUserError);
 
   useEffect(() => {
-    dispatch(getUserById({ id: ownerId, showLoader: false }));
+    if (ownerId) dispatch(getUserById({ id: ownerId, showLoader: false }));
   }, [dispatch, ownerId]);
 
   return (
