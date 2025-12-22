@@ -5,7 +5,7 @@ import { subscriptionApi } from '../../../api/subscription';
 import { PagedResponse } from '../../../models/Common';
 import { Community, CommunitySearchRequest } from '../../../models/Community';
 import { hideLoader, showLoader } from '../loader/loaderSlice';
-import { getUserDetails } from '../userDetails/userDetailsSlice';
+import { getUserById } from '../users/usersSlice';
 import {
   getCommunities,
   getCommunityById,
@@ -62,7 +62,7 @@ function* fetchCommunityById(action: {
       }),
     );
     if (community.ownerId) {
-      yield put(getUserDetails({ id: community.ownerId, showLoader: false }));
+      yield put(getUserById({ id: community.ownerId, showLoader: false }));
     }
   } catch (error: any) {
     yield put(setCommunitiesError(error.message || 'Failed to fetch community details'));

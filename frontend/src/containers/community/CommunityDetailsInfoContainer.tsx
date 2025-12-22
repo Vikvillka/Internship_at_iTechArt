@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CommunityDetailsInfo from '../../components/community/communityDetails/CommunityDetailsInfo';
-import {
-  selectUserDetails,
-  selectUserDetailsError,
-} from '../../store/features/userDetails/userDetailsSelectors';
-import { getUserDetails } from '../../store/features/userDetails/userDetailsSlice';
+import { selectUserById, selectUserError } from '../../store/features/users/usersSelectors';
+import { getUserById } from '../../store/features/users/usersSlice';
 
 interface Props {
   ownerId: string;
@@ -19,11 +16,11 @@ const CommunityDetailsInfoContainer: React.FC<Props> = ({
   description,
 }) => {
   const dispatch = useDispatch();
-  const user = useSelector(selectUserDetails);
-  const error = useSelector(selectUserDetailsError);
+  const user = useSelector(selectUserById);
+  const error = useSelector(selectUserError);
 
   useEffect(() => {
-    dispatch(getUserDetails({ id: ownerId, showLoader: false }));
+    dispatch(getUserById({ id: ownerId, showLoader: false }));
   }, [dispatch, ownerId]);
 
   return (

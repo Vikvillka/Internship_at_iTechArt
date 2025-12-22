@@ -15,17 +15,20 @@ export const userDetailsSlice = createSlice({
   name: 'userDetails',
   initialState,
   reducers: {
-    getUserDetails(state, action: PayloadAction<{ id: string; showLoader?: boolean }>) {},
-    setUserDetails(state, action: PayloadAction<{ user: User }>) {
+    getUserById(state, action: PayloadAction<{ id: string; showLoader?: boolean }>) {
+      state.user = null;
+      state.error = null;
+    },
+    setUserById(state, action: PayloadAction<{ user: User }>) {
       state.user = action.payload.user;
       state.error = null;
     },
-    setUserDetailsError(state, action: PayloadAction<string>) {
+    setUserError(state, action: PayloadAction<string>) {
       state.user = null;
       state.error = action.payload;
     },
   },
 });
 
-export const { getUserDetails, setUserDetails, setUserDetailsError } = userDetailsSlice.actions;
+export const { getUserById, setUserById, setUserError } = userDetailsSlice.actions;
 export default userDetailsSlice.reducer;

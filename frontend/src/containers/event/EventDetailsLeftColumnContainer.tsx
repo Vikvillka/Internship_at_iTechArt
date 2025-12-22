@@ -7,10 +7,7 @@ import {
   selectCommunityById,
 } from '../../store/features/communities/communitiesSelectors';
 import { getCommunityById } from '../../store/features/communities/communitiesSlice';
-import {
-  selectUserDetails,
-  selectUserDetailsError,
-} from '../../store/features/userDetails/userDetailsSelectors';
+import { selectUserById, selectUserError } from '../../store/features/users/usersSelectors';
 
 interface Props {
   event: Event;
@@ -19,9 +16,9 @@ interface Props {
 const EventDetailsLeftColumnContainer: React.FC<Props> = ({ event }) => {
   const dispatch = useDispatch();
   const community = useSelector(selectCommunityById);
-  const owner = useSelector(selectUserDetails);
+  const owner = useSelector(selectUserById);
   const errorCommunity = useSelector(selectCommunitiesError);
-  const errorUser = useSelector(selectUserDetailsError);
+  const errorUser = useSelector(selectUserError);
 
   useEffect(() => {
     if (event.communityId) {
