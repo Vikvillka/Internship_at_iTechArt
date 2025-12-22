@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import EventDetailsLeftColumn from '../../components/event/eventDetails/EventDetailsLeftColumn';
 import { Event } from '../../models/Event';
 import {
-  selectCommunityDetails,
-  selectCommunityDetailsError,
-} from '../../store/features/communityDetails/communityDetailsSelectors';
-import { getCommunityDetails } from '../../store/features/communityDetails/communityDetailsSlice';
+  selectCommunitiesError,
+  selectCommunityById,
+} from '../../store/features/communities/communitiesSelectors';
+import { getCommunityById } from '../../store/features/communities/communitiesSlice';
 import {
   selectUserDetails,
   selectUserDetailsError,
@@ -18,14 +18,14 @@ interface Props {
 
 const EventDetailsLeftColumnContainer: React.FC<Props> = ({ event }) => {
   const dispatch = useDispatch();
-  const community = useSelector(selectCommunityDetails);
+  const community = useSelector(selectCommunityById);
   const owner = useSelector(selectUserDetails);
-  const errorCommunity = useSelector(selectCommunityDetailsError);
+  const errorCommunity = useSelector(selectCommunitiesError);
   const errorUser = useSelector(selectUserDetailsError);
 
   useEffect(() => {
     if (event.communityId) {
-      dispatch(getCommunityDetails({ id: event.communityId }));
+      dispatch(getCommunityById({ id: event.communityId, showLoader: false }));
     }
   }, [event.communityId, dispatch]);
 

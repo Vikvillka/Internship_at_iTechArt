@@ -5,7 +5,14 @@ import { subscriptionApi } from '../../../api/subscription';
 import { PagedResponse } from '../../../models/Common';
 import { Community, CommunitySearchRequest } from '../../../models/Community';
 import { hideLoader, showLoader } from '../loader/loaderSlice';
-import { getCommunities, setCommunities } from './communitiesSlice';
+import { getUserDetails } from '../userDetails/userDetailsSlice';
+import {
+  getCommunities,
+  getCommunityById,
+  setCommunities,
+  setCommunitiesError,
+  setCommunityById,
+} from './communitiesSlice';
 
 function* fetchCommunities(action: { payload: CommunitySearchRequest }): SagaIterator {
   try {
@@ -31,13 +38,40 @@ function* fetchCommunities(action: { payload: CommunitySearchRequest }): SagaIte
         totalPages: Math.ceil(response.totalCount / response.pageSize),
       }),
     );
-  } catch (error) {
-    console.error('Failed to fetch communities:', error);
+  } catch (error: any) {
+    yield put(setCommunitiesError(error.message || 'Failed to fetch communities'));
   } finally {
     yield put(hideLoader());
   }
 }
 
+function* fetchCommunityById(action: {
+  payload: { id: string; showLoader?: boolean };
+}): SagaIterator {
+  try {
+    if (action.payload.showLoader) yield put(showLoader());
+
+    const community: Community = yield call(communityApi.getCommunityById, action.payload.id);
+    const counts = yield call(subscriptionApi.getSubscriptionCounts, [action.payload.id]);
+    const subscriptionCount = counts.length > 0 ? counts[0].count : 0;
+
+    yield put(
+      setCommunityById({
+        community,
+        subscriptionCount,
+      }),
+    );
+    if (community.ownerId) {
+      yield put(getUserDetails({ id: community.ownerId, showLoader: false }));
+    }
+  } catch (error: any) {
+    yield put(setCommunitiesError(error.message || 'Failed to fetch community details'));
+  } finally {
+    if (action.payload.showLoader) yield put(hideLoader());
+  }
+}
+
 export function* communitiesSaga() {
   yield takeLatest(getCommunities, fetchCommunities);
+  yield takeLatest(getCommunityById, fetchCommunityById);
 }
