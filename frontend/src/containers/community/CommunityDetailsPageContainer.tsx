@@ -1,34 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { communityApi } from '../../api/community';
-import { subscriptionApi } from '../../api/subscription';
-import { Community } from '../../models/Community';
 import CommunityDetailsPage from '../../pages/communityDetailsPage/CommunityDetailsPage';
+import {
+  selectCommunityDetails,
+  selectCommunityDetailsError,
+  selectCommunitySubscriptionCounts,
+} from '../../store/features/communityDetails/communityDetailsSelectors';
+import { getCommunityDetails } from '../../store/features/communityDetails/communityDetailsSlice';
+import { selectIsLoading } from '../../store/features/loader/loaderSelectors';
 
 const CommunityDetailsPageContainer: React.FC = () => {
   const { communityId } = useParams();
-  const [community, setCommunity] = useState<Community | null>(null);
-  const [subscriptionCount, setSubscriptionCount] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch();
+
+  const community = useSelector(selectCommunityDetails);
+  const subscriptionCount = useSelector(selectCommunitySubscriptionCounts);
+  const loading = useSelector(selectIsLoading);
+  const error = useSelector(selectCommunityDetailsError);
 
   useEffect(() => {
-    const fetchCommunityDetails = async () => {
-      try {
-        const communityData = await communityApi.getCommunityById(communityId!);
-        setCommunity(communityData);
-
-        const counts = await subscriptionApi.getSubscriptionCounts([communityId!]);
-        setSubscriptionCount(counts.length > 0 ? counts[0].count : 0);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch community details');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCommunityDetails();
-  }, [communityId]);
+    if (communityId) {
+      dispatch(getCommunityDetails({ id: communityId, showLoader: true }));
+    }
+  }, [communityId, dispatch]);
 
   return (
     <CommunityDetailsPage
