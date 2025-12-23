@@ -1,5 +1,5 @@
-import { Box, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Tooltip, Typography } from '@mui/material';
+import React, { ReactNode } from 'react';
 import { baseInputStyles } from './BaseInput.styles';
 
 interface BaseInputProps {
@@ -8,6 +8,10 @@ interface BaseInputProps {
   placeholder?: string;
   type?: string;
   onChange: (value: string) => void;
+  labelIcon?: ReactNode;
+  labelTooltip?: string;
+  startIcon?: ReactNode;
+  caption?: ReactNode;
 }
 
 const BaseInput: React.FC<BaseInputProps> = ({
@@ -16,20 +20,35 @@ const BaseInput: React.FC<BaseInputProps> = ({
   placeholder,
   type = 'text',
   onChange,
+  labelIcon,
+  labelTooltip,
+  startIcon,
+  caption,
 }) => {
   const [focused, setFocused] = React.useState(false);
+  const hasStartIcon = Boolean(startIcon);
 
   return (
     <Box>
       {label && (
-        <Typography
-          sx={{
-            ...(baseInputStyles.label as any),
-            ...(focused ? (baseInputStyles.labelFocused as any) : {}),
-          }}
-        >
-          {label}
-        </Typography>
+        <Box sx={baseInputStyles.labelRow}>
+          <Typography
+            sx={{
+              ...(baseInputStyles.label as any),
+              ...(focused ? (baseInputStyles.labelFocused as any) : {}),
+            }}
+          >
+            {label}
+          </Typography>
+
+          {labelIcon && (
+            <Tooltip title={labelTooltip ?? ''} arrow>
+              <Box component='span' sx={baseInputStyles.tooltip}>
+                {labelIcon}
+              </Box>
+            </Tooltip>
+          )}
+        </Box>
       )}
 
       <Box sx={baseInputStyles.field}>
@@ -39,6 +58,18 @@ const BaseInput: React.FC<BaseInputProps> = ({
             ...(focused ? (baseInputStyles.fieldFocused as any) : {}),
           }}
         />
+
+        {startIcon && (
+          <Box
+            sx={{
+              ...(baseInputStyles.iconInside as any),
+              ...(baseInputStyles.iconLeft as any),
+            }}
+          >
+            {startIcon}
+          </Box>
+        )}
+
         <Box
           component='input'
           type={type}
@@ -47,9 +78,14 @@ const BaseInput: React.FC<BaseInputProps> = ({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           onChange={(e) => onChange(e.target.value)}
-          sx={baseInputStyles.input}
+          sx={{
+            ...(baseInputStyles.input as any),
+            ...(hasStartIcon ? baseInputStyles.inputWithLeftIcon : ({} as any)),
+          }}
         />
       </Box>
+
+      {caption && <Typography sx={baseInputStyles.caption}>{caption}</Typography>}
     </Box>
   );
 };

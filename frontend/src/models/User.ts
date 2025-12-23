@@ -1,4 +1,4 @@
-export type Gender = 'Male' | 'Female' | 'Other';
+import { Gender } from './Gender';
 
 export interface User {
   id: string;

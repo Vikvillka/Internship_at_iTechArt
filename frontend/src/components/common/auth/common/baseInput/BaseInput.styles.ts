@@ -27,7 +27,7 @@ export const baseInputStyles = {
 
   input: {
     width: '100%',
-    height: 45,
+    height: 40,
     px: 2,
     borderRadius: '12px',
     border: 'none',
@@ -38,8 +38,22 @@ export const baseInputStyles = {
     zIndex: 1,
   } as SxProps<Theme>,
 
-  label: {
+  inputWithLeftIcon: {
+    pl: 5,
+  } as SxProps<Theme>,
+
+  inputWithRightIcon: {
+    pr: 5,
+  } as SxProps<Theme>,
+
+  labelRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 0.5,
     mb: 0.2,
+  } as SxProps<Theme>,
+
+  label: {
     fontSize: 14,
     color: 'secondary.dark',
     transition: 'color 0.2s ease, transform 0.2s ease',
@@ -48,5 +62,31 @@ export const baseInputStyles = {
   labelFocused: {
     color: 'primary.main',
     transform: 'translateY(-1px)',
+  } as SxProps<Theme>,
+
+  iconInside: {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-40%)',
+    zIndex: 2,
+    color: 'secondary.main',
+  } as SxProps<Theme>,
+
+  iconLeft: {
+    left: 12,
+  } as SxProps<Theme>,
+
+  iconRight: {
+    right: 12,
+  } as SxProps<Theme>,
+
+  caption: {
+    mt: 0.5,
+    fontSize: 12,
+    color: 'secondary.main',
+  } as SxProps<Theme>,
+
+  tooltip: {
+    cursor: 'pointer',
   } as SxProps<Theme>,
 };

@@ -1,6 +1,6 @@
 import { SxProps, Theme } from '@mui/material';
 
-export const loginModalStyles = {
+export const registerModalStyles = {
   modalBox: {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -11,22 +11,22 @@ export const loginModalStyles = {
     boxShadow: 24,
     backgroundColor: 'background.paper',
     px: 4,
-    pb: 6,
-    pt: 3,
+    pb: 3,
+    pt: 1,
   } as SxProps<Theme>,
 
   modalContent: {
     mt: 2,
     display: 'flex',
     flexDirection: 'column',
-    pt: 2,
-    pb: 2,
+    pt: 1,
+    pb: 3,
     mx: 5,
   } as SxProps<Theme>,
 
   title: {
     mt: 4,
-    mb: 3,
+    mb: 2,
     textAlign: 'center',
     fontWeight: 'bold',
   } as SxProps<Theme>,
@@ -34,7 +34,7 @@ export const loginModalStyles = {
   inputContainer: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 3,
+    gap: 1,
   } as SxProps<Theme>,
 
   passwordContainer: {
@@ -67,8 +67,19 @@ export const loginModalStyles = {
     textAlign: 'center',
   } as SxProps<Theme>,
 
-  linkSignUp: {
+  linkLogIn: {
     fontWeight: 'bold',
     cursor: 'pointer',
+  } as SxProps<Theme>,
+
+  radio: {
+    color: 'primary.main',
+    '&.Mui-checked': {
+      color: 'primary.main',
+    },
+  } as SxProps<Theme>,
+
+  genderTitle: {
+    color: 'secondary.dark',
   } as SxProps<Theme>,
 };

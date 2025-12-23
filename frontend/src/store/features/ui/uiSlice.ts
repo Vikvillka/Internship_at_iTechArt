@@ -26,10 +26,24 @@ export const uiSlice = createSlice({
     closeRegisterModal(state) {
       state.isRegisterModalOpen = false;
     },
+    switchToRegisterModal(state) {
+      state.isLoginModalOpen = false;
+      state.isRegisterModalOpen = true;
+    },
+    switchToLoginModal(state) {
+      state.isRegisterModalOpen = false;
+      state.isLoginModalOpen = true;
+    },
   },
 });
 
-export const { openLoginModal, closeLoginModal, openRegisterModal, closeRegisterModal } =
-  uiSlice.actions;
+export const {
+  openLoginModal,
+  closeLoginModal,
+  openRegisterModal,
+  closeRegisterModal,
+  switchToRegisterModal,
+  switchToLoginModal,
+} = uiSlice.actions;
 
 export default uiSlice.reducer;
