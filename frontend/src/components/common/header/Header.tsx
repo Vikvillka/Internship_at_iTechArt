@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import AuthButtonsContainer from '../../../containers/auth/AuthButtonsContainer';
+import AuthContainer from '../../../containers/auth/AuthContainer';
 import { headerStyles } from './Header.styles';
 import HeaderLogo from './HeaderLogo';
 import HeaderSearch from './HeaderSearch';
@@ -12,7 +12,7 @@ const Header: React.FC = () => {
         <HeaderLogo />
         <HeaderSearch />
       </Box>
-      <AuthButtonsContainer />
+      <AuthContainer />
     </Box>
   );
 };

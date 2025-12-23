@@ -1,15 +1,31 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import AuthButtons from '../../components/common/auth/AuthButtons';
 import LoginModal from '../../components/common/auth/loginModal/LoginModal';
+import { isLoginModalOpen } from '../../store/features/ui/uiSelectors';
+import { closeLoginModal, openLoginModal } from '../../store/features/ui/uiSlice';
 // import { loginUser, registerUser } from '../../store/authSlice';
 
-const AuthButtonsContainer: React.FC = () => {
+const AuthContainer: React.FC = () => {
   const dispatch = useDispatch();
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const isLoginOpen = useSelector(isLoginModalOpen);
+  // const isRegisterOpen = useSelector(isRegisterModalOpen);
 
-  const handleLoginOpen = () => setIsLoginOpen(true);
-  const handleLoginClose = () => setIsLoginOpen(false);
+  const handleLoginOpen = () => {
+    dispatch(openLoginModal());
+  };
+
+  const handleLoginClose = () => {
+    dispatch(closeLoginModal());
+  };
+
+  // const handleRegisterOpen = () => {
+  //   dispatch(openRegisterModal());
+  // }
+
+  // const handleRegisterClose = () => {
+  //   dispatch(closeRegisterModal());
+  // }
 
   const handleSubmitLogin = (login: string, password: string) => {
     // dispatch(loginUser({ login, password }));
@@ -29,4 +45,4 @@ const AuthButtonsContainer: React.FC = () => {
   );
 };
 
-export default AuthButtonsContainer;
+export default AuthContainer;
