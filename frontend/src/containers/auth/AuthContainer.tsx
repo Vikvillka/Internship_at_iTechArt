@@ -4,7 +4,6 @@ import AuthButtons from '../../components/common/auth/AuthButtons';
 import { openLoginModal, openRegisterModal } from '../../store/features/ui/uiSlice';
 import LoginModalContainer from './LoginModalContainer';
 import RegisterModalContainer from './RegisterModalContainer';
-// import { loginUser, registerUser } from '../../store/authSlice';
 
 const AuthContainer: React.FC = () => {
   const dispatch = useDispatch();

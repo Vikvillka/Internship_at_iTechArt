@@ -1,5 +1,6 @@
 import { Box, Modal } from '@mui/material';
 import React from 'react';
+import { AuthCreds } from '../../../../models/Auth';
 import LoginForm from './LoginForm';
 import { loginModalStyles } from './LoginModal.styles';
 import LoginModalHeader from './LoginModalHeader';
@@ -7,7 +8,7 @@ import LoginModalHeader from './LoginModalHeader';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (login: string, password: string) => void;
+  onSubmit: (creds: AuthCreds) => void;
   onSwitchToRegister?: () => void;
 }
 

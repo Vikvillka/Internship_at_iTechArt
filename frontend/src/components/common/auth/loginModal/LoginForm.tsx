@@ -1,11 +1,12 @@
 import { Box } from '@mui/material';
 import React, { useState } from 'react';
+import { AuthCreds } from '../../../../models/Auth';
 import LoginActions from './LoginActions';
 import LoginFields from './LoginFields';
 import { loginModalStyles } from './LoginModal.styles';
 
 interface LoginFormProps {
-  onSubmit: (login: string, password: string) => void;
+  onSubmit: (creds: AuthCreds) => void;
   onSwitchToRegister?: () => void;
 }
 
@@ -26,7 +27,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onSwitchToRegister }) =
       />
 
       <LoginActions
-        onSubmit={() => onSubmit(login, password)}
+        onSubmit={() => onSubmit({ username: login, password: password })}
         onSwitchToRegister={onSwitchToRegister}
       />
     </Box>
