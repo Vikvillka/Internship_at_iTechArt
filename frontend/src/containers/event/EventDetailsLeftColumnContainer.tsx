@@ -8,6 +8,7 @@ import {
 } from '../../store/features/communities/communitiesSelectors';
 import { getCommunityById } from '../../store/features/communities/communitiesSlice';
 import { selectUserById, selectUserError } from '../../store/features/users/usersSelectors';
+import { getUserById } from '../../store/features/users/usersSlice';
 
 interface Props {
   event: Event;
@@ -25,6 +26,12 @@ const EventDetailsLeftColumnContainer: React.FC<Props> = ({ event }) => {
       dispatch(getCommunityById({ id: event.communityId, showLoader: false }));
     }
   }, [event.communityId, dispatch]);
+
+  useEffect(() => {
+    if (community?.ownerId) {
+      dispatch(getUserById({ id: community.ownerId, showLoader: false }));
+    }
+  }, [community?.ownerId, dispatch]);
 
   const error = errorCommunity || errorUser || null;
 

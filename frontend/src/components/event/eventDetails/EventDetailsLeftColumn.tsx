@@ -3,7 +3,7 @@ import React from 'react';
 import { Community } from '../../../models/Community';
 import { Event } from '../../../models/Event';
 import { User } from '../../../models/User';
-import { useStyles } from './EventDetails.styles';
+import { eventDetailsStyles } from './EventDetails.styles';
 import EventDescriptionDetails from './EventDetailsDescription';
 import EventDetailsHeader from './EventDetailsHeader';
 
@@ -15,10 +15,8 @@ interface Props {
 }
 
 const EventDetailsLeftColumn: React.FC<Props> = ({ event, community, owner, error }) => {
-  const classes = useStyles();
-
   return (
-    <Box className={classes.leftColumn}>
+    <Box sx={eventDetailsStyles.leftColumn}>
       <EventDetailsHeader
         title={event.title}
         ownerName={owner?.username}

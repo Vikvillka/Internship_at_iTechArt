@@ -4,8 +4,7 @@ import { communityApi } from '../../../api/community';
 import { subscriptionApi } from '../../../api/subscription';
 import { PagedResponse } from '../../../models/Common';
 import { Community, CommunitySearchRequest } from '../../../models/Community';
-import { hideLoader, showLoader } from '../loader/loaderSlice';
-import { getUserById } from '../users/usersSlice';
+import { decrementLoader, incrementLoader } from '../loader/loaderSlice';
 import {
   getCommunities,
   getCommunityById,
@@ -16,7 +15,7 @@ import {
 
 function* fetchCommunities(action: { payload: CommunitySearchRequest }): SagaIterator {
   try {
-    yield put(showLoader());
+    yield put(incrementLoader());
 
     const response: PagedResponse<Community> = yield call(
       communityApi.getCommunitiesBySearch,
@@ -41,7 +40,7 @@ function* fetchCommunities(action: { payload: CommunitySearchRequest }): SagaIte
   } catch (error: any) {
     yield put(setCommunitiesError(error.message || 'Failed to fetch communities'));
   } finally {
-    yield put(hideLoader());
+    yield put(decrementLoader());
   }
 }
 
@@ -49,7 +48,7 @@ function* fetchCommunityById(action: {
   payload: { id: string; showLoader?: boolean };
 }): SagaIterator {
   try {
-    if (action.payload.showLoader) yield put(showLoader());
+    if (action.payload.showLoader) yield put(incrementLoader());
 
     const community: Community = yield call(communityApi.getCommunityById, action.payload.id);
     const counts = yield call(subscriptionApi.getSubscriptionCounts, [action.payload.id]);
@@ -61,13 +60,10 @@ function* fetchCommunityById(action: {
         subscriptionCount,
       }),
     );
-    if (community.ownerId) {
-      yield put(getUserById({ id: community.ownerId, showLoader: false }));
-    }
   } catch (error: any) {
     yield put(setCommunitiesError(error.message || 'Failed to fetch community details'));
   } finally {
-    if (action.payload.showLoader) yield put(hideLoader());
+    if (action.payload.showLoader) yield put(decrementLoader());
   }
 }
 

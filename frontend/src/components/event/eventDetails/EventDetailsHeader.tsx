@@ -1,7 +1,7 @@
 import PeopleIcon from '@mui/icons-material/PeopleAltTwoTone';
 import { Box, Typography } from '@mui/material';
 import React from 'react';
-import { useStyles } from './EventDetails.styles';
+import { eventDetailsStyles } from './EventDetails.styles';
 
 interface EventHeaderProps {
   title: string;
@@ -16,11 +16,9 @@ const EventDetailsHeader: React.FC<EventHeaderProps> = ({
   communityName,
   error,
 }) => {
-  const classes = useStyles();
-
   return (
     <Box>
-      <Typography className={classes.title} variant='h4'>
+      <Typography sx={eventDetailsStyles.title} variant='h4'>
         {title}
       </Typography>
       {error && (
@@ -28,13 +26,13 @@ const EventDetailsHeader: React.FC<EventHeaderProps> = ({
           {error}
         </Typography>
       )}
-      <Box className={classes.ownerBox}>
+      <Box sx={eventDetailsStyles.ownerBox}>
         <PeopleIcon />
         <Typography variant='subtitle1'>
           Hosted by <strong>{ownerName}</strong>
         </Typography>
       </Box>
-      <Box className={classes.ownerBox}>
+      <Box sx={eventDetailsStyles.ownerBox}>
         <Typography variant='subtitle1'>
           Meet the community: <br />
           <strong>{communityName}</strong>

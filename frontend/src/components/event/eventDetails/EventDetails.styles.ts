@@ -1,42 +1,50 @@
-import { makeStyles } from '@mui/styles';
+import { SxProps, Theme } from '@mui/material';
 
-export const useStyles = makeStyles(() => ({
-  container: {
+export const eventDetailsStyles = {
+  containerEventDetails: {
     display: 'flex',
     flexDirection: 'row',
     gap: '32px',
-    padding: '16px',
-    '@media (max-width: 900px)': {
+    p: 2,
+    '@media (max-width:900px)': {
       flexDirection: 'column',
     },
-  },
+  } as SxProps<Theme>,
+
   leftColumn: {
     flex: 6,
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-    paddingRight: '30px',
-  },
+    pr: '30px',
+  } as SxProps<Theme>,
+
   title: {
-    fontWeight: '700',
-  },
+    fontWeight: 700,
+  } as SxProps<Theme>,
+
   ownerBox: {
     display: 'flex',
-    marginTop: '8px',
+    mt: 1,
     alignItems: 'center',
-    gap: '8px',
-  },
+    gap: 1,
+  } as SxProps<Theme>,
+
   detailTextBold: {
-    fontWeight: '700',
-    margin: '16px 0px 8px 0px',
-  },
+    fontWeight: 700,
+    mt: 2,
+    mb: 1,
+  } as SxProps<Theme>,
+
   detailsBox: {
-    marginTop: '24px',
-  },
+    mt: 3,
+  } as SxProps<Theme>,
+
   description: {
-    marginTop: '20px',
-    marginBottom: '8px',
-  },
+    mt: 2.5,
+    mb: 1,
+  } as SxProps<Theme>,
+
   rightColumn: {
     flex: 4,
     display: 'flex',
@@ -46,33 +54,38 @@ export const useStyles = makeStyles(() => ({
     top: '20px',
     alignSelf: 'flex-start',
     height: 'fit-content',
-  },
+  } as SxProps<Theme>,
+
   cardMedia: {
     borderRadius: '20px',
     maxHeight: '300px',
     objectFit: 'cover',
-    marginBottom: '16px',
-  },
+    mb: 2,
+  } as SxProps<Theme>,
+
   paperBox: {
-    padding: '25px 20px',
-    marginTop: '16px',
+    p: '25px 20px',
+    mt: 2,
     borderRadius: '20px',
-    boxShadow: '0px 0px 0px rgba(0, 0, 0, 0)',
+    boxShadow: '0px 0px 0px rgba(0,0,0,0)',
     border: '1px dashed #C9C9C9',
-  },
+  } as SxProps<Theme>,
+
   dateBox: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
-  },
+    gap: 1,
+  } as SxProps<Theme>,
+
   tagsBox: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: '8px',
-  },
+    gap: 1,
+  } as SxProps<Theme>,
+
   chip: {
     color: '#000 !important',
     border: 'none !important',
     fontWeight: '600 !important',
-  },
-}));
+  } as SxProps<Theme>,
+};

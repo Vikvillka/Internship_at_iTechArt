@@ -4,7 +4,7 @@ import { eventsApi } from '../../../api/event';
 import { participationApi } from '../../../api/participation';
 import { PagedResponse } from '../../../models/Common';
 import { Event, EventSearchRequest } from '../../../models/Event';
-import { hideLoader, showLoader } from '../loader/loaderSlice';
+import { decrementLoader, incrementLoader } from '../loader/loaderSlice';
 import {
   getEventByCommunityId,
   getEventById,
@@ -17,7 +17,7 @@ import {
 
 function* fetchEvents(action: { payload: EventSearchRequest }): SagaIterator {
   try {
-    yield put(showLoader());
+    yield put(incrementLoader());
 
     const events: PagedResponse<Event> = yield call(eventsApi.getEventsBySearch, action.payload);
     const eventIds = events.items.map((event) => event.id);
@@ -38,13 +38,13 @@ function* fetchEvents(action: { payload: EventSearchRequest }): SagaIterator {
   } catch (error: any) {
     yield put(setEventsError(error.message || 'Failed to fetch events'));
   } finally {
-    yield put(hideLoader());
+    yield put(decrementLoader());
   }
 }
 
 function* fetchEventById(action: { payload: { id: string } }): SagaIterator {
   try {
-    yield put(showLoader());
+    yield put(incrementLoader());
 
     const event: Event = yield call(eventsApi.getEventById, action.payload.id);
     const counts = yield call(participationApi.getParticipationCounts, [action.payload.id]);
@@ -59,7 +59,7 @@ function* fetchEventById(action: { payload: { id: string } }): SagaIterator {
   } catch (error: any) {
     yield put(setEventsError(error.message || 'Failed to fetch event details'));
   } finally {
-    yield put(hideLoader());
+    yield put(decrementLoader());
   }
 }
 
@@ -67,7 +67,7 @@ function* fetchEventByCommunityId(action: {
   payload: { communityId: string; showLoader?: boolean };
 }): SagaIterator {
   try {
-    if (action.payload.showLoader) yield put(showLoader());
+    if (action.payload.showLoader) yield put(incrementLoader());
 
     const events: Event[] = yield call(
       eventsApi.getEventsByCommunityId,
@@ -91,7 +91,7 @@ function* fetchEventByCommunityId(action: {
     console.error('Failed to fetch events by community ID:', error);
     yield put(setEventsError(error.message || 'Failed to fetch events by community ID'));
   } finally {
-    if (action.payload.showLoader) yield put(hideLoader());
+    if (action.payload.showLoader) yield put(decrementLoader());
   }
 }
 
