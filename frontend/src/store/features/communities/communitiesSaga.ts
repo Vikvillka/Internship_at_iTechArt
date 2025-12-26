@@ -6,12 +6,15 @@ import { PagedResponse } from '../../../models/Common';
 import { Community, CommunitySearchRequest } from '../../../models/Community';
 import { hideLoader, showLoader } from '../loader/loaderSlice';
 import { getUserById } from '../users/usersSlice';
+
 import {
   getCommunities,
   getCommunityById,
+  getUserCommunities,
   setCommunities,
   setCommunitiesError,
   setCommunityById,
+  setUserCommunities,
 } from './communitiesSlice';
 
 function* fetchCommunities(action: { payload: CommunitySearchRequest }): SagaIterator {
@@ -71,7 +74,25 @@ function* fetchCommunityById(action: {
   }
 }
 
+function* fetchUserCommunities(action: { payload: { userId: string } }): SagaIterator {
+  try {
+    yield put(showLoader());
+
+    const communities: Community[] = yield call(
+      communityApi.getUserCommunities,
+      action.payload.userId,
+    );
+
+    yield put(setUserCommunities(communities));
+  } catch (error: any) {
+    yield put(setCommunitiesError(error.message || 'Failed to fetch user communities'));
+  } finally {
+    yield put(hideLoader());
+  }
+}
+
 export function* communitiesSaga() {
   yield takeLatest(getCommunities, fetchCommunities);
   yield takeLatest(getCommunityById, fetchCommunityById);
+  yield takeLatest(getUserCommunities, fetchUserCommunities);
 }

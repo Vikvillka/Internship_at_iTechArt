@@ -67,6 +67,13 @@ export const communitiesSlice = createSlice({
       state.subscriptionCounts = {};
       state.totalPages = 0;
     },
+    getUserCommunities(state, action: PayloadAction<{ userId: string }>) {
+      state.error = null;
+    },
+    setUserCommunities(state, action: PayloadAction<Community[]>) {
+      state.items = action.payload;
+      state.error = null;
+    },
   },
 });
 
@@ -76,6 +83,8 @@ export const {
   getCommunityById,
   setCommunityById,
   setCommunitiesError,
+  getUserCommunities,
+  setUserCommunities,
 } = communitiesSlice.actions;
 
 export default communitiesSlice.reducer;

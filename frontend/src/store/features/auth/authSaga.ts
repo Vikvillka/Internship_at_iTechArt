@@ -15,12 +15,25 @@ function* handleLogin(action: { payload: AuthCreds }): SagaIterator {
     yield put(setTokens(tokens));
     localStorage.setItem('accessToken', tokens.accessToken);
     localStorage.setItem('refreshToken', tokens.refreshToken);
-
+    yield put(closeLoginModal());
     const payload = parseJwt(tokens.accessToken);
     const user = yield call(userApi.getUserById, payload.sub);
 
     yield put(setUser(user));
-    yield put(closeLoginModal());
+  } catch (error: any) {
+    yield put(setAuthError(error.message || 'Login failed'));
+  } finally {
+    yield put(hideLoader());
+  }
+}
+
+function* handleSetTokens(action: {
+  payload: { accessToken: string; refreshToken: string };
+}): SagaIterator {
+  try {
+    yield put(showLoader());
+    localStorage.setItem('accessToken', action.payload.accessToken);
+    localStorage.setItem('refreshToken', action.payload.refreshToken);
   } catch (error: any) {
     yield put(setAuthError(error.message || 'Login failed'));
   } finally {
@@ -57,6 +70,7 @@ function* initAuth(): SagaIterator {
 }
 
 export function* authSaga(): SagaIterator {
+  yield takeLatest(setTokens, handleSetTokens);
   yield takeLatest(login, handleLogin);
   yield takeLatest(logout, handleLogout);
   yield call(initAuth);

@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('authToken');
+  const token = store.getState().auth.accessToken;
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -19,7 +19,9 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
       const refreshToken = store.getState().auth.refreshToken;
       if (refreshToken) {
         try {
@@ -34,9 +36,11 @@ api.interceptors.response.use(
           return api.request(error.config);
         } catch {
           store.dispatch(logout());
+          return Promise.reject(error);
         }
       } else {
         store.dispatch(logout());
+        return Promise.reject(error);
       }
     }
     const customError = {

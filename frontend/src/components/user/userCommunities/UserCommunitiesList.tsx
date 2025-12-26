@@ -1,0 +1,23 @@
+import { Grid } from '@mui/material';
+import { useSelector } from 'react-redux';
+import EmptyState from '../../../components/common/emptyState/EmptyState';
+import { selectCommunities } from '../../../store/features/communities/communitiesSelectors';
+import UserCommunitiesCard from './UserCommunitiesCard';
+
+const UserCommunitiesPage: React.FC = () => {
+  const communities = useSelector(selectCommunities);
+
+  if (communities.length === 0) return <EmptyState message='No communities found' />;
+
+  return (
+    <Grid container spacing={2}>
+      {communities.map((community) => (
+        <Grid key={community.id} size={{ xs: 12, sm: 6, md: 3 }}>
+          <UserCommunitiesCard community={community} />
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
+export default UserCommunitiesPage;

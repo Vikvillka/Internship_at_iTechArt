@@ -17,4 +17,8 @@ export const communityApi = {
     const response = await api.post('/community/search', searchParams);
     return response.data;
   },
+  getUserCommunities: async (userId: string): Promise<Community[]> => {
+    const response = await api.get<Community[]>(`/community/getByUser/${userId}`);
+    return response.data;
+  },
 };
