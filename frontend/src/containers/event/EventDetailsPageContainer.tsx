@@ -8,7 +8,6 @@ import {
   selectParticipationCounts,
 } from '../../store/features/events/eventsSelectors';
 import { getEventById } from '../../store/features/events/eventsSlice';
-import { selectIsLoading } from '../../store/features/loader/loaderSelectors';
 
 const EventDetailsPageContainer: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
@@ -16,7 +15,6 @@ const EventDetailsPageContainer: React.FC = () => {
 
   const event = useSelector(selectEventById);
   const participantsCount = useSelector(selectParticipationCounts);
-  const loading = useSelector(selectIsLoading);
   const error = useSelector(selectEventsError);
 
   useEffect(() => {
@@ -29,7 +27,6 @@ const EventDetailsPageContainer: React.FC = () => {
     <EventDetailsPage
       event={event}
       participantCount={participantsCount[eventId || ''] || 0}
-      loading={loading}
       error={error}
     />
   );

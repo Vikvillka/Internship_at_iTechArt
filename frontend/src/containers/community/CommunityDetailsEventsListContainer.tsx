@@ -20,7 +20,7 @@ const CommunityDetailsInfoContainer: React.FC<Props> = ({ communityId }) => {
 
   useEffect(() => {
     if (communityId) {
-      dispatch(getEventByCommunityId({ communityId: communityId, showLoader: false }));
+      dispatch(getEventByCommunityId({ communityId: communityId, showLoader: true }));
     }
   }, [communityId, dispatch]);
 

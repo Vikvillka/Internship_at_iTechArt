@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import React, { useState } from 'react';
 import { AuthCreds } from '../../../../models/Auth';
 import LoginActions from './LoginActions';
+import LoginErrors from './LoginErrors';
 import LoginFields from './LoginFields';
 import { loginModalStyles } from './LoginModal.styles';
 
@@ -25,7 +26,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onSwitchToRegister }) =
         onPasswordChange={setPassword}
         onToggleShowPassword={() => setShowPassword((p) => !p)}
       />
-
+      <LoginErrors />
       <LoginActions
         onSubmit={() => onSubmit({ username: login, password: password })}
         onSwitchToRegister={onSwitchToRegister}

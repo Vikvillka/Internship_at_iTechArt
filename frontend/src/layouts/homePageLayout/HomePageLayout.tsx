@@ -1,13 +1,13 @@
 import EventIcon from '@mui/icons-material/Event';
 import GroupsIcon from '@mui/icons-material/Groups';
-import { Box, Button, ButtonGroup, CircularProgress, Container, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, Container, Typography } from '@mui/material';
 import React from 'react';
 import CategorySlider from '../../components/common/categorySlider/CategorySlider';
 import DateFilter from '../../components/common/dataFilter/DateFilter';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
 import { DateOption } from '../../models/Date';
 import { ContentMode } from '../../models/Mode';
-import { errorContainer, errorText, loadingBox, pageContainer } from '../../styles/common';
+import { errorContainer, errorText, pageContainer } from '../../styles/common';
 import { homePageStyles } from './HomePage.styles';
 
 type Props = {
@@ -68,11 +68,6 @@ const HomePageLayout: React.FC<Props> = ({
         }
       />
       <CategorySlider onSelect={onCategorySelect} />
-      {loading && (
-        <Box sx={loadingBox}>
-          <CircularProgress />
-        </Box>
-      )}
       {!loading && error && (
         <Box sx={errorContainer}>
           <Typography sx={errorText}>{error}</Typography>

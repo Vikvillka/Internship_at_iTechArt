@@ -1,9 +1,9 @@
-import { Box, CircularProgress, Container, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import CommunityDetails from '../../components/community/communityDetails/CommunityDetails';
 import CommunityDetailsEventsListContainer from '../../containers/community/CommunityDetailsEventsListContainer';
 import CommunityDetailsInfoContainer from '../../containers/community/CommunityDetailsInfoContainer';
 import { Community } from '../../models/Community';
-import { errorContainer, errorText, loadingBox, pageContainer } from '../../styles/common';
+import { errorContainer, errorText, pageContainer } from '../../styles/common';
 
 interface Props {
   community: Community | null;
@@ -12,20 +12,7 @@ interface Props {
   error: string | null;
 }
 
-const CommunityDetailsPage: React.FC<Props> = ({
-  community,
-  subscriptionCount,
-  loading,
-  error,
-}) => {
-  if (loading) {
-    return (
-      <Box sx={loadingBox}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
+const CommunityDetailsPage: React.FC<Props> = ({ community, subscriptionCount, error }) => {
   if (error) {
     return (
       <Container sx={errorContainer}>
