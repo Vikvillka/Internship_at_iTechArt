@@ -7,3 +7,5 @@ export const selectRefreshToken = (state: RootState) => state.auth.refreshToken;
 export const selectAuthError = (state: RootState) => state.auth.error;
 
 export const selectIsLoggedIn = (state: RootState) => !!state.auth.accessToken;
+
+export const selectActiveUser = (state: RootState) => state.auth.user;
