@@ -8,8 +8,8 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  accessToken: null,
-  refreshToken: null,
+  accessToken: localStorage.getItem('accessToken'),
+  refreshToken: localStorage.getItem('refreshToken'),
   error: null,
 };
 
