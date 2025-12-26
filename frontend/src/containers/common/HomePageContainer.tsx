@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHomePageData } from '../../hooks/useHomePageData';
 import { ContentMode as Mode } from '../../models/Mode';
@@ -15,7 +15,6 @@ import {
   selectTotalEventPages,
 } from '../../store/features/events/eventsSelectors';
 import { getEvents } from '../../store/features/events/eventsSlice';
-import { selectIsLoading } from '../../store/features/loader/loaderSelectors';
 
 const HomePageContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -43,36 +42,29 @@ const HomePageContainer: React.FC = () => {
   const subscriptionCounts = useSelector(selectCommunitySubscriptionCounts);
   const totalCommunityPages = useSelector(selectCommunityTotalPages);
 
-  const loading = useSelector(selectIsLoading);
-  const [error, setError] = useState<string | null>(null);
-
   useEffect(() => {
-    try {
-      if (mode === Mode.Events) {
-        dispatch(
-          getEvents({
-            page,
-            pageSize: 20,
-            dateTo: dateTo,
-            dateFrom: dateFrom,
-            category: category || undefined,
-            keywords: keywordsFromUrl,
-            location: locationFromUrl,
-          }),
-        );
-      } else {
-        dispatch(
-          getCommunities({
-            page,
-            pageSize: 20,
-            category: category || undefined,
-            keywords: keywordsFromUrl,
-            location: locationFromUrl,
-          }),
-        );
-      }
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch data');
+    if (mode === Mode.Events) {
+      dispatch(
+        getEvents({
+          page,
+          pageSize: 20,
+          dateTo: dateTo,
+          dateFrom: dateFrom,
+          category: category || undefined,
+          keywords: keywordsFromUrl,
+          location: locationFromUrl,
+        }),
+      );
+    } else {
+      dispatch(
+        getCommunities({
+          page,
+          pageSize: 20,
+          category: category || undefined,
+          keywords: keywordsFromUrl,
+          location: locationFromUrl,
+        }),
+      );
     }
   }, [
     mode,
@@ -95,8 +87,6 @@ const HomePageContainer: React.FC = () => {
       subscriptionCounts={subscriptionCounts}
       page={page}
       totalPages={mode === Mode.Events ? totalEventPages : totalCommunityPages}
-      loading={loading}
-      error={error}
       selectedCategory={category}
       selectedDate={selectedDate}
       onPageChange={setPage}

@@ -1,23 +1,16 @@
 import { Box, CircularProgress, Container, Typography } from '@mui/material';
-import CommunityDetails from '../../components/community/communityDetails/CommunityDetails';
+import { useSelector } from 'react-redux';
+import CommunityDetailsHeader from '../../components/community/communityDetails/CommunityDetailsHeader';
 import CommunityDetailsEventsListContainer from '../../containers/community/CommunityDetailsEventsListContainer';
 import CommunityDetailsInfoContainer from '../../containers/community/CommunityDetailsInfoContainer';
-import { Community } from '../../models/Community';
+import { selectCommunitiesError } from '../../store/features/communities/communitiesSelectors';
+import { selectIsLoading } from '../../store/features/loader/loaderSelectors';
 import { errorContainer, errorText, loadingBox, pageContainer } from '../../styles/common';
 
-interface Props {
-  community: Community | null;
-  subscriptionCount: number;
-  loading: boolean;
-  error: string | null;
-}
+const CommunityDetailsPage: React.FC = () => {
+  const loading = useSelector(selectIsLoading);
+  const error = useSelector(selectCommunitiesError);
 
-const CommunityDetailsPage: React.FC<Props> = ({
-  community,
-  subscriptionCount,
-  loading,
-  error,
-}) => {
   if (loading) {
     return (
       <Box sx={loadingBox}>
@@ -37,17 +30,11 @@ const CommunityDetailsPage: React.FC<Props> = ({
   }
   return (
     <Container sx={pageContainer}>
-      {community && (
-        <Box>
-          <CommunityDetails community={community} subscriptionCount={subscriptionCount} />
-          <CommunityDetailsInfoContainer
-            ownerId={community.ownerId}
-            communityName={community.name}
-            description={community.description}
-          />
-          <CommunityDetailsEventsListContainer communityId={community.id} />
-        </Box>
-      )}
+      <Box>
+        <CommunityDetailsHeader />
+        <CommunityDetailsInfoContainer />
+        <CommunityDetailsEventsListContainer />
+      </Box>
     </Container>
   );
 };

@@ -4,7 +4,7 @@ import { getRandomColor } from '../../../helpers/getRandomColor';
 import { eventDetailsStyles } from './EventDetails.styles';
 
 interface EventTagsProps {
-  tags: { id: string; name: string }[];
+  tags?: { id: string; name: string }[];
 }
 
 const EventDetailsTags: React.FC<EventTagsProps> = ({ tags }) => {
@@ -14,7 +14,7 @@ const EventDetailsTags: React.FC<EventTagsProps> = ({ tags }) => {
         What's interesting about us?
       </Typography>
       <Box sx={eventDetailsStyles.tagsBox}>
-        {tags.map((tag) => (
+        {tags?.map((tag) => (
           <Chip
             sx={{ ...eventDetailsStyles.chip, backgroundColor: getRandomColor() }}
             key={tag.id}

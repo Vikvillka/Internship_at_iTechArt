@@ -1,20 +1,16 @@
 import { Container } from '@mui/material';
 import React from 'react';
 import EventDetailsLeftColumnContainer from '../../../containers/event/EventDetailsLeftColumnContainer';
-import { Event } from '../../../models/Event';
 import { eventDetailsStyles } from './EventDetails.styles';
 import EventDetailsRightColumn from './EventDetailsRightColumn';
 
-interface EventDetailsProps {
-  event: Event;
-  participantCount: number;
-}
-
-const EventDetails: React.FC<EventDetailsProps> = ({ event, participantCount }) => {
+const EventDetails: React.FC = () => {
   return (
     <Container sx={eventDetailsStyles.containerEventDetails}>
-      <EventDetailsLeftColumnContainer event={event} />
-      <EventDetailsRightColumn event={event} />
+      <>
+        <EventDetailsLeftColumnContainer />
+        <EventDetailsRightColumn />
+      </>
     </Container>
   );
 };

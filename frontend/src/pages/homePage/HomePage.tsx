@@ -14,8 +14,6 @@ interface Props {
   subscriptionCounts: Record<string, number>;
   page: number;
   totalPages: number;
-  loading: boolean;
-  error: string | null;
   selectedCategory: string;
   selectedDate?: DateOption;
   onPageChange: (page: number) => void;
@@ -31,8 +29,6 @@ const HomePage: React.FC<Props> = ({
   subscriptionCounts,
   page,
   totalPages,
-  loading,
-  error,
   onPageChange,
   onCategorySelect,
   selectedDate,
@@ -43,8 +39,6 @@ const HomePage: React.FC<Props> = ({
       <HomePageLayout
         mode={mode}
         setMode={setMode}
-        loading={loading}
-        error={error}
         selectedDate={selectedDate}
         onDateChange={onDateChange}
         onCategorySelect={onCategorySelect}

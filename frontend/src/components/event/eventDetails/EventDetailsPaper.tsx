@@ -8,16 +8,16 @@ import { eventDetailsStyles } from './EventDetails.styles';
 import EventDetailItem from './EventDetailsItem';
 
 interface EventDetailsPaperProps {
-  eventDate: string;
-  address: string;
-  venue: string;
+  eventDate?: string;
+  address?: string;
+  venue?: string;
 }
 
 const EventDetailsPaper: React.FC<EventDetailsPaperProps> = ({ eventDate, address, venue }) => {
   return (
     <Paper sx={eventDetailsStyles.paperBox}>
       <EventDetailItem icon={<CalendarTodayIcon fontSize='small' />}>
-        {formatDate(eventDate)}
+        {formatDate(eventDate ?? '')}
       </EventDetailItem>
       <Divider sx={{ my: 3 }} />
       <EventDetailItem icon={<AddressIcon fontSize='small' />}>{address}</EventDetailItem>
