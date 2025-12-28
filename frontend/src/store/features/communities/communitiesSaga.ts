@@ -83,7 +83,14 @@ function* fetchUserCommunities(action: { payload: { userId: string } }): SagaIte
       action.payload.userId,
     );
 
-    yield put(setUserCommunities(communities));
+    const ids = communities.map((c) => c.id);
+    const counts = yield call(subscriptionApi.getSubscriptionCounts, ids);
+
+    const subscriptionCounts: Record<string, number> = {};
+    counts.forEach((c: { communityId: string; count: number }) => {
+      subscriptionCounts[c.communityId] = c.count;
+    });
+    yield put(setUserCommunities({ communities, subscriptionCounts }));
   } catch (error: any) {
     yield put(setCommunitiesError(error.message || 'Failed to fetch user communities'));
   } finally {

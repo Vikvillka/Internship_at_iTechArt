@@ -70,8 +70,15 @@ export const communitiesSlice = createSlice({
     getUserCommunities(state, action: PayloadAction<{ userId: string }>) {
       state.error = null;
     },
-    setUserCommunities(state, action: PayloadAction<Community[]>) {
-      state.items = action.payload;
+    setUserCommunities(
+      state,
+      action: PayloadAction<{
+        communities: Community[];
+        subscriptionCounts: Record<string, number>;
+      }>,
+    ) {
+      state.items = action.payload.communities;
+      state.subscriptionCounts = action.payload.subscriptionCounts;
       state.error = null;
     },
   },

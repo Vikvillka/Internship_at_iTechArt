@@ -1,7 +1,7 @@
 import { Container, Typography } from '@mui/material';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import UserCommunitesHeader from '../../components/user/userCommunities/UserCommunitesHeader';
+import PageTitle from '../../components/common/pageTitle/PageTitle';
 import UserCommunitiesList from '../../components/user/userCommunities/UserCommunitiesList';
 import { selectCommunitiesError } from '../../store/features/communities/communitiesSelectors';
 import { errorContainer, errorText, pageContainer } from '../../styles/common';
@@ -20,7 +20,7 @@ const UserCommunitiesPage: React.FC = () => {
 
   return (
     <Container sx={pageContainer}>
-      <UserCommunitesHeader />
+      <PageTitle title='Your communities' />
       <UserCommunitiesList />
     </Container>
   );

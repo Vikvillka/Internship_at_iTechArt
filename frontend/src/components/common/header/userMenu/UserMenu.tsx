@@ -2,6 +2,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Avatar, Box, Menu, MenuItem, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { selectActiveUser } from '../../../../store/features/auth/authSelectors';
 import { headerStyles } from '../Header.styles';
 
@@ -60,6 +61,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ onLogout }) => {
           }}
         >
           Logout
+        </MenuItem>
+        <MenuItem
+          sx={headerStyles.menuItem}
+          component={Link}
+          to='/user-communities'
+          onClick={handleClose}
+        >
+          My communities
         </MenuItem>
       </Menu>
     </>
