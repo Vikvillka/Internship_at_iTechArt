@@ -2,7 +2,7 @@ import CityIcon from '@mui/icons-material/LocationCity';
 import PeopleIcon from '@mui/icons-material/People';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import UserCommunityActionsContainer from '../../../containers/user/userCommunities/UserCommunityActionsContainer';
 import { Community } from '../../../models/Community';
 import { userCommunitiesStyles } from './UserCommunities.styles';
 
@@ -16,9 +16,9 @@ const UserCommunitiesCard: React.FC<UserCommunitiesCardProps> = ({
   subscriptionCount,
 }) => {
   return (
-    <Link to={`/community/${community.id}`} style={{ textDecoration: 'none' }}>
-      <Card sx={userCommunitiesStyles.card}>
-        <CardContent>
+    <Card sx={userCommunitiesStyles.card}>
+      <CardContent>
+        <Box>
           <Typography variant='h6' sx={userCommunitiesStyles.cardTitle}>
             {community.name}
           </Typography>
@@ -32,9 +32,12 @@ const UserCommunitiesCard: React.FC<UserCommunitiesCardProps> = ({
             <PeopleIcon fontSize='small' sx={{ mr: 1 }} />
             <Typography variant='body2'>{subscriptionCount} members</Typography>
           </Box>
-        </CardContent>
-      </Card>
-    </Link>
+        </Box>
+      </CardContent>
+      <Box sx={userCommunitiesStyles.actionsBox}>
+        <UserCommunityActionsContainer communityId={community.id} />
+      </Box>
+    </Card>
   );
 };
 

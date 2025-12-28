@@ -8,6 +8,7 @@ import { hideLoader, showLoader } from '../loader/loaderSlice';
 import { getUserById } from '../users/usersSlice';
 
 import {
+  deleteCommunity,
   getCommunities,
   getCommunityById,
   getUserCommunities,
@@ -98,8 +99,27 @@ function* fetchUserCommunities(action: { payload: { userId: string } }): SagaIte
   }
 }
 
+function* handleDeleteCommunity(action: {
+  payload: { communityId: string; userId: string };
+}): SagaIterator {
+  try {
+    yield put(showLoader());
+
+    yield call(communityApi.deleteCommunity, action.payload.communityId);
+
+    if (action.payload.userId) {
+      yield put(getUserCommunities({ userId: action.payload.userId }));
+    }
+  } catch (error: any) {
+    yield put(setCommunitiesError(error.message || 'Failed to delete community'));
+  } finally {
+    yield put(hideLoader());
+  }
+}
+
 export function* communitiesSaga() {
   yield takeLatest(getCommunities, fetchCommunities);
   yield takeLatest(getCommunityById, fetchCommunityById);
   yield takeLatest(getUserCommunities, fetchUserCommunities);
+  yield takeLatest(deleteCommunity, handleDeleteCommunity);
 }

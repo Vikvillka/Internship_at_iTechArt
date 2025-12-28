@@ -5,21 +5,24 @@ export const userCommunitiesStyles = {
     py: 2,
     px: 1,
     boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-    minHeight: '200px',
+    minHeight: '150px',
     borderRadius: '20px',
     '&:hover': {
       boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.2)',
       transform: 'scale(1.01)',
       transition: 'transform 0.3s ease-in-out',
     },
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   } as SxProps<Theme>,
 
   cardTitle: {
-    marginTop: '8px',
     fontWeight: 'bold',
     fontSize: '18px',
     lineHeight: '22px',
     height: '45px',
+    textDecoration: 'none',
     overflow: 'hidden',
     display: '-webkit-box',
     WebkitLineClamp: 2,
@@ -30,5 +33,11 @@ export const userCommunitiesStyles = {
     display: 'flex',
     marginTop: '4px',
     alignItems: 'center',
+  } as SxProps<Theme>,
+
+  actionsBox: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    pr: 1,
   } as SxProps<Theme>,
 };

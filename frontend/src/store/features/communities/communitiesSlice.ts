@@ -81,6 +81,13 @@ export const communitiesSlice = createSlice({
       state.subscriptionCounts = action.payload.subscriptionCounts;
       state.error = null;
     },
+    deleteCommunity(state, action: PayloadAction<{ communityId: string; userId: string }>) {
+      state.items = state.items.filter((c) => c.id !== action.payload.communityId);
+      delete state.subscriptionCounts[action.payload.communityId];
+      if (state.selectedCommunity?.id === action.payload.communityId) {
+        state.selectedCommunity = null;
+      }
+    },
   },
 });
 
@@ -92,6 +99,7 @@ export const {
   setCommunitiesError,
   getUserCommunities,
   setUserCommunities,
+  deleteCommunity,
 } = communitiesSlice.actions;
 
 export default communitiesSlice.reducer;

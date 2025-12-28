@@ -21,4 +21,7 @@ export const communityApi = {
     const response = await api.get<Community[]>(`/community/getByUser/${userId}`);
     return response.data;
   },
+  deleteCommunity: async (communityId: string): Promise<void> => {
+    await api.delete(`/community/delete/${communityId}`);
+  },
 };
