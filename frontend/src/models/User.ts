@@ -8,3 +8,12 @@ export interface User {
   city: string;
   country: string;
 }
+
+export interface UserRegistration {
+  username: string;
+  email: string;
+  password: string;
+  gender: Gender;
+  city: string;
+  country: string;
+}

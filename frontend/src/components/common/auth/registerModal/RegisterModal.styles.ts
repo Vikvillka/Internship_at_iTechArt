@@ -82,4 +82,16 @@ export const registerModalStyles = {
   genderTitle: {
     color: 'secondary.dark',
   } as SxProps<Theme>,
+
+  errorText: {
+    color: 'error.main',
+    mt: 1,
+    textAlign: 'center',
+  } as SxProps<Theme>,
+
+  errorBox: {
+    mt: 1,
+    display: 'flex',
+    justifyContent: 'center',
+  } as SxProps<Theme>,
 };

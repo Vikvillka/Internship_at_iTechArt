@@ -63,6 +63,8 @@ const RegisterFields: React.FC<RegisterFieldsProps> = ({
       <BaseInput
         label='Location'
         value={location}
+        labelIcon={<InfoOutlined fontSize='small' />}
+        labelTooltip='Please enter an example: "city, country".'
         onChange={onLocationChange}
         startIcon={<LocationIcon fontSize='small' />}
         caption='We won’t use your location for anything else, sorry!'

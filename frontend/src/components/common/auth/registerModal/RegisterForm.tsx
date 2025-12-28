@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import React, { useState } from 'react';
 import { Gender } from '../../../../models/Gender';
 import RegisterActions from './RegisterActions';
+import RegisterErrors from './RegisterErrors';
 import RegisterFields from './RegisterFields';
 import { registerModalStyles } from './RegisterModal.styles';
 
@@ -40,6 +41,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, onSwitchToLogin }
         onLocationChange={setLocation}
         onToggleShowPassword={() => setShowPassword((p) => !p)}
       />
+      <RegisterErrors />
       <RegisterActions
         onSubmit={() => {
           if (gender === null) return;
