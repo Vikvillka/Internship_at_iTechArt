@@ -1,8 +1,8 @@
 # Internship at iTechArt
----
 ## Project idea
+
 This project was developed as part of an internship assignment and represents a community-driven web application designed to bring people together based on shared interests and events.
----
+
 ## Technologies & Architecture
 
 ### Architectural Approach
