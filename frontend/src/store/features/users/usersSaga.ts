@@ -29,7 +29,7 @@ function* fetchRegisterUser(action: {
   try {
     if (action.payload.showLoader) yield put(showLoader());
     const user = yield call(userApi.registerUser, action.payload.userRegistration);
-    yield put(registerUserSuccess({ user }));
+    yield put(registerUserSuccess());
     yield put(closeRegisterModal());
     yield put(openLoginModal());
   } catch (error: any) {

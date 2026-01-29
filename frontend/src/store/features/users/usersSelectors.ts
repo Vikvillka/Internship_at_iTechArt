@@ -4,4 +4,4 @@ export const selectUserById = (state: RootState) => state.users.user;
 
 export const selectUserError = (state: RootState) => state.users.error;
 
-export const selectUserSuccess = (state: RootState) => state.users.user !== null;
+export const selectUserSuccess = (state: RootState) => state.users.registrationSuccess;

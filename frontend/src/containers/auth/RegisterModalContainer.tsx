@@ -7,7 +7,7 @@ import { setAuthError } from '../../store/features/auth/authSlice';
 import { isRegisterModalOpen } from '../../store/features/ui/uiSelectors';
 import { closeRegisterModal, switchToLoginModal } from '../../store/features/ui/uiSlice';
 import { selectUserSuccess } from '../../store/features/users/usersSelectors';
-import { registerUser } from '../../store/features/users/usersSlice';
+import { registerUser, resetRegistrationSuccess } from '../../store/features/users/usersSlice';
 
 const RegisterModalContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const RegisterModalContainer: React.FC = () => {
   };
 
   React.useEffect(() => {
-    setOpen(success);
+    if (success) setOpen(true);
   }, [success]);
 
   return (
@@ -55,7 +55,10 @@ const RegisterModalContainer: React.FC = () => {
       />
       <SnackbarComponent
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          dispatch(resetRegistrationSuccess());
+        }}
         severity='success'
         message='Registration successful! Please log in.'
       />
