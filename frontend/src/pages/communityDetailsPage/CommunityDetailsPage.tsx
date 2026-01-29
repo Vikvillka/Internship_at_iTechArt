@@ -5,12 +5,9 @@ import CommunityDetailsInfoContainer from '../../containers/community/CommunityD
 import { Community } from '../../models/Community';
 import { errorContainer, errorText, pageContainer } from '../../styles/common';
 
-interface Props {
-  community: Community | null;
-  subscriptionCount: number;
-  loading: boolean;
-  error: string | null;
-}
+const CommunityDetailsPage: React.FC = () => {
+  const loading = useSelector(selectIsLoading);
+  const error = useSelector(selectCommunitiesError);
 
 const CommunityDetailsPage: React.FC<Props> = ({ community, subscriptionCount, error }) => {
   if (error) {
@@ -24,17 +21,11 @@ const CommunityDetailsPage: React.FC<Props> = ({ community, subscriptionCount, e
   }
   return (
     <Container sx={pageContainer}>
-      {community && (
-        <Box>
-          <CommunityDetails community={community} subscriptionCount={subscriptionCount} />
-          <CommunityDetailsInfoContainer
-            ownerId={community.ownerId}
-            communityName={community.name}
-            description={community.description}
-          />
-          <CommunityDetailsEventsListContainer communityId={community.id} />
-        </Box>
-      )}
+      <Box>
+        <CommunityDetailsHeader />
+        <CommunityDetailsInfoContainer />
+        <CommunityDetailsEventsListContainer />
+      </Box>
     </Container>
   );
 };

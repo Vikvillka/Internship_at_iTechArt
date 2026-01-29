@@ -1,12 +1,7 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import EventDetailsPage from '../../pages/eventDetailsPage/EventDetailsPage';
-import {
-  selectEventById,
-  selectEventsError,
-  selectParticipationCounts,
-} from '../../store/features/events/eventsSelectors';
 import { getEventById } from '../../store/features/events/eventsSlice';
 
 const EventDetailsPageContainer: React.FC = () => {

@@ -1,26 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface LoaderState {
-  isLoading: boolean;
+  counter: number;
 }
 
 const initialState: LoaderState = {
-  isLoading: false,
+  counter: 0,
 };
 
 export const loaderSlice = createSlice({
   name: 'loader',
   initialState,
   reducers: {
-    showLoader(state) {
-      state.isLoading = true;
+    incrementLoader(state) {
+      state.counter += 1;
     },
-    hideLoader(state) {
-      state.isLoading = false;
+    decrementLoader(state) {
+      state.counter -= 1;
     },
   },
 });
 
-export const { showLoader, hideLoader } = loaderSlice.actions;
+export const { incrementLoader, decrementLoader } = loaderSlice.actions;
 
 export default loaderSlice.reducer;

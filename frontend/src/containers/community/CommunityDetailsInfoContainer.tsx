@@ -1,36 +1,18 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CommunityDetailsInfo from '../../components/community/communityDetails/CommunityDetailsInfo';
-import { selectUserById, selectUserError } from '../../store/features/users/usersSelectors';
+import { selectCommunityById } from '../../store/features/communities/communitiesSelectors';
 import { getUserById } from '../../store/features/users/usersSlice';
 
-interface Props {
-  ownerId: string;
-  communityName: string;
-  description: string;
-}
-
-const CommunityDetailsInfoContainer: React.FC<Props> = ({
-  ownerId,
-  communityName,
-  description,
-}) => {
+const CommunityDetailsInfoContainer: React.FC = () => {
   const dispatch = useDispatch();
-  const user = useSelector(selectUserById);
-  const error = useSelector(selectUserError);
+  const community = useSelector(selectCommunityById);
 
   useEffect(() => {
     if (ownerId) dispatch(getUserById({ id: ownerId, showLoader: true }));
   }, [dispatch, ownerId]);
 
-  return (
-    <CommunityDetailsInfo
-      communityName={communityName}
-      description={description}
-      owner={user ?? undefined}
-      error={error}
-    />
-  );
+  return <CommunityDetailsInfo />;
 };
 
 export default CommunityDetailsInfoContainer;

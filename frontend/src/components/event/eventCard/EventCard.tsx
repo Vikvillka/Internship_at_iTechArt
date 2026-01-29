@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { formatDate } from '../../../helpers/formatDate';
 import { getEventImageUrl } from '../../../helpers/getEventImageUrl';
 import { Event } from '../../../models/Event';
-import { useStyles } from './EventCard.styles';
+import { cardStyles } from './EventCard.styles';
 
 interface EventCardProps {
   event: Event;
@@ -13,29 +13,23 @@ interface EventCardProps {
 }
 
 const EventCard: React.FC<EventCardProps> = ({ event, participantCount }) => {
-  const classes = useStyles();
   const imageUrl = getEventImageUrl(event.imagePath || '');
 
   return (
-    <Link className={classes.link} to={`/event/${event.id}`}>
-      <Card className={classes.card}>
-        <CardMedia
-          className={classes.cardMedia}
-          component='img'
-          image={imageUrl}
-          alt={event.title}
-        />
+    <Link style={{ textDecoration: 'none' }} to={`/event/${event.id}`}>
+      <Card sx={cardStyles.card}>
+        <CardMedia sx={cardStyles.cardMedia} component='img' image={imageUrl} alt={event.title} />
         <CardContent>
           <Typography variant='subtitle2' color='text.secondary'>
             {formatDate(event.eventDate)}
           </Typography>
-          <Typography className={classes.title} variant='body1'>
+          <Typography sx={cardStyles.title} variant='body1'>
             {event.title}
           </Typography>
-          <Typography className={classes.communityName} variant='subtitle2' color='text.secondary'>
+          <Typography sx={cardStyles.communityName} variant='subtitle2' color='text.secondary'>
             {event.communityName}
           </Typography>
-          <Box className={classes.participants}>
+          <Box sx={cardStyles.participants}>
             <PeopleIcon fontSize='small' sx={{ mr: 1 }} />
             <Typography variant='body2'>{participantCount} attendees</Typography>
           </Box>

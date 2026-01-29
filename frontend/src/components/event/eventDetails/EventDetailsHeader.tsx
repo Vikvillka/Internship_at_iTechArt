@@ -1,43 +1,41 @@
 import PeopleIcon from '@mui/icons-material/PeopleAltTwoTone';
 import { Box, Typography } from '@mui/material';
 import React from 'react';
-import { useStyles } from './EventDetails.styles';
+import { useSelector } from 'react-redux';
+import { selectCommunityById } from '../../../store/features/communities/communitiesSelectors';
+import { selectEventById } from '../../../store/features/events/eventsSelectors';
+import { selectUserById } from '../../../store/features/users/usersSelectors';
+import { eventDetailsStyles } from './EventDetails.styles';
 
 interface EventHeaderProps {
-  title: string;
-  ownerName?: string | null;
-  communityName?: string | null;
   error?: string | null;
 }
 
-const EventDetailsHeader: React.FC<EventHeaderProps> = ({
-  title,
-  ownerName,
-  communityName,
-  error,
-}) => {
-  const classes = useStyles();
+const EventDetailsHeader: React.FC<EventHeaderProps> = ({ error }) => {
+  const event = useSelector(selectEventById);
+  const community = useSelector(selectCommunityById);
+  const owner = useSelector(selectUserById);
 
   return (
     <Box>
-      <Typography className={classes.title} variant='h4'>
-        {title}
+      <Typography sx={eventDetailsStyles.title} variant='h4'>
+        {event?.title}
       </Typography>
       {error && (
         <Typography color='error' variant='subtitle2'>
           {error}
         </Typography>
       )}
-      <Box className={classes.ownerBox}>
+      <Box sx={eventDetailsStyles.ownerBox}>
         <PeopleIcon />
         <Typography variant='subtitle1'>
-          Hosted by <strong>{ownerName}</strong>
+          Hosted by <strong>{owner?.username}</strong>
         </Typography>
       </Box>
-      <Box className={classes.ownerBox}>
+      <Box sx={eventDetailsStyles.ownerBox}>
         <Typography variant='subtitle1'>
           Meet the community: <br />
-          <strong>{communityName}</strong>
+          <strong>{community?.name}</strong>
         </Typography>
       </Box>
     </Box>
