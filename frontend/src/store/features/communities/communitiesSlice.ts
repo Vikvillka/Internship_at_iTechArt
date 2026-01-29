@@ -67,27 +67,6 @@ export const communitiesSlice = createSlice({
       state.subscriptionCounts = {};
       state.totalPages = 0;
     },
-    getUserCommunities(state, action: PayloadAction<{ userId: string }>) {
-      state.error = null;
-    },
-    setUserCommunities(
-      state,
-      action: PayloadAction<{
-        communities: Community[];
-        subscriptionCounts: Record<string, number>;
-      }>,
-    ) {
-      state.items = action.payload.communities;
-      state.subscriptionCounts = action.payload.subscriptionCounts;
-      state.error = null;
-    },
-    deleteCommunity(state, action: PayloadAction<{ communityId: string; userId: string }>) {
-      state.items = state.items.filter((c) => c.id !== action.payload.communityId);
-      delete state.subscriptionCounts[action.payload.communityId];
-      if (state.selectedCommunity?.id === action.payload.communityId) {
-        state.selectedCommunity = null;
-      }
-    },
   },
 });
 
@@ -97,9 +76,6 @@ export const {
   getCommunityById,
   setCommunityById,
   setCommunitiesError,
-  getUserCommunities,
-  setUserCommunities,
-  deleteCommunity,
 } = communitiesSlice.actions;
 
 export default communitiesSlice.reducer;

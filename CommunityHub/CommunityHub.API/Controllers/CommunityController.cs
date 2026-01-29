@@ -79,13 +79,4 @@ public class CommunityController : ControllerBase
         var response = result.ToPagedResponse(e => e.FromEntity());
         return Ok(response);
     }
-
-    [HttpGet("getByUser/{id}")]
-    [ProducesResponseType(typeof(List<CommunityResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetByUserId(Guid id)
-    {
-        var communities = await _service.GetCommunitiesByUserIdAsync(id);
-        var response = communities.Select(c => c.FromEntity()).ToList();
-        return Ok(response);
-    }
 }
