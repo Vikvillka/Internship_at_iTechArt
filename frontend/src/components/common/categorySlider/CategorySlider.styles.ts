@@ -13,6 +13,11 @@ export const sliderStyles = {
     color: 'secondary.main',
   } as SxProps<Theme>,
 
+  buttonSelected: {
+    bgcolor: 'primary.main',
+    color: 'white',
+  } as SxProps<Theme>,
+
   arrowBase: {
     minWidth: 0,
     width: 32,

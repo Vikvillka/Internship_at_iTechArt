@@ -31,4 +31,8 @@ export const homePageStyles = {
       backgroundColor: 'primary.main',
     },
   } as SxProps<Theme>,
+
+  content: {
+    mt: 2,
+  } as SxProps<Theme>,
 };

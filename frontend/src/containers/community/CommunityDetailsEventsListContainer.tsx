@@ -1,40 +1,20 @@
-import { useEffect, useState } from 'react';
-import { eventsApi } from '../../api/event';
-import { participationApi } from '../../api/participation';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CommunityDetailsEventsList from '../../components/community/communityDetails/CommunityDetailsEventsList';
-import { Event } from '../../models/Event';
+import { selectCommunityById } from '../../store/features/communities/communitiesSelectors';
+import { getEventByCommunityId } from '../../store/features/events/eventsSlice';
 
-interface Props {
-  communityId: string;
-}
-
-const CommunityDetailsInfoContainer: React.FC<Props> = ({ communityId }) => {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [participantCount, setParticipantCount] = useState<Record<string, number>>({});
-  const [error, setError] = useState<string | null>(null);
+const CommunityDetailsInfoContainer: React.FC = () => {
+  const dispatch = useDispatch();
+  const community = useSelector(selectCommunityById);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const eventsData = await eventsApi.getEventsByCommunityId(communityId);
-        setEvents(eventsData);
-        const eventIds = eventsData.map((event) => event.id);
-        const counts = await participationApi.getParticipationCounts(eventIds);
-        const countsMap: Record<string, number> = {};
-        counts.forEach((count) => {
-          countsMap[count.eventId] = count.count;
-        });
-        setParticipantCount(countsMap);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch community events');
-      }
-    };
-    fetchData();
-  }, [communityId]);
+    if (community?.id) {
+      dispatch(getEventByCommunityId({ communityId: community.id, showLoader: false }));
+    }
+  }, [community?.id, dispatch]);
 
-  return (
-    <CommunityDetailsEventsList events={events} participantCount={participantCount} error={error} />
-  );
+  return <CommunityDetailsEventsList />;
 };
 
 export default CommunityDetailsInfoContainer;

@@ -4,22 +4,20 @@ import AddressIcon from '@mui/icons-material/Place';
 import { Divider, Paper } from '@mui/material';
 import React from 'react';
 import { formatDate } from '../../../helpers/formatDate';
-import { useStyles } from './EventDetails.styles';
+import { eventDetailsStyles } from './EventDetails.styles';
 import EventDetailItem from './EventDetailsItem';
 
 interface EventDetailsPaperProps {
-  eventDate: string;
-  address: string;
-  venue: string;
+  eventDate?: string;
+  address?: string;
+  venue?: string;
 }
 
 const EventDetailsPaper: React.FC<EventDetailsPaperProps> = ({ eventDate, address, venue }) => {
-  const classes = useStyles();
-
   return (
-    <Paper className={classes.paperBox}>
+    <Paper sx={eventDetailsStyles.paperBox}>
       <EventDetailItem icon={<CalendarTodayIcon fontSize='small' />}>
-        {formatDate(eventDate)}
+        {formatDate(eventDate ?? '')}
       </EventDetailItem>
       <Divider sx={{ my: 3 }} />
       <EventDetailItem icon={<AddressIcon fontSize='small' />}>{address}</EventDetailItem>

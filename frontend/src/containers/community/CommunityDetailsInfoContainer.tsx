@@ -1,42 +1,18 @@
-import { useEffect, useState } from 'react';
-import { userApi } from '../../api/user';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CommunityDetailsInfo from '../../components/community/communityDetails/CommunityDetailsInfo';
-import { User } from '../../models/User';
+import { selectCommunityById } from '../../store/features/communities/communitiesSelectors';
+import { getUserById } from '../../store/features/users/usersSlice';
 
-interface Props {
-  ownerId: string;
-  communityName: string;
-  description: string;
-}
-
-const CommunityDetailsInfoContainer: React.FC<Props> = ({
-  ownerId,
-  communityName,
-  description,
-}) => {
-  const [owner, setOwner] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
+const CommunityDetailsInfoContainer: React.FC = () => {
+  const dispatch = useDispatch();
+  const community = useSelector(selectCommunityById);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const ownerData = await userApi.getUserById(ownerId);
-        setOwner(ownerData);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch community owner details');
-      }
-    };
-    fetchData();
-  }, [ownerId]);
+    if (community?.ownerId) dispatch(getUserById({ id: community.ownerId, showLoader: false }));
+  }, [dispatch, community?.ownerId]);
 
-  return (
-    <CommunityDetailsInfo
-      communityName={communityName}
-      description={description}
-      owner={owner ?? undefined}
-      error={error}
-    />
-  );
+  return <CommunityDetailsInfo />;
 };
 
 export default CommunityDetailsInfoContainer;

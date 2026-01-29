@@ -1,22 +1,24 @@
-import { makeStyles } from '@mui/styles';
+import { SxProps, Theme } from '@mui/material';
 
-export const useStyles = makeStyles(() => ({
+export const cardStyles = {
   card: {
-    margin: '10px 5px',
+    m: '10px 5px',
     minHeight: '350px',
-    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+    boxShadow: '0px 4px 12px rgba(0,0,0,0.1)',
     borderRadius: '5%',
+    transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
     '&:hover': {
-      boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.2)',
+      boxShadow: '0px 6px 16px rgba(0,0,0,0.2)',
       transform: 'scale(1.01)',
-      transition: 'transform 0.3s ease-in-out',
     },
-  },
+  } as SxProps<Theme>,
+
   cardMedia: {
     height: '180px',
-  },
+  } as SxProps<Theme>,
+
   title: {
-    marginTop: '8px',
+    mt: 1,
     fontWeight: 'bold',
     fontSize: '18px',
     lineHeight: '22px',
@@ -25,21 +27,20 @@ export const useStyles = makeStyles(() => ({
     display: '-webkit-box',
     WebkitLineClamp: 2,
     WebkitBoxOrient: 'vertical',
-  },
+  } as SxProps<Theme>,
+
   communityName: {
-    margin: '10px 0px',
+    my: '10px',
     height: '20px',
     overflow: 'hidden',
     display: '-webkit-box',
     WebkitLineClamp: 2,
     WebkitBoxOrient: 'vertical',
-  },
+  } as SxProps<Theme>,
+
   participants: {
     display: 'flex',
-    marginTop: '4px',
+    mt: '4px',
     alignItems: 'center',
-  },
-  link: {
-    textDecoration: 'none',
-  },
-}));
+  } as SxProps<Theme>,
+};

@@ -1,44 +1,37 @@
-import { useEffect, useState } from 'react';
-import { communityApi } from '../../api/community';
-import { userApi } from '../../api/user';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import EventDetailsLeftColumn from '../../components/event/eventDetails/EventDetailsLeftColumn';
-import { Community } from '../../models/Community';
-import { Event } from '../../models/Event';
-import { User } from '../../models/User';
+import {
+  selectCommunitiesError,
+  selectCommunityById,
+} from '../../store/features/communities/communitiesSelectors';
+import { getCommunityById } from '../../store/features/communities/communitiesSlice';
+import { selectEventById } from '../../store/features/events/eventsSelectors';
+import { selectUserError } from '../../store/features/users/usersSelectors';
+import { getUserById } from '../../store/features/users/usersSlice';
 
-interface Props {
-  event: Event;
-}
-
-const EventDetailsLeftColumnContainer: React.FC<Props> = ({ event }) => {
-  const [community, setCommunity] = useState<Community | null>(null);
-  const [owner, setOwner] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
+const EventDetailsLeftColumnContainer: React.FC = () => {
+  const dispatch = useDispatch();
+  const event = useSelector(selectEventById);
+  const community = useSelector(selectCommunityById);
+  const errorCommunity = useSelector(selectCommunitiesError);
+  const errorUser = useSelector(selectUserError);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const community = await communityApi.getCommunityById(event.communityId);
-        setCommunity(community);
+    if (event?.communityId) {
+      dispatch(getCommunityById({ id: event.communityId, showLoader: false }));
+    }
+  }, [event?.communityId, dispatch]);
 
-        const ownerData = await userApi.getUserById(community.ownerId);
-        setOwner(ownerData);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch event details');
-      }
-    };
+  useEffect(() => {
+    if (community?.ownerId) {
+      dispatch(getUserById({ id: community.ownerId, showLoader: false }));
+    }
+  }, [community?.ownerId, dispatch]);
 
-    fetchData();
-  }, [event.communityId]);
+  const error = errorCommunity || errorUser || null;
 
-  return (
-    <EventDetailsLeftColumn
-      event={event}
-      community={community ?? undefined}
-      owner={owner ?? undefined}
-      error={error}
-    />
-  );
+  return <EventDetailsLeftColumn error={error} />;
 };
 
 export default EventDetailsLeftColumnContainer;
