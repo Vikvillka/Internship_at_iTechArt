@@ -63,4 +63,37 @@ export const headerStyles = {
       bgcolor: 'primary.dark',
     },
   } as SxProps<Theme>,
+
+  userMenu: {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    gap: 1,
+  } as SxProps<Theme>,
+
+  userMenuButton: {
+    textTransform: 'none',
+    gap: 1,
+    padding: 0,
+    minWidth: 0,
+  } as SxProps<Theme>,
+
+  avatar: {
+    width: 36,
+    height: 36,
+    bgcolor: 'primary.main',
+  } as SxProps<Theme>,
+
+  menuPaper: {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    borderBottomLeftRadius: '10px',
+    borderBottomRightRadius: '10px',
+    boxShadow: '0 6px 16px rgba(0,0,0,0.12)',
+    mt: 1,
+  } as SxProps<Theme>,
+
+  menuItem: {
+    py: 1,
+  } as SxProps<Theme>,
 };
