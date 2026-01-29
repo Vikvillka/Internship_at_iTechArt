@@ -69,4 +69,11 @@ public class CommunityRepository: EfRepository<Community>, ICommunityRepository
             PageSize = request.PageSize
         };
     }
+
+    public async Task<IList<Community>> GetCommunitiesByUserIdAsync(Guid userId)
+    {
+        return await _dbSet
+        .Where(c => c.OwnerId == userId)
+        .ToListAsync();
+    }
 }
