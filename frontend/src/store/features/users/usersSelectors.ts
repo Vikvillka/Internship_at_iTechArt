@@ -1,7 +1,5 @@
 import { RootState } from '../../rootReducer';
 
-export const selectUserById = (state: RootState) => state.users.user;
+export const selectUserById = (state: RootState) => state.userDetails.user;
 
-export const selectUserError = (state: RootState) => state.users.error;
-
-export const selectUserSuccess = (state: RootState) => state.users.registrationSuccess;
+export const selectUserError = (state: RootState) => state.userDetails.error;

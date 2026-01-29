@@ -8,23 +8,13 @@ const EventDetailsPageContainer: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
   const dispatch = useDispatch();
 
-  const event = useSelector(selectEventById);
-  const participantsCount = useSelector(selectParticipationCounts);
-  const error = useSelector(selectEventsError);
-
   useEffect(() => {
     if (eventId) {
       dispatch(getEventById({ id: eventId, showLoader: true }));
     }
   }, [eventId, dispatch]);
 
-  return (
-    <EventDetailsPage
-      event={event}
-      participantCount={participantsCount[eventId || ''] || 0}
-      error={error}
-    />
-  );
+  return <EventDetailsPage />;
 };
 
 export default EventDetailsPageContainer;

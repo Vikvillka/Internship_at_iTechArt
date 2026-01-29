@@ -9,8 +9,8 @@ const CommunityDetailsInfoContainer: React.FC = () => {
   const community = useSelector(selectCommunityById);
 
   useEffect(() => {
-    if (ownerId) dispatch(getUserById({ id: ownerId, showLoader: true }));
-  }, [dispatch, ownerId]);
+    if (community?.ownerId) dispatch(getUserById({ id: community.ownerId, showLoader: false }));
+  }, [dispatch, community?.ownerId]);
 
   return <CommunityDetailsInfo />;
 };
