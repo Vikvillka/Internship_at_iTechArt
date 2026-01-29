@@ -107,9 +107,4 @@ public class CommunityService : ICommunityService
         request.PageSize = Math.Clamp(request.PageSize, 1, 100);
         return await _communityRepository.GetCommunitiesBySearchAsync(request);
     }
-
-    public async Task<IList<Community>> GetCommunitiesByUserIdAsync(Guid userId)
-    {
-        return await _communityRepository.GetCommunitiesByUserIdAsync(userId);
-    }
 }

@@ -39,9 +39,6 @@ public interface IBestApiClient
 
     [Post(CommunityPath + "/search")]
     Task<PagedResponse<GatewayCommunityResponse>> GetCommunitiesBySearchAsync([Body] CommunitySearchRequest request);
-
-    [Get(CommunityPath + "/getByUser/{id}")]
-    Task<List<GatewayCommunityResponse>> GetCommunityByUserIdAsync(Guid id);
     #endregion
 
     #region Event

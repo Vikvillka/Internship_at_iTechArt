@@ -8,5 +8,4 @@ public interface ICommunityRepository : IRepository<Community>
 {
     Task<IList<Community>> FindCommunitiesAsync(string? category, string? city, string? country);
     Task<PagedResult<Community>> GetCommunitiesBySearchAsync(CommunitySearchRequest request);
-    Task<IList<Community>> GetCommunitiesByUserIdAsync(Guid userId);
 }
