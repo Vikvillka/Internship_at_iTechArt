@@ -2,6 +2,7 @@ import EventIcon from '@mui/icons-material/Event';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { Box, Button, ButtonGroup, Container, Typography } from '@mui/material';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import CategorySlider from '../../components/common/categorySlider/CategorySlider';
 import DateFilter from '../../components/common/dataFilter/DateFilter';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
@@ -13,8 +14,6 @@ import { homePageStyles } from './HomePage.styles';
 type Props = {
   mode: ContentMode.Events | ContentMode.Communities;
   setMode: (mode: ContentMode.Events | ContentMode.Communities) => void;
-  loading?: boolean;
-  error?: string | null;
   selectedDate?: DateOption;
   onDateChange: (value: DateOption) => void;
   onCategorySelect: (category: string) => void;
@@ -24,13 +23,15 @@ type Props = {
 const HomePageLayout: React.FC<Props> = ({
   mode,
   setMode,
-  loading,
-  error,
   selectedDate,
   onDateChange,
   onCategorySelect,
   children,
 }) => {
+  const loading = useSelector(selectIsLoading);
+  const errorCommunities = useSelector(selectCommunitiesError);
+  const errorEvents = useSelector(selectEventsError);
+
   return (
     <Container sx={pageContainer} disableGutters>
       <Box>
@@ -70,10 +71,12 @@ const HomePageLayout: React.FC<Props> = ({
       <CategorySlider onSelect={onCategorySelect} />
       {!loading && error && (
         <Box sx={errorContainer}>
-          <Typography sx={errorText}>{error}</Typography>
+          <Typography sx={errorText}>{errorCommunities || errorEvents}</Typography>
         </Box>
       )}
-      {!loading && !error && <Box mt={3}>{children}</Box>}
+      {!loading && !errorCommunities && !errorEvents && (
+        <Box sx={homePageStyles.content}>{children}</Box>
+      )}
     </Container>
   );
 };

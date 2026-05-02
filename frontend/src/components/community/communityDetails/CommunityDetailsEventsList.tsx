@@ -1,17 +1,20 @@
 import { Grid, Typography } from '@mui/material';
 import React from 'react';
-import { Event } from '../../../models/Event';
+import { useSelector } from 'react-redux';
+import {
+  selectEventsByCommunityId,
+  selectEventsError,
+  selectParticipationCounts,
+} from '../../../store/features/events/eventsSelectors';
 import EmptyState from '../../common/emptyState/EmptyState';
 import EventCard from '../../event/eventCard/EventCard';
 import { communityDetailsStyles } from './CommunityDetails.styles';
 
-interface Props {
-  events: Event[];
-  participantCount: Record<string, number>;
-  error?: string | null;
-}
+const CommunityDetailsEventsList: React.FC = () => {
+  const events = useSelector(selectEventsByCommunityId);
+  const participantCount = useSelector(selectParticipationCounts);
+  const error = useSelector(selectEventsError);
 
-const CommunityDetailsEventsList: React.FC<Props> = ({ events, participantCount, error }) => {
   return (
     <>
       {error && (

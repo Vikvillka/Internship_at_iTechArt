@@ -22,7 +22,7 @@ const EventDetailsPage: React.FC<Props> = ({ event, participantCount, error }) =
 
   return (
     <Container sx={pageContainer}>
-      {event && <EventDetails event={event} participantCount={participantCount} />}
+      <EventDetails />
     </Container>
   );
 };

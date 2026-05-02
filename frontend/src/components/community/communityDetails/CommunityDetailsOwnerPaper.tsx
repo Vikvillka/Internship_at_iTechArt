@@ -1,23 +1,21 @@
 import UserIcon from '@mui/icons-material/PersonTwoTone';
 import { Box, Paper, Typography } from '@mui/material';
 import React from 'react';
-import { User } from '../../../models/User';
+import { useSelector } from 'react-redux';
+import { selectUserById, selectUserError } from '../../../store/features/users/usersSelectors';
 import { communityDetailsStyles } from './CommunityDetails.styles';
 
-interface Props {
-  owner?: User;
-  error?: string | null;
-}
-
-const CommunityDetailsOwnerPaper: React.FC<Props> = ({ owner, error }) => {
+const CommunityDetailsOwnerPaper: React.FC = () => {
+  const owner = useSelector(selectUserById);
+  const ownerError = useSelector(selectUserError);
   return (
     <Paper sx={communityDetailsStyles.ownerContainer}>
       <Typography variant='h6' gutterBottom>
         Organizer
       </Typography>
-      {error ? (
+      {ownerError ? (
         <Typography variant='body1' color='error'>
-          {error}
+          {ownerError}
         </Typography>
       ) : owner ? (
         <Box sx={communityDetailsStyles.ownerNameIconBox}>

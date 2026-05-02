@@ -3,8 +3,8 @@ import React from 'react';
 import { communityDetailsStyles } from './CommunityDetails.styles';
 
 interface Props {
-  name: string;
-  description: string;
+  name: string | undefined;
+  description: string | undefined;
 }
 
 const CommunityDetailsDescription: React.FC<Props> = ({ name, description }) => {
