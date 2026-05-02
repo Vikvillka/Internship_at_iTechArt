@@ -31,12 +31,12 @@ const EventParticipationActionBar: React.FC<EventParticipationActionBarProps> = 
   const isMutationLoading = useSelector(selectParticipationIsMutationLoading);
   const isParticipating = useSelector(selectIsParticipatingInEvent(event?.id || ''));
 
-  if (!isLoggedIn || !event) {
+  if (!isLoggedIn || !user?.id || !event) {
     return null;
   }
 
   const handleAttendClick = () => {
-    if (!user?.id || isParticipating) {
+    if (isParticipating) {
       return;
     }
 

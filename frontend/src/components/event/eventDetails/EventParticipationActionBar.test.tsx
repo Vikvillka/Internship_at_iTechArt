@@ -65,6 +65,31 @@ describe('EventParticipationActionBar', () => {
     expect(screen.getByRole('button', { name: 'Attend' })).toBeInTheDocument();
   });
 
+  it('does not render when logged in but user is not yet loaded (auth init state)', () => {
+    const store = createStore({
+      auth: {
+        accessToken: 'token',
+        refreshToken: 'refresh',
+        user: null,
+        error: null,
+      },
+      participation: {
+        items: [],
+        error: null,
+        isLoading: false,
+        isMutationLoading: false,
+      },
+    });
+
+    render(
+      <Provider store={store}>
+        <EventParticipationActionBar event={event} participantCount={5} />
+      </Provider>,
+    );
+
+    expect(screen.queryByRole('button', { name: 'Attend' })).not.toBeInTheDocument();
+  });
+
   it('does not render for unauthenticated users', () => {
     const store = createStore({
       auth: {
