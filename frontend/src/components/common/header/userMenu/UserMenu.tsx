@@ -65,6 +65,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ onLogout }) => {
         <MenuItem
           sx={headerStyles.menuItem}
           component={Link}
+          to='/profile'
+          onClick={handleClose}
+        >
+          Profile
+        </MenuItem>
+        <MenuItem
+          sx={headerStyles.menuItem}
+          component={Link}
           to='/user-communities'
           onClick={handleClose}
         >

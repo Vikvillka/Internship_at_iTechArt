@@ -88,4 +88,52 @@ export const eventDetailsStyles = {
     border: 'none !important',
     fontWeight: '600 !important',
   } as SxProps<Theme>,
+
+  actionBarWrapper: {
+    position: 'sticky',
+    bottom: '16px',
+    zIndex: 10,
+    mt: 3,
+    display: 'flex',
+    justifyContent: 'center',
+  } as SxProps<Theme>,
+
+  actionBar: {
+    width: '100%',
+    maxWidth: '1040px',
+    borderRadius: '16px',
+    border: '1px solid #C9C9C9',
+    boxShadow: '0 6px 18px rgba(0,0,0,0.08)',
+    px: 2,
+    py: 1.5,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 2,
+    backgroundColor: '#FFFFFF',
+    '@media (max-width:900px)': {
+      flexDirection: 'column',
+      alignItems: 'stretch',
+    },
+  } as SxProps<Theme>,
+
+  actionBarEventInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 0.5,
+  } as SxProps<Theme>,
+
+  actionBarMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 1.5,
+    color: '#6F6F6F',
+  } as SxProps<Theme>,
+
+  actionBarMetaItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 0.5,
+  } as SxProps<Theme>,
 };

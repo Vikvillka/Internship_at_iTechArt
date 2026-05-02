@@ -4,6 +4,7 @@ import HomePageContainer from './containers/common/HomePageContainer';
 import CommunityDetailsPageContainer from './containers/community/CommunityDetailsPageContainer';
 import EventDetailsPageContainer from './containers/event/EventDetailsPageContainer';
 import UserCommunitiesContainer from './containers/user/userCommunities/UserCommunitiesContainer';
+import UserProfileContainer from './containers/user/userProfile/UserProfileContainer';
 import AppLayout from './layouts/AppLayout';
 import { selectIsLoggedIn } from './store/features/auth/authSelectors';
 
@@ -20,6 +21,7 @@ const AppRoutes = () => {
           path='/user-communities'
           element={isLoggedIn ? <UserCommunitiesContainer /> : <HomePageContainer />}
         />
+        <Route path='/profile' element={isLoggedIn ? <UserProfileContainer /> : <HomePageContainer />} />
         <Route path='*' element={<HomePageContainer />} />
       </Route>
     </Routes>
