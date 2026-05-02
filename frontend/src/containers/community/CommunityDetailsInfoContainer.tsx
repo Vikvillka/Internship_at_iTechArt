@@ -11,7 +11,7 @@ const CommunityDetailsInfoContainer: React.FC = () => {
 
   useEffect(() => {
     if (ownerId) {
-      dispatch(getUserById({ id: ownerId, showLoader: true }));
+      dispatch(getUserById({ id: ownerId }));
     }
   }, [dispatch, ownerId]);
 
