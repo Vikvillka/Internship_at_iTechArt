@@ -11,6 +11,7 @@ import {
 } from '../../../store/features/auth/authSelectors';
 import {
   selectIsParticipatingInEvent,
+  selectParticipationIsLoading,
   selectParticipationIsMutationLoading,
 } from '../../../store/features/participation/participationSelectors';
 import { joinEventParticipation } from '../../../store/features/participation/participationSlice';
@@ -29,6 +30,7 @@ const EventParticipationActionBar: React.FC<EventParticipationActionBarProps> = 
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectActiveUser);
   const isMutationLoading = useSelector(selectParticipationIsMutationLoading);
+  const isLoading = useSelector(selectParticipationIsLoading);
   const isParticipating = useSelector(selectIsParticipatingInEvent(event?.id || ''));
 
   if (!isLoggedIn || !user?.id || !event) {
@@ -70,9 +72,9 @@ const EventParticipationActionBar: React.FC<EventParticipationActionBarProps> = 
         <Button
           variant='contained'
           onClick={handleAttendClick}
-          disabled={isMutationLoading || isParticipating}
+          disabled={isLoading || isMutationLoading || isParticipating}
         >
-          {isParticipating ? 'Attending' : 'Attend'}
+          {isParticipating ? 'Attending' : isLoading ? 'Loading...' : 'Attend'}
         </Button>
       </Paper>
     </Box>

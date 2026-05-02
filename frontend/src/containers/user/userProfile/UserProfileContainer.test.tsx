@@ -1,10 +1,13 @@
 import '@testing-library/jest-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from '../../../store/rootReducer';
-import { getUserParticipations } from '../../../store/features/participation/participationSlice';
+import {
+  getUserParticipations,
+  setUserParticipations,
+} from '../../../store/features/participation/participationSlice';
 import UserProfileContainer from './UserProfileContainer';
 
 const createStore = (preloadedState: Partial<ReturnType<typeof rootReducer>>) =>
@@ -14,6 +17,31 @@ const createStore = (preloadedState: Partial<ReturnType<typeof rootReducer>>) =>
   });
 
 describe('UserProfileContainer', () => {
+  it('shows loading state when user is not yet loaded (auth init state)', () => {
+    const store = createStore({
+      auth: {
+        accessToken: 'token',
+        refreshToken: 'refresh',
+        user: null,
+        error: null,
+      },
+      participation: {
+        items: [],
+        error: null,
+        isLoading: false,
+        isMutationLoading: false,
+      },
+    });
+
+    render(
+      <Provider store={store}>
+        <UserProfileContainer />
+      </Provider>,
+    );
+
+    expect(screen.getByText('Loading joined events...')).toBeInTheDocument();
+  });
+
   it('fetches participations for active user', async () => {
     const store = createStore({
       auth: {
@@ -50,24 +78,23 @@ describe('UserProfileContainer', () => {
     });
   });
 
-  it('renders joined events from participation state', () => {
+  it('renders joined events from participation state', async () => {
     const store = createStore({
       auth: {
         accessToken: 'token',
         refreshToken: 'refresh',
-        user: null,
+        user: {
+          id: 'user-1',
+          username: 'john',
+          email: 'john@mail.com',
+          gender: 0,
+          city: 'City',
+          country: 'Country',
+        },
         error: null,
       },
       participation: {
-        items: [
-          {
-            id: 'p-1',
-            userId: 'user-1',
-            eventId: 'event-1',
-            eventName: 'Frontend Meetup',
-            isConfirmed: true,
-          },
-        ],
+        items: [],
         error: null,
         isLoading: false,
         isMutationLoading: false,
@@ -80,7 +107,24 @@ describe('UserProfileContainer', () => {
       </Provider>,
     );
 
-    expect(screen.getByText('Joined events')).toBeInTheDocument();
-    expect(screen.getByText('Frontend Meetup')).toBeInTheDocument();
+    // Simulate saga completing and delivering participations
+    act(() => {
+      store.dispatch(
+        setUserParticipations([
+          {
+            id: 'p-1',
+            userId: 'user-1',
+            eventId: 'event-1',
+            eventName: 'Frontend Meetup',
+            isConfirmed: true,
+          },
+        ]),
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Joined events')).toBeInTheDocument();
+      expect(screen.getByText('Frontend Meetup')).toBeInTheDocument();
+    });
   });
 });

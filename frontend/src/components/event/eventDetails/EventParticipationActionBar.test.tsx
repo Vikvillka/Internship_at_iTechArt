@@ -115,6 +115,40 @@ describe('EventParticipationActionBar', () => {
     expect(screen.queryByRole('button', { name: 'Attend' })).not.toBeInTheDocument();
   });
 
+  it('disables and shows loading label while participations are being fetched', () => {
+    const store = createStore({
+      auth: {
+        accessToken: 'token',
+        refreshToken: 'refresh',
+        user: {
+          id: 'user-1',
+          username: 'john',
+          email: 'john@mail.com',
+          gender: 0,
+          city: 'City',
+          country: 'Country',
+        },
+        error: null,
+      },
+      participation: {
+        items: [],
+        error: null,
+        isLoading: true,
+        isMutationLoading: false,
+      },
+    });
+
+    render(
+      <Provider store={store}>
+        <EventParticipationActionBar event={event} participantCount={5} />
+      </Provider>,
+    );
+
+    const button = screen.getByRole('button', { name: 'Loading...' });
+    expect(button).toBeInTheDocument();
+    expect(button).toBeDisabled();
+  });
+
   it('dispatches join action when attend is clicked', () => {
     const store = createStore({
       auth: {

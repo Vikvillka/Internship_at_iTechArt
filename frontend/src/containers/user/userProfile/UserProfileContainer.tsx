@@ -22,7 +22,13 @@ const UserProfileContainer: React.FC = () => {
     }
   }, [dispatch, user?.id]);
 
-  return <UserProfilePage participations={participations} isLoading={isLoading} error={error} />;
+  return (
+    <UserProfilePage
+      participations={participations}
+      isLoading={isLoading || !user?.id}
+      error={error}
+    />
+  );
 };
 
 export default UserProfileContainer;
