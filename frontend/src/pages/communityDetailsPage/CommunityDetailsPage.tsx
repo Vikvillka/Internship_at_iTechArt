@@ -27,7 +27,7 @@ const CommunityDetailsPage: React.FC = () => {
     }
   };
 
-  if (loading) {
+  if (loading && !community) {
     return (
       <Container sx={pageContainer}>
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>

@@ -10,7 +10,7 @@ const CommunityDetailsEventsListContainer: React.FC = () => {
 
   useEffect(() => {
     if (communityId) {
-      dispatch(getEventByCommunityId({ communityId, showLoader: true }));
+      dispatch(getEventByCommunityId({ communityId }));
     }
   }, [communityId, dispatch]);
 

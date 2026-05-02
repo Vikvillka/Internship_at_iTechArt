@@ -16,7 +16,7 @@ export const loaderSlice = createSlice({
       state.counter += 1;
     },
     decrementLoader(state) {
-      state.counter -= 1;
+      state.counter = Math.max(0, state.counter - 1);
     },
   },
 });
