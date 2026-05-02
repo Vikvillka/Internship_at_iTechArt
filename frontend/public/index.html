@@ -2,6 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <script>
+      (function () {
+        const head = document.getElementsByTagName('head')[0];
+        const insertBefore = head.insertBefore;
+
+        head.insertBefore = function (newElement, referenceElement) {
+          if (
+            newElement.href &&
+            newElement.href.includes('fonts.googleapis.com/css?family=Roboto')
+          ) {
+            return;
+          }
+          insertBefore.call(head, newElement, referenceElement);
+        };
+      })();
+    </script>
     <link rel="icon" href="%PUBLIC_URL%/icon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />

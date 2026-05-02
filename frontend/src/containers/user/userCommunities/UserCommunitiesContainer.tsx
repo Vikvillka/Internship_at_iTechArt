@@ -10,7 +10,7 @@ const UserCommunitiesContainer: React.FC = () => {
 
   useEffect(() => {
     if (user?.id) {
-      dispatch(getUserCommunities({ userId: user.id }));
+      dispatch(getUserCommunities({ userId: user.id, showLoader: true }));
     }
   }, [user?.id, dispatch]);
 

@@ -67,7 +67,7 @@ export const communitiesSlice = createSlice({
       state.subscriptionCounts = {};
       state.totalPages = 0;
     },
-    getUserCommunities(state, action: PayloadAction<{ userId: string }>) {
+    getUserCommunities(state, action: PayloadAction<{ userId: string; showLoader?: boolean }>) {
       state.error = null;
     },
     setUserCommunities(
