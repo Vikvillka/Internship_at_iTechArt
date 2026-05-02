@@ -1,4 +1,5 @@
 import { Container, Typography } from '@mui/material';
+import EventParticipationActionBar from '../../components/event/eventDetails/EventParticipationActionBar';
 import EventDetails from '../../components/event/eventDetails/EventDetails';
 import { Event } from '../../models/Event';
 import { errorContainer, errorText, pageContainer } from '../../styles/common';
@@ -23,6 +24,7 @@ const EventDetailsPage: React.FC<Props> = ({ event, participantCount, error }) =
   return (
     <Container sx={pageContainer}>
       <EventDetails />
+      <EventParticipationActionBar event={event} participantCount={participantCount} />
     </Container>
   );
 };

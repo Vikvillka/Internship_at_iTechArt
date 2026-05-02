@@ -79,6 +79,14 @@ export const eventsSlice = createSlice({
       state.participationCounts = action.payload.participationCounts;
       state.error = null;
     },
+    addParticipantCount(state, action: PayloadAction<{ eventId: string }>) {
+      const currentCount = state.participationCounts[action.payload.eventId] || 0;
+      state.participationCounts[action.payload.eventId] = currentCount + 1;
+    },
+    decrementParticipantCount(state, action: PayloadAction<{ eventId: string }>) {
+      const currentCount = state.participationCounts[action.payload.eventId] || 0;
+      state.participationCounts[action.payload.eventId] = Math.max(0, currentCount - 1);
+    },
     setEventsError(state, action: PayloadAction<string>) {
       state.error = action.payload;
       state.items = [];
@@ -96,6 +104,8 @@ export const {
   setEventById,
   getEventByCommunityId,
   setEventByCommunityId,
+  addParticipantCount,
+  decrementParticipantCount,
   setEventsError,
 } = eventsSlice.actions;
 
