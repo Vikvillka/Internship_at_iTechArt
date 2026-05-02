@@ -18,7 +18,7 @@ const EventDetailsLeftColumnContainer: React.FC = () => {
   const errorUser = useSelector(selectUserError);
 
   useEffect(() => {
-    if (event.communityId) {
+    if (event?.communityId) {
       dispatch(getCommunityById({ id: event.communityId, showLoader: true }));
     }
   }, [event?.communityId, dispatch]);

@@ -1,7 +1,7 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { userApi } from '../../../api/user';
-import { hideLoader, showLoader } from '../loader/loaderSlice';
+import { hideLoader, showLoader, incrementLoader, decrementLoader } from '../loader/loaderSlice';
 import { closeRegisterModal, openLoginModal } from '../ui/uiSlice';
 import {
   getUserById,

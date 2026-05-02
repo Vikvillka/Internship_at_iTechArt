@@ -4,7 +4,7 @@ import { communityApi } from '../../../api/community';
 import { subscriptionApi } from '../../../api/subscription';
 import { PagedResponse } from '../../../models/Common';
 import { Community, CommunitySearchRequest } from '../../../models/Community';
-import { hideLoader, showLoader } from '../loader/loaderSlice';
+import { hideLoader, showLoader, incrementLoader, decrementLoader } from '../loader/loaderSlice';
 import { getUserById } from '../users/usersSlice';
 
 import {

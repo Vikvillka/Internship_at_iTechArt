@@ -7,9 +7,12 @@ import { getUserById } from '../../store/features/users/usersSlice';
 const CommunityDetailsInfoContainer: React.FC = () => {
   const dispatch = useDispatch();
   const community = useSelector(selectCommunityById);
+  const ownerId = community?.ownerId;
 
   useEffect(() => {
-    if (ownerId) dispatch(getUserById({ id: ownerId, showLoader: true }));
+    if (ownerId) {
+      dispatch(getUserById({ id: ownerId, showLoader: true }));
+    }
   }, [dispatch, ownerId]);
 
   return <CommunityDetailsInfo />;

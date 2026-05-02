@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import CommunityDetailsEventsList from '../../components/community/communityDetails/CommunityDetailsEventsList';
-import { selectCommunityById } from '../../store/features/communities/communitiesSelectors';
 import { getEventByCommunityId } from '../../store/features/events/eventsSlice';
 
-const CommunityDetailsInfoContainer: React.FC = () => {
+const CommunityDetailsEventsListContainer: React.FC = () => {
   const dispatch = useDispatch();
-  const community = useSelector(selectCommunityById);
+  const { communityId } = useParams<{ communityId: string }>();
 
   useEffect(() => {
     if (communityId) {
-      dispatch(getEventByCommunityId({ communityId: communityId, showLoader: true }));
+      dispatch(getEventByCommunityId({ communityId, showLoader: true }));
     }
-  }, [community?.id, dispatch]);
+  }, [communityId, dispatch]);
 
   return <CommunityDetailsEventsList />;
 };
 
-export default CommunityDetailsInfoContainer;
+export default CommunityDetailsEventsListContainer;

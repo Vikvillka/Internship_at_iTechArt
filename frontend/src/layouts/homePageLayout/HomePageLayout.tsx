@@ -8,6 +8,11 @@ import DateFilter from '../../components/common/dataFilter/DateFilter';
 import PageTitle from '../../components/common/pageTitle/PageTitle';
 import { DateOption } from '../../models/Date';
 import { ContentMode } from '../../models/Mode';
+import {
+  selectCommunitiesError,
+} from '../../store/features/communities/communitiesSelectors';
+import { selectEventsError } from '../../store/features/events/eventsSelectors';
+import { selectIsLoading } from '../../store/features/loader/loaderSelectors';
 import { errorContainer, errorText, pageContainer } from '../../styles/common';
 import { homePageStyles } from './HomePage.styles';
 
@@ -69,7 +74,7 @@ const HomePageLayout: React.FC<Props> = ({
         }
       />
       <CategorySlider onSelect={onCategorySelect} />
-      {!loading && error && (
+      {!loading && (errorCommunities || errorEvents) && (
         <Box sx={errorContainer}>
           <Typography sx={errorText}>{errorCommunities || errorEvents}</Typography>
         </Box>
