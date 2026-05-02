@@ -5,11 +5,11 @@ import { useParams } from 'react-router-dom';
 import CommunityDetailsHeader from '../../components/community/communityDetails/CommunityDetailsHeader';
 import CommunityDetailsEventsListContainer from '../../containers/community/CommunityDetailsEventsListContainer';
 import CommunityDetailsInfoContainer from '../../containers/community/CommunityDetailsInfoContainer';
-import { getCommunityById } from '../../store/features/communities/communitiesSlice';
 import {
   selectCommunitiesError,
   selectCommunityById,
 } from '../../store/features/communities/communitiesSelectors';
+import { getCommunityById } from '../../store/features/communities/communitiesSlice';
 import { selectIsLoading } from '../../store/features/loader/loaderSelectors';
 import { errorContainer, errorText, pageContainer } from '../../styles/common';
 
