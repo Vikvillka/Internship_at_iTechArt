@@ -1,22 +1,15 @@
-import { Box, CircularProgress, Container, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { Container, Typography } from '@mui/material';
 import EventDetails from '../../components/event/eventDetails/EventDetails';
-import { selectEventsError } from '../../store/features/events/eventsSelectors';
-import { selectIsLoading } from '../../store/features/loader/loaderSelectors';
-import { errorContainer, errorText, loadingBox, pageContainer } from '../../styles/common';
+import { Event } from '../../models/Event';
+import { errorContainer, errorText, pageContainer } from '../../styles/common';
 
-const EventDetailsPage: React.FC = () => {
-  const loading = useSelector(selectIsLoading);
-  const error = useSelector(selectEventsError);
+interface Props {
+  event: Event | null;
+  participantCount: number;
+  error: string | null;
+}
 
-  if (loading) {
-    return (
-      <Box sx={loadingBox}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
+const EventDetailsPage: React.FC<Props> = ({ event, participantCount, error }) => {
   if (error) {
     return (
       <Container sx={errorContainer}>

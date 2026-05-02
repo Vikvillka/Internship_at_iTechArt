@@ -22,5 +22,7 @@ export const loaderSlice = createSlice({
 });
 
 export const { incrementLoader, decrementLoader } = loaderSlice.actions;
+export const showLoader = incrementLoader;
+export const hideLoader = decrementLoader;
 
 export default loaderSlice.reducer;

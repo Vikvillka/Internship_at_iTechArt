@@ -6,7 +6,7 @@ export const communityCardStyles = {
     px: 1,
     minHeight: '300px',
     boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-    borderRadius: '5%',
+    borderRadius: '20px',
     '&:hover': {
       boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.2)',
       transform: 'scale(1.01)',

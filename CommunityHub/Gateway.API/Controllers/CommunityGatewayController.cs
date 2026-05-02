@@ -52,7 +52,7 @@ public class CommunityGatewayController : ControllerBase
     }
 
     [HttpPost("create")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(GatewayCommunityResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create(GatewayCreateCommunityRequest request)
     {
@@ -95,6 +95,16 @@ public class CommunityGatewayController : ControllerBase
         var apiRequest = _mapper.Map<CommunitySearchRequest>(request);
         var result = await _apiClient.GetCommunitiesBySearchAsync(apiRequest);
         var gatewayResponse = _mapper.Map<PagedResponse<GatewayCommunityResponse>>(result);
+        return Ok(gatewayResponse);
+    }
+
+    [HttpGet("getByUser/{id}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ProducesResponseType(typeof(List<GatewayCommunityResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCommnitiesByUserId(Guid id)
+    {
+        var result = await _apiClient.GetCommunityByUserIdAsync(id);
+        var gatewayResponse = _mapper.Map<List<GatewayCommunityResponse>>(result);
         return Ok(gatewayResponse);
     }
 }

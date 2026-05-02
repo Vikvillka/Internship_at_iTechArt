@@ -19,7 +19,7 @@ const EventDetailsLeftColumnContainer: React.FC = () => {
 
   useEffect(() => {
     if (event?.communityId) {
-      dispatch(getCommunityById({ id: event.communityId, showLoader: false }));
+      dispatch(getCommunityById({ id: event.communityId, showLoader: true }));
     }
   }, [event?.communityId, dispatch]);
 
